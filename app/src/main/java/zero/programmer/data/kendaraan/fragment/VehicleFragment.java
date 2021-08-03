@@ -3,12 +3,27 @@ package zero.programmer.data.kendaraan.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
+import zero.programmer.data.kendaraan.activity.MainActivity;
+import zero.programmer.data.kendaraan.adapter.VehicleAdapter;
+import zero.programmer.data.kendaraan.api.ApiRequest;
+import zero.programmer.data.kendaraan.api.RetroServer;
+import zero.programmer.data.kendaraan.entitites.Vehicle;
+import zero.programmer.data.kendaraan.model.ResponseVehicle;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +40,11 @@ public class VehicleFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter recyclerViewAdapter;
+    private RecyclerView.LayoutManager recyclerViewLayoutManager;
+    private List<Vehicle> listVehicle = new ArrayList<>();
 
     public VehicleFragment() {
         // Required empty public constructor
@@ -61,6 +81,45 @@ public class VehicleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_vehicle, container, false);
+        View view = inflater.inflate(R.layout.fragment_vehicle, container, false);
+
+        recyclerView = view.findViewById(R.id.recycler_view_vehicle);
+        recyclerViewLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(recyclerViewLayoutManager);
+
+        retrieveData();
+
+        return view;
+    }
+
+
+    private void retrieveData(){
+
+        ApiRequest apiRequest = RetroServer.getRetrofit().create(ApiRequest.class);
+        Call<ResponseVehicle> getData = apiRequest.listVehicle();
+
+        getData.enqueue(new Callback<ResponseVehicle>() {
+            @Override
+            public void onResponse(Call<ResponseVehicle> call, Response<ResponseVehicle> response) {
+
+                try{
+                    listVehicle = response.body().getData();
+                } catch (NullPointerException e){
+                    Toast.makeText(getContext(), "Error" + e, Toast.LENGTH_SHORT).show();
+                }
+
+
+                recyclerViewAdapter = new VehicleAdapter(getContext(), listVehicle);
+                recyclerView.setAdapter(recyclerViewAdapter);
+                recyclerViewAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseVehicle> call, Throwable t) {
+                Toast.makeText(getContext(), "Error : " + t, Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }

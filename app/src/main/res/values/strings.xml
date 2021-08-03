@@ -13,4 +13,7 @@
     <string name="title_driver">Data Sopir</string>
     <string name="title_user">Data User</string>
 
+    <string name="vehicle_name">Nama Kendaraan</string>
+    <string name="vehicle_merk">Merk Kendaraan</string>
+
 </resources>

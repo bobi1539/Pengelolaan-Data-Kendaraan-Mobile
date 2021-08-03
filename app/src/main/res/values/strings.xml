@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Pengelolaan Data Kendaraan Mobile</string>
+
+    <string name="title_item_person">Profil</string>
+    <string name="title_item_vehicle">Kendaraan</string>
+    <string name="title_item_create">Peminjaman</string>
+    <string name="title_item_driver">Sopir</string>
+    <string name="title_item_user">User</string>
+
+    <string name="title_profile">Profil</string>
+    <string name="title_vehicle">Data Kendaraan</string>
+    <string name="title_borrow">Data Peminjaman</string>
+    <string name="title_driver">Data Sopir</string>
+    <string name="title_user">Data User</string>
+
+</resources>

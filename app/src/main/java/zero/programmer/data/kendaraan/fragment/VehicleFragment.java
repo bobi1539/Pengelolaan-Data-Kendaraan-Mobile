@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ public class VehicleFragment extends Fragment {
     private RecyclerView.Adapter recyclerViewAdapter;
     private RecyclerView.LayoutManager recyclerViewLayoutManager;
     private List<Vehicle> listVehicle = new ArrayList<>();
+    private ProgressBar progressBar;
 
     public VehicleFragment() {
         // Required empty public constructor
@@ -84,6 +86,7 @@ public class VehicleFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_vehicle, container, false);
 
         recyclerView = view.findViewById(R.id.recycler_view_vehicle);
+        progressBar = view.findViewById(R.id.vehicle_progress_bar);
         recyclerViewLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
 
@@ -94,6 +97,8 @@ public class VehicleFragment extends Fragment {
 
 
     private void retrieveData(){
+
+        progressBar.setVisibility(View.VISIBLE);
 
         ApiRequest apiRequest = RetroServer.getRetrofit().create(ApiRequest.class);
         Call<ResponseVehicle> getData = apiRequest.listVehicle();
@@ -112,6 +117,7 @@ public class VehicleFragment extends Fragment {
                 recyclerViewAdapter = new VehicleAdapter(getContext(), listVehicle);
                 recyclerView.setAdapter(recyclerViewAdapter);
                 recyclerViewAdapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.GONE);
 
             }
 

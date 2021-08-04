@@ -13,7 +13,15 @@
     <string name="title_driver">Data Sopir</string>
     <string name="title_user">Data User</string>
 
+    <string name="vehicle_registration_number">Nomor Registrasi</string>
     <string name="vehicle_name">Nama Kendaraan</string>
     <string name="vehicle_merk">Merk Kendaraan</string>
+    <string name="vehicle_police_number">Nomor Polisi</string>
+    <string name="vehicle_is_borrow">Status Peminjaman</string>
+
+    <string name="borrow_false">Ready</string>
+    <string name="borrow_true">Dipinjam</string>
+
+
 
 </resources>

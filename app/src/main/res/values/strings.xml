@@ -21,7 +21,7 @@
     <string name="vehicle_is_borrow">Status Peminjaman</string>
     <string name="vehicle_chassis_number">Nomor Rangka</string>
     <string name="vehicle_machine_number">Nomor Mesin</string>
-    <string name="vehicle_purchase_date">Tanggal Beli</string>
+    <string name="vehicle_purchase_date">Tanggal Beli (yyyy-mm-dd)</string>
     <string name="vehicle_value">Nilai Peroleh</string>
     <string name="vehicle_location">Lokasi</string>
     <string name="vehicle_condition">Kondisi</string>
@@ -32,10 +32,12 @@
     <string name="button_update">Ubah</string>
     <string name="button_delete">Hapus</string>
     <string name="button_add">Tambah Data</string>
+    <string name="button_update_action">Update Data</string>
 
     <string name="content_description">TODO</string>
 
     <string name="input_vehicle">Input Data Kendaraan</string>
+    <string name="edit_vehicle">Edit Data Kendaraan</string>
 
     <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheetStyle</item>

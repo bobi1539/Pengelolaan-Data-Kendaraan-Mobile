@@ -28,6 +28,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
+import zero.programmer.data.kendaraan.activity.EditVehicleActivity;
 import zero.programmer.data.kendaraan.activity.MainActivity;
 import zero.programmer.data.kendaraan.api.ApiRequest;
 import zero.programmer.data.kendaraan.api.RetroServer;
@@ -204,7 +205,14 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
         }
 
         private void updateVehicle(){
-            Toast.makeText(context, "Update Vehicle : " + registrationNumber, Toast.LENGTH_SHORT).show();
+
+            bottomSheetDialog.dismiss();
+
+            Intent intent = new Intent(context, EditVehicleActivity.class);
+
+            intent.putExtra("registrationNumber", registrationNumber);
+            context.startActivity(intent);
+
         }
 
         private void deleteVehicle(){

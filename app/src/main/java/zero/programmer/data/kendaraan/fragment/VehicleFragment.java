@@ -1,5 +1,6 @@
 package zero.programmer.data.kendaraan.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +22,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
+import zero.programmer.data.kendaraan.activity.AddVehicleActivity;
 import zero.programmer.data.kendaraan.activity.MainActivity;
 import zero.programmer.data.kendaraan.adapter.VehicleAdapter;
 import zero.programmer.data.kendaraan.api.ApiRequest;
@@ -47,6 +51,7 @@ public class VehicleFragment extends Fragment {
     private RecyclerView.LayoutManager recyclerViewLayoutManager;
     private List<Vehicle> listVehicle = new ArrayList<>();
     private ProgressBar progressBar;
+    private FloatingActionButton floatingActionButton;
 
     public VehicleFragment() {
         // Required empty public constructor
@@ -90,6 +95,15 @@ public class VehicleFragment extends Fragment {
         recyclerViewLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
 
+        // button untuk pergi ke activity tambah vehicle
+        floatingActionButton = view.findViewById(R.id.button_add_vehicle);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), AddVehicleActivity.class));
+            }
+        });
+
         retrieveData();
 
         return view;
@@ -123,6 +137,7 @@ public class VehicleFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ResponseVehicle> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(getContext(), "Error : " + t, Toast.LENGTH_SHORT).show();
             }
         });

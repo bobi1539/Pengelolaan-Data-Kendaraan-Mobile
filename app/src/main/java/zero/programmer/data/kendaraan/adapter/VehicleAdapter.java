@@ -1,5 +1,6 @@
 package zero.programmer.data.kendaraan.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Vibrator;
 import android.view.LayoutInflater;
@@ -150,7 +151,7 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
                         textViewDetailCondition = bottomSheetView.findViewById(R.id.tv_vehicle_condition);
                         textViewDetailBorrowStatus = bottomSheetView.findViewById(R.id.tv_vehicle_is_borrow);
 
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
 
                         textViewDetailRegistrationNumber.setText(vehicle.getRegistrationNumber());
@@ -159,7 +160,13 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
                         textViewDetailChassisNumber.setText(vehicle.getChassisNumber());
                         textViewDetailMachineNumber.setText(vehicle.getMachineNumber());
                         textViewDetailPoliceNumber.setText(vehicle.getPoliceNumber());
-                        textViewDetailPurchaseDate.setText(simpleDateFormat.format(vehicle.getPurchaseDate()));
+
+                        // cek jika tanggal pembelian kosong
+                        if (vehicle.getPurchaseDate() == null){
+                            textViewDetailPurchaseDate.setText("");
+                        } else {
+                            textViewDetailPurchaseDate.setText(simpleDateFormat.format(vehicle.getPurchaseDate()));
+                        }
                         textViewDetailValue.setText(String.valueOf(vehicle.getAcquisitionValue()));
                         textViewDetailLocation.setText(vehicle.getLocation());
                         textViewDetailCondition.setText(vehicle.getCondition());

@@ -15,8 +15,8 @@
 
     <string name="vehicle_detail">Detail Kendaraan</string>
     <string name="vehicle_registration_number">Nomor Registrasi</string>
-    <string name="vehicle_name">Nama Kendaraan</string>
-    <string name="vehicle_merk">Merk Kendaraan</string>
+    <string name="vehicle_name">Nama</string>
+    <string name="vehicle_merk">Merk</string>
     <string name="vehicle_police_number">Nomor Polisi</string>
     <string name="vehicle_is_borrow">Status Peminjaman</string>
     <string name="vehicle_chassis_number">Nomor Rangka</string>
@@ -31,8 +31,11 @@
 
     <string name="button_update">Ubah</string>
     <string name="button_delete">Hapus</string>
+    <string name="button_add">Tambah Data</string>
 
     <string name="content_description">TODO</string>
+
+    <string name="input_vehicle">Input Data Kendaraan</string>
 
     <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
@@ -42,8 +45,13 @@
         <item name="android:background">@color/transparent</item>
     </style>
 
-
-
+    <string-array name="array_condition">
+        <item>Kondisi</item>
+        <item>Baik</item>
+        <item>Rusak Ringan</item>
+        <item>Rusak Berat</item>
+        <item>Hilang</item>
+    </string-array>
 
 
 </resources>

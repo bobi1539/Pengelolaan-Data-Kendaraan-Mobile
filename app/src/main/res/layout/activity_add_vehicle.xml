@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.AddVehicleActivity">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:elevation="10dp"
+        app:cardCornerRadius="10dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/input_vehicle"
+                    android:textStyle="bold"
+                    android:textSize="22sp"
+                    android:textColor="@color/purple_500"
+                    android:layout_marginBottom="20dp"
+                    android:layout_gravity="center_horizontal"/>
+
+                <EditText
+                    android:id="@+id/et_vehicle_registration_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/vehicle_registration_number"
+                    android:background="@drawable/custom_input"
+                    android:autofillHints="@string/vehicle_registration_number"
+                    android:inputType="text"
+                    tools:ignore="TextFields" />
+
+                <EditText
+                    android:id="@+id/et_vehicle_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/vehicle_name"
+                    android:background="@drawable/custom_input"
+                    android:autofillHints="@string/vehicle_name"
+                    android:inputType="text"/>
+
+                <EditText
+                    android:id="@+id/et_vehicle_merk"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/vehicle_merk"
+                    android:background="@drawable/custom_input"
+                    android:autofillHints="@string/vehicle_merk"
+                    android:inputType="text"/>
+
+                <EditText
+                    android:id="@+id/et_vehicle_chassis_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/vehicle_chassis_number"
+                    android:background="@drawable/custom_input"
+                    android:autofillHints="@string/vehicle_chassis_number"
+                    android:inputType="text"
+                    tools:ignore="TextFields" />
+
+                <EditText
+                    android:id="@+id/et_vehicle_machine_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/vehicle_machine_number"
+                    android:background="@drawable/custom_input"
+                    android:autofillHints="@string/vehicle_machine_number"
+                    android:inputType="text"
+                    tools:ignore="TextFields" />
+
+                <EditText
+                    android:id="@+id/et_vehicle_police_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/vehicle_police_number"
+                    android:background="@drawable/custom_input"
+                    android:autofillHints="@string/vehicle_police_number"
+                    android:inputType="text"
+                    tools:ignore="TextFields" />
+
+                <EditText
+                    android:id="@+id/et_vehicle_purchase_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/vehicle_purchase_date"
+                    android:background="@drawable/custom_input"
+                    android:autofillHints="@string/vehicle_purchase_date"
+                    android:inputType="date"/>
+
+                <EditText
+                    android:id="@+id/et_vehicle_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/vehicle_value"
+                    android:background="@drawable/custom_input"
+                    android:autofillHints="@string/vehicle_value"
+                    android:inputType="number"/>
+
+                <EditText
+                    android:id="@+id/et_vehicle_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/vehicle_location"
+                    android:background="@drawable/custom_input"
+                    android:autofillHints="@string/vehicle_location"
+                    android:inputType="text"/>
+
+                <Spinner
+                    android:id="@+id/spinner_condition_vehicle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:padding="15dp"
+                    android:background="@drawable/custom_input"
+                    android:entries="@array/array_condition"/>
+
+                <Button
+                    android:id="@+id/button_insert_vehicle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/button_add"/>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

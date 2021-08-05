@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,6 +53,7 @@ public class VehicleFragment extends Fragment {
     private List<Vehicle> listVehicle = new ArrayList<>();
     private ProgressBar progressBar;
     private FloatingActionButton floatingActionButton;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public VehicleFragment() {
         // Required empty public constructor
@@ -104,11 +106,24 @@ public class VehicleFragment extends Fragment {
             }
         });
 
-        retrieveData();
+        // retrieveData();
+
+        // swipe refrest layout
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_vehicle);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.setRefreshing(true);
+            retrieveData();
+            swipeRefreshLayout.setRefreshing(false);
+        });
 
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        retrieveData();
+    }
 
     private void retrieveData(){
 

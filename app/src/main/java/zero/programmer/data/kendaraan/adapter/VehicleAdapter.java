@@ -1,7 +1,10 @@
 package zero.programmer.data.kendaraan.adapter;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +28,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
+import zero.programmer.data.kendaraan.activity.MainActivity;
 import zero.programmer.data.kendaraan.api.ApiRequest;
 import zero.programmer.data.kendaraan.api.RetroServer;
 import zero.programmer.data.kendaraan.entitites.Vehicle;
@@ -38,6 +42,8 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
     private Vehicle vehicle;
 
     private String registrationNumber;
+
+    private ApiRequest apiRequest = RetroServer.getRetrofit().create(ApiRequest.class);
 
     public VehicleAdapter(Context context, List<Vehicle> listVehicle){
         this.context = context;
@@ -83,6 +89,7 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
                 textViewDetailLocation, textViewDetailCondition, textViewDetailBorrowStatus;
         Vibrator vibrator;
         Button buttonUpdateVehicle, buttonDeleteVehicle;
+        BottomSheetDialog bottomSheetDialog;
 
         public HolderData(@NonNull View itemView) {
             super(itemView);
@@ -112,7 +119,6 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
 
             registrationNumber = textViewRegistrationNumber.getText().toString();
 
-            ApiRequest apiRequest = RetroServer.getRetrofit().create(ApiRequest.class);
             Call<ResponseGetVehicle> getVehicle = apiRequest.getVehicle(registrationNumber);
 
             getVehicle.enqueue(new Callback<ResponseGetVehicle>() {
@@ -123,7 +129,7 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
 
                         Vehicle vehicle = response.body().getData();
 
-                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(
+                        bottomSheetDialog = new BottomSheetDialog(
                                 context, R.style.BottomSheetDialogTheme
                         );
                         View bottomSheetView = LayoutInflater.from(context)
@@ -202,7 +208,39 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
         }
 
         private void deleteVehicle(){
-            Toast.makeText(context, "Delete Vehicle : " + registrationNumber, Toast.LENGTH_SHORT).show();
+            // membuat alert dialog
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+            alertDialog.setMessage("Yakin data dihapus?");
+            alertDialog.setCancelable(true);
+
+            alertDialog.setPositiveButton("Tidak", (dialog, which) -> dialog.dismiss());
+
+            alertDialog.setNegativeButton("Ya", (dialog, which) -> {
+
+                Call<ResponseGetVehicle> callDeleteVehicle = apiRequest.deleteVehicle(registrationNumber);
+
+                callDeleteVehicle.enqueue(new Callback<ResponseGetVehicle>() {
+                    @Override
+                    public void onResponse(Call<ResponseGetVehicle> call, Response<ResponseGetVehicle> response) {
+
+                        try{
+                            List<String> messages = response.body().getMessages();
+                            Toast.makeText(context, messages.get(0), Toast.LENGTH_SHORT).show();
+                            bottomSheetDialog.dismiss();
+                        } catch (NullPointerException e){
+                            Toast.makeText(context, "Error : " + e, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseGetVehicle> call, Throwable t) {
+                        Toast.makeText(context, "Error : " + t, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            });
+
+            alertDialog.show();
         }
     }
 

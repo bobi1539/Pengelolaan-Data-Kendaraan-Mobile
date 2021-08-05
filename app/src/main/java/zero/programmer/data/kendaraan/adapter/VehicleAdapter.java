@@ -82,10 +82,12 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
                 textViewDetailMachineNumber, textViewDetailPoliceNumber, textViewDetailPurchaseDate, textViewDetailValue,
                 textViewDetailLocation, textViewDetailCondition, textViewDetailBorrowStatus;
         Vibrator vibrator;
+        Button buttonUpdateVehicle, buttonDeleteVehicle;
 
         public HolderData(@NonNull View itemView) {
             super(itemView);
 
+            // get view
             textViewName = itemView.findViewById(R.id.card_vehicle_name);
             textViewMerk = itemView.findViewById(R.id.card_vehicle_merk);
             textViewPoliceNumber = itemView.findViewById(R.id.card_vehicle_police_number);
@@ -101,20 +103,12 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
                     detailVehicle();
                 }
             });
-
-            cardViewVehicle.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-
-                    vibrator.vibrate(80);
-
-                    Toast.makeText(context, "Testing", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-            });
         }
 
         private void detailVehicle(){
+
+            // getar
+            vibrator.vibrate(80);
 
             registrationNumber = textViewRegistrationNumber.getText().toString();
 
@@ -138,7 +132,7 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
                                         itemView.findViewById(R.id.bottomSheetContainer)
                                 );
 
-                        // set data detail kendaraan dari database
+                        // get view
                         textViewDetailRegistrationNumber = bottomSheetView.findViewById(R.id.tv_vehicle_registration_number);
                         textViewDetailName = bottomSheetView.findViewById(R.id.tv_vehicle_name);
                         textViewDetailMerk = bottomSheetView.findViewById(R.id.tv_vehicle_merk);
@@ -150,10 +144,12 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
                         textViewDetailLocation = bottomSheetView.findViewById(R.id.tv_vehicle_location);
                         textViewDetailCondition = bottomSheetView.findViewById(R.id.tv_vehicle_condition);
                         textViewDetailBorrowStatus = bottomSheetView.findViewById(R.id.tv_vehicle_is_borrow);
+                        buttonUpdateVehicle = bottomSheetView.findViewById(R.id.button_update_vehicle);
+                        buttonDeleteVehicle = bottomSheetView.findViewById(R.id.button_delete_vehicle);
 
                         @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-
+                        // set data detail kendaraan dari database
                         textViewDetailRegistrationNumber.setText(vehicle.getRegistrationNumber());
                         textViewDetailName.setText(vehicle.getName());
                         textViewDetailMerk.setText(vehicle.getMerk());
@@ -177,6 +173,11 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
                             textViewDetailBorrowStatus.setText(R.string.borrow_true);
                         }
                         // -------
+
+                        // click button update
+                        buttonUpdateVehicle.setOnClickListener(v -> updateVehicle());
+                        // click button delete
+                        buttonDeleteVehicle.setOnClickListener(v -> deleteVehicle());
 
                         bottomSheetDialog.setContentView(bottomSheetView);
                         bottomSheetDialog.show();

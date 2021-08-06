@@ -32,6 +32,7 @@ import zero.programmer.data.kendaraan.activity.EditVehicleActivity;
 import zero.programmer.data.kendaraan.activity.MainActivity;
 import zero.programmer.data.kendaraan.api.ApiRequest;
 import zero.programmer.data.kendaraan.api.RetroServer;
+import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.Vehicle;
 import zero.programmer.data.kendaraan.model.ResponseGetVehicle;
 import zero.programmer.data.kendaraan.model.ResponseVehicle;
@@ -78,7 +79,12 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
 
     @Override
     public int getItemCount() {
-        return listVehicle.size();
+        try {
+            return listVehicle.size();
+        } catch (NullPointerException e){
+            Toast.makeText(context, "Error : " + e, Toast.LENGTH_SHORT).show();
+            return 0;
+        }
     }
 
     public class HolderData extends RecyclerView.ViewHolder{
@@ -115,12 +121,9 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
 
         private void detailVehicle(){
 
-            // getar
-            vibrator.vibrate(80);
-
             registrationNumber = textViewRegistrationNumber.getText().toString();
 
-            Call<ResponseGetVehicle> getVehicle = apiRequest.getVehicle(registrationNumber);
+            Call<ResponseGetVehicle> getVehicle = apiRequest.getVehicle(ApiKeyData.getApiKey(), registrationNumber);
 
             getVehicle.enqueue(new Callback<ResponseGetVehicle>() {
                 @Override
@@ -225,7 +228,7 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
 
             alertDialog.setNegativeButton("Ya", (dialog, which) -> {
 
-                Call<ResponseGetVehicle> callDeleteVehicle = apiRequest.deleteVehicle(registrationNumber);
+                Call<ResponseGetVehicle> callDeleteVehicle = apiRequest.deleteVehicle(ApiKeyData.getApiKey(), registrationNumber);
 
                 callDeleteVehicle.enqueue(new Callback<ResponseGetVehicle>() {
                     @Override

@@ -24,6 +24,7 @@ import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
 import zero.programmer.data.kendaraan.api.ApiRequest;
 import zero.programmer.data.kendaraan.api.RetroServer;
+import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.Vehicle;
 import zero.programmer.data.kendaraan.model.ResponseGetVehicle;
 import zero.programmer.data.kendaraan.model.VehicleData;
@@ -77,7 +78,7 @@ public class EditVehicleActivity extends AppCompatActivity {
 
     private void setDataToEditText(){
 
-        Call<ResponseGetVehicle> callGetVehicle = apiRequest.getVehicle(registrationNumber);
+        Call<ResponseGetVehicle> callGetVehicle = apiRequest.getVehicle(ApiKeyData.getApiKey(), registrationNumber);
 
         callGetVehicle.enqueue(new Callback<ResponseGetVehicle>() {
             @SuppressLint("ResourceAsColor")
@@ -186,7 +187,7 @@ public class EditVehicleActivity extends AppCompatActivity {
                         isBorrow
                 );
 
-                Call<ResponseGetVehicle> callUpdateVehicle = apiRequest.updateVehicle(vehicleData);
+                Call<ResponseGetVehicle> callUpdateVehicle = apiRequest.updateVehicle(ApiKeyData.getApiKey(), vehicleData);
 
                 callUpdateVehicle.enqueue(new Callback<ResponseGetVehicle>() {
                     @Override

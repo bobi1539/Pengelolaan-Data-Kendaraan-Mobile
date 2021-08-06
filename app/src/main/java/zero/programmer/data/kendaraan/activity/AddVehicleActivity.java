@@ -23,6 +23,7 @@ import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
 import zero.programmer.data.kendaraan.api.ApiRequest;
 import zero.programmer.data.kendaraan.api.RetroServer;
+import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.Vehicle;
 import zero.programmer.data.kendaraan.model.ResponseGetVehicle;
 import zero.programmer.data.kendaraan.model.VehicleData;
@@ -130,7 +131,7 @@ public class AddVehicleActivity extends AppCompatActivity {
 
 
                 ApiRequest apiRequest = RetroServer.getRetrofit().create(ApiRequest.class);
-                Call<ResponseGetVehicle> callInsertVehicle = apiRequest.createVehicle(vehicleData);
+                Call<ResponseGetVehicle> callInsertVehicle = apiRequest.createVehicle(ApiKeyData.getApiKey(), vehicleData);
 
                 callInsertVehicle.enqueue(new Callback<ResponseGetVehicle>() {
                     @Override

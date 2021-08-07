@@ -52,4 +52,10 @@ public interface ApiRequest {
             @Path("username") String username
     );
 
+    @POST("api/users")
+    Call<ResponseOneData<User>> createUser(
+            @Header("X-Api-Key") String apiKey,
+            @Body User userData
+    );
+
 }

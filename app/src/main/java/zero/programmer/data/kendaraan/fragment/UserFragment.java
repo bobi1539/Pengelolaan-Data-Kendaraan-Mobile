@@ -1,5 +1,6 @@
 package zero.programmer.data.kendaraan.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -22,6 +23,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
+import zero.programmer.data.kendaraan.activity.AddUserActivity;
 import zero.programmer.data.kendaraan.adapter.UserAdapter;
 import zero.programmer.data.kendaraan.api.ApiRequest;
 import zero.programmer.data.kendaraan.api.RetroServer;
@@ -104,6 +106,8 @@ public class UserFragment extends Fragment {
             retrieveData();
             swipeRefreshLayoutUser.setRefreshing(false);
         });
+
+        floatingActionButtonAddUser.setOnClickListener(v -> startActivity(new Intent(getContext(), AddUserActivity.class)));
 
         return view;
     }

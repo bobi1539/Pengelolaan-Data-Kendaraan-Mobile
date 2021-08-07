@@ -15,7 +15,8 @@
         android:theme="@style/Theme.PengelolaanDataKendaraanMobile"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".activity.EditVehicleActivity"></activity>
+        <activity android:name=".activity.AddUserActivity"></activity>
+        <activity android:name=".activity.EditVehicleActivity" />
         <activity android:name=".activity.AddVehicleActivity" />
         <activity android:name=".activity.MainActivity">
             <intent-filter>

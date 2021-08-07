@@ -59,6 +59,7 @@
     <string name="title_data_user">Data User</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
+    <string name="repeat_password">Ulangi Password</string>
     <string name="full_name">Nama Lengkap</string>
     <string name="employee_number">Nomor Pokok Karyawan</string>
     <string name="employee_number2">NPK</string>
@@ -67,12 +68,14 @@
     <string name="role_id">Role Id</string>
 
     <string-array name="array_role_id">
+        <item>Role Id</item>
         <item>ADMIN</item>
         <item>KARYAWAN</item>
         <item>KABID</item>
     </string-array>
 
     <string name="detail_user">Detail User</string>
+    <string name="input_user">Input Data User</string>
 
     <!--  End Bagian User  -->
 

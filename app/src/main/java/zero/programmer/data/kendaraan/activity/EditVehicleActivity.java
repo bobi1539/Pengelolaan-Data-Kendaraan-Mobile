@@ -24,8 +24,8 @@ import zero.programmer.data.kendaraan.api.ApiRequest;
 import zero.programmer.data.kendaraan.api.RetroServer;
 import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.Vehicle;
-import zero.programmer.data.kendaraan.response.ResponseGetVehicle;
 import zero.programmer.data.kendaraan.model.VehicleData;
+import zero.programmer.data.kendaraan.response.ResponseOneData;
 
 public class EditVehicleActivity extends AppCompatActivity {
 
@@ -76,13 +76,12 @@ public class EditVehicleActivity extends AppCompatActivity {
 
     private void setDataToEditText(){
 
-        Call<ResponseGetVehicle> callGetVehicle = apiRequest.getVehicle(ApiKeyData.getApiKey(), registrationNumber);
+        Call<ResponseOneData<Vehicle>> getDetailVehicle = apiRequest.getVehicle(ApiKeyData.getApiKey(), registrationNumber);
 
-        callGetVehicle.enqueue(new Callback<ResponseGetVehicle>() {
+        getDetailVehicle.enqueue(new Callback<ResponseOneData<Vehicle>>() {
             @SuppressLint("ResourceAsColor")
             @Override
-            public void onResponse(Call<ResponseGetVehicle> call, Response<ResponseGetVehicle> response) {
-
+            public void onResponse(Call<ResponseOneData<Vehicle>> call, Response<ResponseOneData<Vehicle>> response) {
                 try {
                     Vehicle vehicle = response.body().getData();
 
@@ -111,7 +110,7 @@ public class EditVehicleActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResponseGetVehicle> call, Throwable t) {
+            public void onFailure(Call<ResponseOneData<Vehicle>> call, Throwable t) {
                 Toast.makeText(EditVehicleActivity.this, "Error : " + t, Toast.LENGTH_SHORT).show();
             }
         });
@@ -185,12 +184,11 @@ public class EditVehicleActivity extends AppCompatActivity {
                         isBorrow
                 );
 
-                Call<ResponseGetVehicle> callUpdateVehicle = apiRequest.updateVehicle(ApiKeyData.getApiKey(), vehicleData);
+                Call<ResponseOneData<Vehicle>> updateVehicle = apiRequest.updateVehicle(ApiKeyData.getApiKey(), vehicleData);
 
-                callUpdateVehicle.enqueue(new Callback<ResponseGetVehicle>() {
+                updateVehicle.enqueue(new Callback<ResponseOneData<Vehicle>>() {
                     @Override
-                    public void onResponse(Call<ResponseGetVehicle> call, Response<ResponseGetVehicle> response) {
-
+                    public void onResponse(Call<ResponseOneData<Vehicle>> call, Response<ResponseOneData<Vehicle>> response) {
                         List<String> messages = response.body().getMessages();
                         Toast.makeText(EditVehicleActivity.this, messages.get(0), Toast.LENGTH_SHORT).show();
                         onBackPressed();
@@ -198,7 +196,7 @@ public class EditVehicleActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<ResponseGetVehicle> call, Throwable t) {
+                    public void onFailure(Call<ResponseOneData<Vehicle>> call, Throwable t) {
                         Toast.makeText(EditVehicleActivity.this, "Error : " + t, Toast.LENGTH_SHORT).show();
                     }
                 });

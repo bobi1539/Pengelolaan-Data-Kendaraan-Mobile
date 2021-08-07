@@ -9,36 +9,36 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import zero.programmer.data.kendaraan.entitites.User;
-import zero.programmer.data.kendaraan.response.ResponseGetVehicle;
+import zero.programmer.data.kendaraan.entitites.Vehicle;
 import zero.programmer.data.kendaraan.response.ResponseListData;
-import zero.programmer.data.kendaraan.response.ResponseVehicle;
 import zero.programmer.data.kendaraan.model.VehicleData;
+import zero.programmer.data.kendaraan.response.ResponseOneData;
 
 public interface ApiRequest {
 
     @GET("api/vehicles")
-    Call<ResponseVehicle> listVehicle(@Header("X-Api-Key") String apiKey);
+    Call<ResponseListData<Vehicle>> listVehicle(@Header("X-Api-Key") String apiKey);
 
     @GET("api/vehicles/{registrationNumber}")
-    Call<ResponseGetVehicle> getVehicle(
+    Call<ResponseOneData<Vehicle>> getVehicle(
             @Header("X-Api-Key") String apiKey,
             @Path("registrationNumber") String registrationNumber
     );
 
     @POST("api/vehicles")
-    Call<ResponseGetVehicle> createVehicle(
+    Call<ResponseOneData<Vehicle>> createVehicle(
             @Header("X-Api-Key") String apiKey,
             @Body VehicleData vehicleData
     );
 
     @DELETE("api/vehicles/{registrationNumber}")
-    Call<ResponseGetVehicle> deleteVehicle(
+    Call<ResponseOneData<Vehicle>> deleteVehicle(
             @Header("X-Api-Key") String apiKey,
             @Path("registrationNumber") String registrationNumber
     );
 
     @PUT("api/vehicles")
-    Call<ResponseGetVehicle> updateVehicle(
+    Call<ResponseOneData<Vehicle>> updateVehicle(
             @Header("X-Api-Key") String apiKey,
             @Body VehicleData vehicleData
     );

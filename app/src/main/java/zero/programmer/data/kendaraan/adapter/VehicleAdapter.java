@@ -30,16 +30,16 @@ import zero.programmer.data.kendaraan.api.ApiRequest;
 import zero.programmer.data.kendaraan.api.RetroServer;
 import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.Vehicle;
-import zero.programmer.data.kendaraan.response.ResponseGetVehicle;
+import zero.programmer.data.kendaraan.response.ResponseOneData;
 
 public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderData> {
 
-    private Context context;
-    private List<Vehicle> listVehicle;
+    private final Context context;
+    private final List<Vehicle> listVehicle;
 
     private String registrationNumber;
 
-    private ApiRequest apiRequest = RetroServer.getRetrofit().create(ApiRequest.class);
+    private final ApiRequest apiRequest = RetroServer.getRetrofit().create(ApiRequest.class);
 
     public VehicleAdapter(Context context, List<Vehicle> listVehicle){
         this.context = context;
@@ -117,12 +117,11 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
 
             registrationNumber = textViewRegistrationNumber.getText().toString();
 
-            Call<ResponseGetVehicle> getVehicle = apiRequest.getVehicle(ApiKeyData.getApiKey(), registrationNumber);
+            Call<ResponseOneData<Vehicle>> getDetailVehicle = apiRequest.getVehicle(ApiKeyData.getApiKey(), registrationNumber);
 
-            getVehicle.enqueue(new Callback<ResponseGetVehicle>() {
+            getDetailVehicle.enqueue(new Callback<ResponseOneData<Vehicle>>() {
                 @Override
-                public void onResponse(Call<ResponseGetVehicle> call, Response<ResponseGetVehicle> response) {
-
+                public void onResponse(Call<ResponseOneData<Vehicle>> call, Response<ResponseOneData<Vehicle>> response) {
                     try {
 
                         Vehicle vehicleDetail = response.body().getData();
@@ -189,12 +188,10 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
                     } catch (Exception e){
                         Toast.makeText(context, "Error : " + e, Toast.LENGTH_SHORT).show();
                     }
-
                 }
 
-
                 @Override
-                public void onFailure(Call<ResponseGetVehicle> call, Throwable t) {
+                public void onFailure(Call<ResponseOneData<Vehicle>> call, Throwable t) {
                     Toast.makeText(context, "Error : " + t, Toast.LENGTH_SHORT).show();
                 }
             });
@@ -222,12 +219,11 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
 
             alertDialog.setNegativeButton("Ya", (dialog, which) -> {
 
-                Call<ResponseGetVehicle> callDeleteVehicle = apiRequest.deleteVehicle(ApiKeyData.getApiKey(), registrationNumber);
+                Call<ResponseOneData<Vehicle>> callDeleteVehicle = apiRequest.deleteVehicle(ApiKeyData.getApiKey(), registrationNumber);
 
-                callDeleteVehicle.enqueue(new Callback<ResponseGetVehicle>() {
+                callDeleteVehicle.enqueue(new Callback<ResponseOneData<Vehicle>>() {
                     @Override
-                    public void onResponse(Call<ResponseGetVehicle> call, Response<ResponseGetVehicle> response) {
-
+                    public void onResponse(Call<ResponseOneData<Vehicle>> call, Response<ResponseOneData<Vehicle>> response) {
                         try{
                             List<String> messages = response.body().getMessages();
                             Toast.makeText(context, messages.get(0), Toast.LENGTH_SHORT).show();
@@ -238,7 +234,7 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
                     }
 
                     @Override
-                    public void onFailure(Call<ResponseGetVehicle> call, Throwable t) {
+                    public void onFailure(Call<ResponseOneData<Vehicle>> call, Throwable t) {
                         Toast.makeText(context, "Error : " + t, Toast.LENGTH_SHORT).show();
                     }
                 });

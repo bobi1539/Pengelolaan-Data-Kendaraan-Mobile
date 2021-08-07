@@ -21,8 +21,9 @@ import zero.programmer.data.kendaraan.R;
 import zero.programmer.data.kendaraan.api.ApiRequest;
 import zero.programmer.data.kendaraan.api.RetroServer;
 import zero.programmer.data.kendaraan.apikey.ApiKeyData;
-import zero.programmer.data.kendaraan.response.ResponseGetVehicle;
+import zero.programmer.data.kendaraan.entitites.Vehicle;
 import zero.programmer.data.kendaraan.model.VehicleData;
+import zero.programmer.data.kendaraan.response.ResponseOneData;
 
 public class AddVehicleActivity extends AppCompatActivity {
 
@@ -127,12 +128,11 @@ public class AddVehicleActivity extends AppCompatActivity {
 
 
                 ApiRequest apiRequest = RetroServer.getRetrofit().create(ApiRequest.class);
-                Call<ResponseGetVehicle> callInsertVehicle = apiRequest.createVehicle(ApiKeyData.getApiKey(), vehicleData);
+                Call<ResponseOneData<Vehicle>> insertVehicle = apiRequest.createVehicle(ApiKeyData.getApiKey(), vehicleData);
 
-                callInsertVehicle.enqueue(new Callback<ResponseGetVehicle>() {
+                insertVehicle.enqueue(new Callback<ResponseOneData<Vehicle>>() {
                     @Override
-                    public void onResponse(Call<ResponseGetVehicle> call, Response<ResponseGetVehicle> response) {
-
+                    public void onResponse(Call<ResponseOneData<Vehicle>> call, Response<ResponseOneData<Vehicle>> response) {
                         List<String> messages = response.body().getMessages();
                         Toast.makeText(AddVehicleActivity.this, messages.get(0), Toast.LENGTH_SHORT).show();
                         onBackPressed();
@@ -140,7 +140,7 @@ public class AddVehicleActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<ResponseGetVehicle> call, Throwable t) {
+                    public void onFailure(Call<ResponseOneData<Vehicle>> call, Throwable t) {
                         Toast.makeText(AddVehicleActivity.this, "On Failure : " + t, Toast.LENGTH_SHORT).show();
                     }
                 });

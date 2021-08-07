@@ -29,7 +29,7 @@ import zero.programmer.data.kendaraan.api.ApiRequest;
 import zero.programmer.data.kendaraan.api.RetroServer;
 import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.Vehicle;
-import zero.programmer.data.kendaraan.response.ResponseVehicle;
+import zero.programmer.data.kendaraan.response.ResponseListData;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -130,12 +130,11 @@ public class VehicleFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
 
         ApiRequest apiRequest = RetroServer.getRetrofit().create(ApiRequest.class);
-        Call<ResponseVehicle> getData = apiRequest.listVehicle(ApiKeyData.getApiKey());
+        Call<ResponseListData<Vehicle>> getDataVehicle = apiRequest.listVehicle(ApiKeyData.getApiKey());
 
-        getData.enqueue(new Callback<ResponseVehicle>() {
+        getDataVehicle.enqueue(new Callback<ResponseListData<Vehicle>>() {
             @Override
-            public void onResponse(Call<ResponseVehicle> call, Response<ResponseVehicle> response) {
-
+            public void onResponse(Call<ResponseListData<Vehicle>> call, Response<ResponseListData<Vehicle>> response) {
                 try{
                     listVehicle = response.body().getData();
                 } catch (NullPointerException e){
@@ -147,11 +146,10 @@ public class VehicleFragment extends Fragment {
                 recyclerView.setAdapter(recyclerViewAdapter);
                 recyclerViewAdapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
-
             }
 
             @Override
-            public void onFailure(Call<ResponseVehicle> call, Throwable t) {
+            public void onFailure(Call<ResponseListData<Vehicle>> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
                 Toast.makeText(getContext(), "Error : " + t, Toast.LENGTH_SHORT).show();
             }

@@ -58,4 +58,10 @@ public interface ApiRequest {
             @Body User userData
     );
 
+    @DELETE("api/users/{username}")
+    Call<ResponseOneData<User>> deleteUser(
+            @Header("X-Api-Key") String apiKey,
+            @Path("username") String username
+    );
+
 }

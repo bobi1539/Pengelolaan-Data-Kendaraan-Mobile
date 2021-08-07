@@ -1,6 +1,8 @@
 package zero.programmer.data.kendaraan.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -156,7 +158,38 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.HolderData>{
         }
 
         private void deleteUser(){
-            Toast.makeText(context, "Delete user", Toast.LENGTH_SHORT).show();
+            // membuat alert dialog
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+            alertDialog.setMessage("Yakin data dihapus?");
+            alertDialog.setCancelable(true);
+
+            alertDialog.setPositiveButton("Tidak", (dialog, which) -> dialog.dismiss());
+
+            alertDialog.setNegativeButton("Ya", ((dialog, which) -> {
+
+                Call<ResponseOneData<User>> deleteUserData = apiRequest.deleteUser(ApiKeyData.getApiKey(), username);
+
+                deleteUserData.enqueue(new Callback<ResponseOneData<User>>() {
+                    @Override
+                    public void onResponse(Call<ResponseOneData<User>> call, Response<ResponseOneData<User>> response) {
+
+                        try {
+                            Toast.makeText(context, response.body().getMessages().get(0), Toast.LENGTH_SHORT).show();
+                            bottomSheetDialog.dismiss();
+                        } catch (NullPointerException e){
+                            Toast.makeText(context, "Error : " + e, Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseOneData<User>> call, Throwable t) {
+                        Toast.makeText(context, "Error : " + t, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }));
+            alertDialog.show();
         }
     }
 

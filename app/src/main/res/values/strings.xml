@@ -55,5 +55,22 @@
         <item>Hilang</item>
     </string-array>
 
+    <!--  Bagian User  -->
+    <string name="title_data_user">Data User</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="full_name">Nama Lengkap</string>
+    <string name="employee_number">Nomor Pokok Karyawan</string>
+    <string name="position">Jabatan</string>
+    <string name="work_unit">Unit Kerja</string>
+
+    <string-array name="array_role_id">
+        <item>ADMIN</item>
+        <item>KARYAWAN</item>
+        <item>KABID</item>
+    </string-array>
+
+    <!--  End Bagian User  -->
+
 
 </resources>

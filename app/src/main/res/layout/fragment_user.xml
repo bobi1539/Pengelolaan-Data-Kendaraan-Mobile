@@ -25,7 +25,11 @@
             android:textColor="@color/main_color"
             android:textStyle="bold"/>
 
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/purple_500"
+            android:layout_marginBottom="5dp"/>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh_user"

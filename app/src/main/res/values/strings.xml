@@ -61,14 +61,18 @@
     <string name="password">Password</string>
     <string name="full_name">Nama Lengkap</string>
     <string name="employee_number">Nomor Pokok Karyawan</string>
+    <string name="employee_number2">NPK</string>
     <string name="position">Jabatan</string>
     <string name="work_unit">Unit Kerja</string>
+    <string name="role_id">Role Id</string>
 
     <string-array name="array_role_id">
         <item>ADMIN</item>
         <item>KARYAWAN</item>
         <item>KABID</item>
     </string-array>
+
+    <string name="detail_user">Detail User</string>
 
     <!--  End Bagian User  -->
 

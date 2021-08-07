@@ -4,18 +4,27 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
 import zero.programmer.data.kendaraan.api.ApiRequest;
 import zero.programmer.data.kendaraan.api.RetroServer;
+import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.User;
+import zero.programmer.data.kendaraan.response.ResponseOneData;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.HolderData>{
 
@@ -60,6 +69,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.HolderData>{
     public class HolderData extends RecyclerView.ViewHolder{
 
         TextView textViewFullName, textViewUsername, textViewEmployeeNumber, textViewPosition;
+        TextView textViewDetailFullName, textViewDetailUsername, textViewDetailEmployeeNumber,
+                textViewDetailPosition, textViewDetailWorkUnit, textViewDetailRoleId;
+        Button buttonUpdateUser, buttonDeleteUser;
+        CardView cardViewUser;
+        BottomSheetDialog bottomSheetDialog;
+
 
         public HolderData(@NonNull View itemView) {
             super(itemView);
@@ -67,6 +82,81 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.HolderData>{
             textViewUsername = itemView.findViewById(R.id.card_user_username);
             textViewEmployeeNumber = itemView.findViewById(R.id.card_user_employee_number);
             textViewPosition = itemView.findViewById(R.id.card_user_position);
+
+            cardViewUser = itemView.findViewById(R.id.card_user);
+
+            cardViewUser.setOnClickListener(v -> {
+                detailUser();
+            });
+        }
+
+        private void detailUser(){
+            username = textViewUsername.getText().toString();
+
+            Call<ResponseOneData<User>> getDetailUser = apiRequest.getUser(ApiKeyData.getApiKey(), username);
+
+            getDetailUser.enqueue(new Callback<ResponseOneData<User>>() {
+                @Override
+                public void onResponse(Call<ResponseOneData<User>> call, Response<ResponseOneData<User>> response) {
+                    try {
+
+                        User userDetail = response.body().getData();
+
+                        // bottom sheet dialog
+                        bottomSheetDialog = new BottomSheetDialog(
+                                context, R.style.BottomSheetDialogTheme
+                        );
+                        View bottomSheetView = LayoutInflater.from(context)
+                                .inflate(
+                                        R.layout.bottom_sheet_user,
+                                        itemView.findViewById(R.id.bottom_sheet_user)
+                                );
+
+                        // get view user detail
+                        textViewDetailUsername = bottomSheetView.findViewById(R.id.tv_user_username);
+                        textViewDetailFullName = bottomSheetView.findViewById(R.id.tv_user_full_name);
+                        textViewDetailEmployeeNumber = bottomSheetView.findViewById(R.id.tv_user_employee_number);
+                        textViewDetailPosition = bottomSheetView.findViewById(R.id.tv_user_position);
+                        textViewDetailWorkUnit = bottomSheetView.findViewById(R.id.tv_user_work_unit);
+                        textViewDetailRoleId = bottomSheetView.findViewById(R.id.tv_user_role_id);
+                        buttonUpdateUser = bottomSheetView.findViewById(R.id.button_edit_user);
+                        buttonDeleteUser = bottomSheetView.findViewById(R.id.button_delete_user);
+
+                        // set detail user dari response
+                        textViewDetailUsername.setText(userDetail.getUsername());
+                        textViewDetailFullName.setText(userDetail.getFullName());
+                        textViewDetailEmployeeNumber.setText(userDetail.getEmployeeNumber());
+                        textViewDetailPosition.setText(userDetail.getPosition());
+                        textViewDetailWorkUnit.setText(userDetail.getWorkUnit());
+                        textViewDetailRoleId.setText(String.valueOf(userDetail.getRoleId()));
+
+                        // button update
+                        buttonUpdateUser.setOnClickListener(v -> editUser());
+                        // button delete
+                        buttonDeleteUser.setOnClickListener(v -> deleteUser());
+
+                        bottomSheetDialog.setContentView(bottomSheetView);
+                        bottomSheetDialog.show();
+
+                    } catch (Exception e){
+                        Toast.makeText(context, "Error : " + e, Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ResponseOneData<User>> call, Throwable t) {
+                    Toast.makeText(context, "Error : " + t, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        private void editUser(){
+            Toast.makeText(context, "Update user", Toast.LENGTH_SHORT).show();
+        }
+
+        private void deleteUser(){
+            Toast.makeText(context, "Delete user", Toast.LENGTH_SHORT).show();
         }
     }
 

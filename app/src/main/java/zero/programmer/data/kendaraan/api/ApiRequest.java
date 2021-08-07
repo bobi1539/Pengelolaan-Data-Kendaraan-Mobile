@@ -46,4 +46,10 @@ public interface ApiRequest {
     @GET("api/users")
     Call<ResponseListData<User>> listUser(@Header("X-Api-Key") String apiKey);
 
+    @GET("api/users/{username}")
+    Call<ResponseOneData<User>> getUser(
+            @Header("X-Api-Key") String apiKey,
+            @Path("username") String username
+    );
+
 }

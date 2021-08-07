@@ -105,12 +105,7 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
             cardViewVehicle = itemView.findViewById(R.id.card_vehicle);
             vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
-            cardViewVehicle.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    detailVehicle();
-                }
-            });
+            cardViewVehicle.setOnClickListener(v -> detailVehicle());
         }
 
         private void detailVehicle(){

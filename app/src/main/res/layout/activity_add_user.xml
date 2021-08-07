@@ -64,7 +64,8 @@
                     android:hint="@string/password"
                     android:background="@drawable/custom_input"
                     android:autofillHints="@string/password"
-                    android:inputType="textPassword"/>
+                    android:inputType="textPassword"
+                    />
 
                 <EditText
                     android:id="@+id/et_user_repeat_password"

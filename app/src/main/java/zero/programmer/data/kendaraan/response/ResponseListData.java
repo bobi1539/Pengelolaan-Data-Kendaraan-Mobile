@@ -1,14 +1,14 @@
-package zero.programmer.data.kendaraan.model;
+package zero.programmer.data.kendaraan.response;
 
 import java.util.List;
 
 import zero.programmer.data.kendaraan.entitites.Vehicle;
 
-public class ResponseGetVehicle {
+public class ResponseListData<T> {
     private Integer code;
     private String status;
     private List<String> messages;
-    private Vehicle data;
+    private List<T> data;
 
     public Integer getCode() {
         return code;
@@ -34,11 +34,11 @@ public class ResponseGetVehicle {
         this.messages = messages;
     }
 
-    public Vehicle getData() {
+    public List<T> getData() {
         return data;
     }
 
-    public void setData(Vehicle data) {
+    public void setData(List<T> data) {
         this.data = data;
     }
 }

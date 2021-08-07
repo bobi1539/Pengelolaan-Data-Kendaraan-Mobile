@@ -5,12 +5,11 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
-import zero.programmer.data.kendaraan.model.ResponseGetVehicle;
-import zero.programmer.data.kendaraan.model.ResponseVehicle;
+import zero.programmer.data.kendaraan.response.ResponseGetVehicle;
+import zero.programmer.data.kendaraan.response.ResponseVehicle;
 import zero.programmer.data.kendaraan.model.VehicleData;
 
 public interface ApiRequest {

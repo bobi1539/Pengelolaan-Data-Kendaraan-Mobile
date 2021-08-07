@@ -6,8 +6,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -26,7 +24,7 @@ import zero.programmer.data.kendaraan.api.ApiRequest;
 import zero.programmer.data.kendaraan.api.RetroServer;
 import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.Vehicle;
-import zero.programmer.data.kendaraan.model.ResponseGetVehicle;
+import zero.programmer.data.kendaraan.response.ResponseGetVehicle;
 import zero.programmer.data.kendaraan.model.VehicleData;
 
 public class EditVehicleActivity extends AppCompatActivity {

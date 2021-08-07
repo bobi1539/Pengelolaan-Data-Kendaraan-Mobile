@@ -3,14 +3,12 @@ package zero.programmer.data.kendaraan.adapter;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -29,19 +26,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
 import zero.programmer.data.kendaraan.activity.EditVehicleActivity;
-import zero.programmer.data.kendaraan.activity.MainActivity;
 import zero.programmer.data.kendaraan.api.ApiRequest;
 import zero.programmer.data.kendaraan.api.RetroServer;
 import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.Vehicle;
-import zero.programmer.data.kendaraan.model.ResponseGetVehicle;
-import zero.programmer.data.kendaraan.model.ResponseVehicle;
+import zero.programmer.data.kendaraan.response.ResponseGetVehicle;
 
 public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderData> {
 
     private Context context;
     private List<Vehicle> listVehicle;
-    private Vehicle vehicle;
 
     private String registrationNumber;
 
@@ -63,7 +57,7 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
 
     @Override
     public void onBindViewHolder(@NonNull HolderData holder, int position) {
-        vehicle = listVehicle.get(position);
+        Vehicle vehicle = listVehicle.get(position);
 
         holder.textViewRegistrationNumber.setText(vehicle.getRegistrationNumber());
         holder.textViewName.setText(vehicle.getName());
@@ -131,7 +125,7 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
 
                     try {
 
-                        Vehicle vehicle = response.body().getData();
+                        Vehicle vehicleDetail = response.body().getData();
 
                         bottomSheetDialog = new BottomSheetDialog(
                                 context, R.style.BottomSheetDialogTheme
@@ -160,24 +154,24 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
                         @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
                         // set data detail kendaraan dari database
-                        textViewDetailRegistrationNumber.setText(vehicle.getRegistrationNumber());
-                        textViewDetailName.setText(vehicle.getName());
-                        textViewDetailMerk.setText(vehicle.getMerk());
-                        textViewDetailChassisNumber.setText(vehicle.getChassisNumber());
-                        textViewDetailMachineNumber.setText(vehicle.getMachineNumber());
-                        textViewDetailPoliceNumber.setText(vehicle.getPoliceNumber());
+                        textViewDetailRegistrationNumber.setText(vehicleDetail.getRegistrationNumber());
+                        textViewDetailName.setText(vehicleDetail.getName());
+                        textViewDetailMerk.setText(vehicleDetail.getMerk());
+                        textViewDetailChassisNumber.setText(vehicleDetail.getChassisNumber());
+                        textViewDetailMachineNumber.setText(vehicleDetail.getMachineNumber());
+                        textViewDetailPoliceNumber.setText(vehicleDetail.getPoliceNumber());
 
                         // cek jika tanggal pembelian kosong
-                        if (vehicle.getPurchaseDate() == null){
+                        if (vehicleDetail.getPurchaseDate() == null){
                             textViewDetailPurchaseDate.setText("");
                         } else {
-                            textViewDetailPurchaseDate.setText(simpleDateFormat.format(vehicle.getPurchaseDate()));
+                            textViewDetailPurchaseDate.setText(simpleDateFormat.format(vehicleDetail.getPurchaseDate()));
                         }
-                        textViewDetailValue.setText(String.valueOf(vehicle.getAcquisitionValue()));
-                        textViewDetailLocation.setText(vehicle.getLocation());
-                        textViewDetailCondition.setText(vehicle.getCondition());
+                        textViewDetailValue.setText(String.valueOf(vehicleDetail.getAcquisitionValue()));
+                        textViewDetailLocation.setText(vehicleDetail.getLocation());
+                        textViewDetailCondition.setText(vehicleDetail.getCondition());
 
-                        if (!vehicle.getBorrow()){
+                        if (!vehicleDetail.getBorrow()){
                             textViewDetailBorrowStatus.setText(R.string.borrow_false);
                         } else {
                             textViewDetailBorrowStatus.setText(R.string.borrow_true);

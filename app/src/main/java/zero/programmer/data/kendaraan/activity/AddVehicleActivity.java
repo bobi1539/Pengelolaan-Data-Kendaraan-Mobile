@@ -3,16 +3,13 @@ package zero.programmer.data.kendaraan.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -24,8 +21,7 @@ import zero.programmer.data.kendaraan.R;
 import zero.programmer.data.kendaraan.api.ApiRequest;
 import zero.programmer.data.kendaraan.api.RetroServer;
 import zero.programmer.data.kendaraan.apikey.ApiKeyData;
-import zero.programmer.data.kendaraan.entitites.Vehicle;
-import zero.programmer.data.kendaraan.model.ResponseGetVehicle;
+import zero.programmer.data.kendaraan.response.ResponseGetVehicle;
 import zero.programmer.data.kendaraan.model.VehicleData;
 
 public class AddVehicleActivity extends AppCompatActivity {

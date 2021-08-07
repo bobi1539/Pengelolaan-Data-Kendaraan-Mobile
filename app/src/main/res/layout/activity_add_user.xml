@@ -125,7 +125,7 @@
                     tools:ignore="TextFields" />
 
                 <Spinner
-                    android:id="@+id/spinner_condition_vehicle"
+                    android:id="@+id/spinner_user_role_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"

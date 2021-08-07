@@ -54,7 +54,7 @@
         android:layout_centerVertical="true"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/button_add_vehicle"
+        android:id="@+id/button_add_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="5dp"

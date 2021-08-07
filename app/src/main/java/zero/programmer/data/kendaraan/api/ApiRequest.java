@@ -8,7 +8,9 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import zero.programmer.data.kendaraan.entitites.User;
 import zero.programmer.data.kendaraan.response.ResponseGetVehicle;
+import zero.programmer.data.kendaraan.response.ResponseListData;
 import zero.programmer.data.kendaraan.response.ResponseVehicle;
 import zero.programmer.data.kendaraan.model.VehicleData;
 
@@ -40,5 +42,8 @@ public interface ApiRequest {
             @Header("X-Api-Key") String apiKey,
             @Body VehicleData vehicleData
     );
+
+    @GET("api/users")
+    Call<ResponseListData<User>> listUser(@Header("X-Api-Key") String apiKey);
 
 }

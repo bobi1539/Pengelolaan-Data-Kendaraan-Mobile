@@ -195,7 +195,7 @@ public class EditVehicleActivity extends AppCompatActivity {
 
                         List<String> messages = response.body().getMessages();
                         Toast.makeText(EditVehicleActivity.this, messages.get(0), Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(EditVehicleActivity.this, MainActivity.class));
+                        onBackPressed();
                         finish();
                     }
 

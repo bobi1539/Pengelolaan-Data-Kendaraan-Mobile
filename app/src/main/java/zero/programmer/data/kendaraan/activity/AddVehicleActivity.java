@@ -139,7 +139,7 @@ public class AddVehicleActivity extends AppCompatActivity {
 
                         List<String> messages = response.body().getMessages();
                         Toast.makeText(AddVehicleActivity.this, messages.get(0), Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(AddVehicleActivity.this, MainActivity.class));
+                        onBackPressed();
                         finish();
                     }
 

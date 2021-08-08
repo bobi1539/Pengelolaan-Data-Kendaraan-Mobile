@@ -3,6 +3,7 @@ package zero.programmer.data.kendaraan.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
+import zero.programmer.data.kendaraan.activity.EditUserActivity;
 import zero.programmer.data.kendaraan.api.ApiRequest;
 import zero.programmer.data.kendaraan.api.RetroServer;
 import zero.programmer.data.kendaraan.apikey.ApiKeyData;
@@ -154,7 +156,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.HolderData>{
         }
 
         private void editUser(){
-            Toast.makeText(context, "Update user", Toast.LENGTH_SHORT).show();
+            bottomSheetDialog.dismiss();
+            Intent intent = new Intent(context, EditUserActivity.class);
+            intent.putExtra("username", username);
+            context.startActivity(intent);
         }
 
         private void deleteUser(){

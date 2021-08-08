@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -102,6 +103,12 @@ public class EditVehicleActivity extends AppCompatActivity {
                     editTextValue.setText(String.valueOf(vehicle.getAcquisitionValue()));
                     editTextLocation.setText(vehicle.getLocation());
                     isBorrow = vehicle.getBorrow();
+
+                    // set condition to spinner
+                    String conditionString = vehicle.getCondition();
+                    ArrayAdapter adapterSpinnerCondition = (ArrayAdapter) spinnerCondition.getAdapter();
+                    int positionSpinnerCondition = adapterSpinnerCondition.getPosition(conditionString);
+                    spinnerCondition.setSelection(positionSpinnerCondition);
 
 
                 } catch (NullPointerException e){

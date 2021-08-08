@@ -6,10 +6,14 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,6 +57,9 @@ public class EditUserActivity extends AppCompatActivity {
 
         // set Data
         setDataToEditText();
+
+        // click button update
+        buttonUpdateUser.setOnClickListener(v -> updateDataUser());
     }
 
     private void setDataToEditText(){
@@ -80,6 +87,13 @@ public class EditUserActivity extends AppCompatActivity {
                     editTextPosition.setText(userDetail.getPosition());
                     editTextWorkUnit.setText(userDetail.getWorkUnit());
 
+                    // set role id to spinner
+                    String roleIdString = userDetail.getRoleId().toString();
+                    ArrayAdapter adapter = (ArrayAdapter) spinnerRoleId.getAdapter();
+                    int spinnerRoleIdPosition = adapter.getPosition(roleIdString);
+
+                    spinnerRoleId.setSelection(spinnerRoleIdPosition);
+
 
                 } catch (NullPointerException e){
                     Toast.makeText(EditUserActivity.this, "Error : " + e, Toast.LENGTH_SHORT).show();
@@ -93,5 +107,72 @@ public class EditUserActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void updateDataUser(){
+        if (validateInput()){
+
+            // membuat map untuk user Data yang akan dikirim ke request
+            Map<Object, Object> userData = new HashMap<>();
+            userData.put("fullName", fullName);
+            userData.put("employeeNumber", employeeNumber);
+            userData.put("position", position);
+            userData.put("workUnit", workUnit);
+            userData.put("roleId", roleId);
+
+            Call<ResponseOneData<User>> updateDataUser = apiRequest.updateUser(
+                    ApiKeyData.getApiKey(),
+                    username,
+                    userData
+            );
+
+            updateDataUser.enqueue(new Callback<ResponseOneData<User>>() {
+                @Override
+                public void onResponse(Call<ResponseOneData<User>> call, Response<ResponseOneData<User>> response) {
+
+                    try {
+
+                        Toast.makeText(EditUserActivity.this, response.body().getMessages().get(0), Toast.LENGTH_SHORT).show();
+                        onBackPressed();
+                        finish();
+
+                    } catch (NullPointerException e){
+                        Toast.makeText(EditUserActivity.this, "Error null : " + e, Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseOneData<User>> call, Throwable t) {
+                    Toast.makeText(EditUserActivity.this, "Error : " + t, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
+    }
+
+    private boolean validateInput(){
+        if (editTextFullName.getText().toString().trim().equals("")){
+            editTextFullName.setError("Nama lengkap tidak boleh kosong");
+            return false;
+        } else if (editTextEmployeeNumber.getText().toString().trim().equals("")){
+            editTextEmployeeNumber.setError("NPK tidak boleh kosong");
+            return false;
+        } else if (editTextPosition.getText().toString().trim().equals("")){
+            editTextPosition.setError("Jabatan tidak boleh kosong");
+            return false;
+        } else if (editTextWorkUnit.getText().toString().trim().equals("")){
+            editTextWorkUnit.setError("Unit kerja tidak boleh kosong");
+            return false;
+        } else if (spinnerRoleId.getSelectedItem().toString().equals("Role Id")){
+            Toast.makeText(this, "Silahkan pilih role Id", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            fullName = editTextFullName.getText().toString();
+            employeeNumber = editTextEmployeeNumber.getText().toString();
+            position = editTextPosition.getText().toString();
+            workUnit = editTextWorkUnit.getText().toString();
+            roleId = RoleId.valueOf(spinnerRoleId.getSelectedItem().toString());
+            return true;
+        }
     }
 }

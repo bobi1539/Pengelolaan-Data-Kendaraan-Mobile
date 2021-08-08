@@ -3,12 +3,31 @@ package zero.programmer.data.kendaraan.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
+import zero.programmer.data.kendaraan.adapter.DriverAdapter;
+import zero.programmer.data.kendaraan.api.ApiRequest;
+import zero.programmer.data.kendaraan.api.RetroServer;
+import zero.programmer.data.kendaraan.apikey.ApiKeyData;
+import zero.programmer.data.kendaraan.entitites.Driver;
+import zero.programmer.data.kendaraan.response.ResponseListData;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +44,14 @@ public class DriverFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private RecyclerView recyclerViewDriver;
+    private RecyclerView.Adapter recyclerViewAdapterDriver;
+    private RecyclerView.LayoutManager recyclerViewLayoutManagerDriver;
+    private List<Driver> listDriver = new ArrayList<>();
+    private ProgressBar progressBarDriver;
+    private FloatingActionButton floatingActionButtonAddDriver;
+    private SwipeRefreshLayout swipeRefreshLayoutDriver;
 
     public DriverFragment() {
         // Required empty public constructor
@@ -61,6 +88,60 @@ public class DriverFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_driver, container, false);
+        View view = inflater.inflate(R.layout.fragment_driver, container, false);
+
+        recyclerViewDriver = view.findViewById(R.id.recycler_view_driver);
+        floatingActionButtonAddDriver = view.findViewById(R.id.button_add_driver);
+        progressBarDriver = view.findViewById(R.id.driver_progress_bar);
+        swipeRefreshLayoutDriver = view.findViewById(R.id.swipe_refresh_driver);
+
+        recyclerViewLayoutManagerDriver = new LinearLayoutManager(getContext());
+        recyclerViewDriver.setLayoutManager(recyclerViewLayoutManagerDriver);
+
+        // swipe refresh layout
+        swipeRefreshLayoutDriver.setOnRefreshListener(() -> {
+            swipeRefreshLayoutDriver.setRefreshing(true);
+            retrieveData();
+            swipeRefreshLayoutDriver.setRefreshing(false);
+        });
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        retrieveData();
+    }
+
+    // ambil data dari server
+    private void retrieveData(){
+
+        progressBarDriver.setVisibility(View.VISIBLE);
+
+        ApiRequest apiRequest = RetroServer.getRetrofit().create(ApiRequest.class);
+        Call<ResponseListData<Driver>> getListDriver = apiRequest.listDriver(ApiKeyData.getApiKey());
+
+        getListDriver.enqueue(new Callback<ResponseListData<Driver>>() {
+            @Override
+            public void onResponse(Call<ResponseListData<Driver>> call, Response<ResponseListData<Driver>> response) {
+                try {
+                    listDriver = response.body().getData();
+                } catch (NullPointerException e){
+                    progressBarDriver.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), "Error : " + e, Toast.LENGTH_SHORT).show();
+                }
+                recyclerViewAdapterDriver = new DriverAdapter(getContext(), listDriver);
+                recyclerViewDriver.setAdapter(recyclerViewAdapterDriver);
+                recyclerViewAdapterDriver.notifyDataSetChanged();
+                progressBarDriver.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseListData<Driver>> call, Throwable t) {
+                Toast.makeText(getContext(), "Error : " + t, Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }

@@ -21,7 +21,7 @@
     <string name="vehicle_is_borrow">Status Peminjaman</string>
     <string name="vehicle_chassis_number">Nomor Rangka</string>
     <string name="vehicle_machine_number">Nomor Mesin</string>
-    <string name="vehicle_purchase_date">Tanggal Beli (yyyy-mm-dd)</string>
+    <string name="vehicle_purchase_date">Tgl Beli (yyyy-mm-dd)</string>
     <string name="vehicle_value">Nilai Peroleh</string>
     <string name="vehicle_location">Lokasi</string>
     <string name="vehicle_condition">Kondisi</string>
@@ -79,6 +79,19 @@
     <string name="edit_user">Edit Data User</string>
 
     <!--  End Bagian User  -->
+
+    <!--  Bagian Driver  -->
+    <string name="detail_driver">Detail Sopir</string>
+    <string name="input_driver">Input Data Sopir</string>
+    <string name="edit_driver">Edit Data Sopir</string>
+    <string name="driver_id_driver">Id Sopir</string>
+    <string name="driver_full_name">Nama Lengkap</string>
+    <string name="driver_phone_number">Nomor Handphone</string>
+    <string name="driver_address">Alamat</string>
+    <string name="driver_on_duty">Sedang Bertugas</string>
+    <string name="driver_not_on_duty">Tidak Sedang Bertugas</string>
+
+    <!--  End Bagian Driver-->
 
 
 </resources>

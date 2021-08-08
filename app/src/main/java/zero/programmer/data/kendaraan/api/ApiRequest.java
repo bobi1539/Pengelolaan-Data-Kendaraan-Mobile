@@ -11,6 +11,7 @@ import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import zero.programmer.data.kendaraan.entitites.Driver;
 import zero.programmer.data.kendaraan.entitites.User;
 import zero.programmer.data.kendaraan.entitites.Vehicle;
 import zero.programmer.data.kendaraan.response.ResponseListData;
@@ -73,5 +74,8 @@ public interface ApiRequest {
             @Path("username") String username,
             @Body Map<Object, Object> userData
             );
+
+    @GET("api/drivers")
+    Call<ResponseListData<Driver>> listDriver(@Header("X-Api-Key") String apiKey);
 
 }

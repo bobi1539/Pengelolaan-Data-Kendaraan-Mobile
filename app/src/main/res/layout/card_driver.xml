@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="10dp"
+    android:elevation="10dp"
+    android:layout_margin="5dp"
+    android:id="@+id/card_driver">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_driver"
+            android:layout_gravity="center"
+            app:tint="@color/purple_500"
+            android:contentDescription="@string/content_description" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/card_driver_full_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/driver_full_name"
+                android:textColor="@color/purple_500"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/card_driver_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/driver_id_driver"/>
+
+            <TextView
+                android:id="@+id/card_driver_phone_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/driver_phone_number"/>
+
+            <TextView
+                android:id="@+id/card_driver_is_on_duty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/driver_address"
+                android:textColor="@color/purple_500"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

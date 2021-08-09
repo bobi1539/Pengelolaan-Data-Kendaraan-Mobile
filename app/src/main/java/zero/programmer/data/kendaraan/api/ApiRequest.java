@@ -84,4 +84,16 @@ public interface ApiRequest {
             @Path("idDriver") String idDriver
     );
 
+    @POST("api/drivers")
+    Call<ResponseOneData<Driver>> createDriver(
+            @Header("X-Api-Key") String apiKey,
+            @Body Driver driverData
+    );
+
+    @DELETE("api/drivers/{idDriver}")
+    Call<ResponseOneData<Driver>> deleteDriver(
+            @Header("X-Api-Key") String apiKey,
+            @Path("idDriver") String idDriver
+    );
+
 }

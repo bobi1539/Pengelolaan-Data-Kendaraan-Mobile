@@ -1,6 +1,8 @@
 package zero.programmer.data.kendaraan.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -165,7 +167,33 @@ public class DriverAdapter extends RecyclerView.Adapter<DriverAdapter.HolderData
         }
 
         private void deleteDriver(){
-            Toast.makeText(context, "Delete " + idDriver, Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+            alertDialog.setMessage("Yakin data dihapus?");
+            alertDialog.setCancelable(true);
+
+            alertDialog.setPositiveButton("Tidak", ((dialog, which) -> dialog.dismiss()));
+
+            alertDialog.setNegativeButton("Ya", (dialog, which) -> {
+
+                Call<ResponseOneData<Driver>> deleteDataDriver = apiRequest.deleteDriver(ApiKeyData.getApiKey(), idDriver);
+                deleteDataDriver.enqueue(new Callback<ResponseOneData<Driver>>() {
+                    @Override
+                    public void onResponse(Call<ResponseOneData<Driver>> call, Response<ResponseOneData<Driver>> response) {
+                        try {
+                            Toast.makeText(context, response.body().getMessages().get(0), Toast.LENGTH_SHORT).show();
+                            bottomSheetDialog.dismiss();
+                        } catch (NullPointerException e){
+                            Toast.makeText(context, "Error : " + e, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseOneData<Driver>> call, Throwable t) {
+                        Toast.makeText(context, "Error : " + t, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            });
+            alertDialog.show();
         }
     }
 }

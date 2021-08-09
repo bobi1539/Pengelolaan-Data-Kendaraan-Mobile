@@ -8,110 +8,131 @@
     android:orientation="vertical"
     android:padding="20dp">
 
-        <TextView
-            android:id="@+id/data_driver_title"
+    <TextView
+        android:id="@+id/data_driver_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_profile"
+        android:layout_gravity="center_horizontal"
+        android:textSize="22sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/main_color"
+        android:textStyle="bold"/>
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/ic_person2"
+        app:tint="@color/purple_500"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="@string/content_description" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="@color/white"
+        android:layout_marginBottom="10dp"
+        android:elevation="10dp"
+        app:cardCornerRadius="10dp">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_profile"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/title_profile"
-            android:layout_gravity="center_horizontal"
-            android:textSize="22sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/main_color"
-            android:textStyle="bold"/>
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:src="@drawable/ic_person2"
-            app:tint="@color/purple_500"
-            android:layout_gravity="center_horizontal"
-            android:contentDescription="@string/content_description" />
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:backgroundTint="@color/white"
-            android:layout_marginBottom="10dp"
-            android:elevation="10dp"
-            app:cardCornerRadius="10dp">
-
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/tv_profil_username"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/username"
-                    android:textSize="18sp"/>
+                    android:padding="10dp"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_profil_full_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/full_name"
-                    android:textSize="18sp"/>
+                    <TextView
+                        android:id="@+id/tv_profil_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/username"
+                        android:textSize="18sp"/>
 
-                <TextView
-                    android:id="@+id/tv_profil_employee_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/employee_number"
-                    android:textSize="18sp"/>
+                    <TextView
+                        android:id="@+id/tv_profil_full_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/full_name"
+                        android:textSize="18sp"/>
 
-                <TextView
-                    android:id="@+id/tv_profil_position"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/position"
-                    android:textSize="18sp"/>
+                    <TextView
+                        android:id="@+id/tv_profil_employee_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/employee_number"
+                        android:textSize="18sp"/>
 
-                <TextView
-                    android:id="@+id/tv_profil_work_unit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/work_unit"
-                    android:textSize="18sp"/>
+                    <TextView
+                        android:id="@+id/tv_profil_position"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/position"
+                        android:textSize="18sp"/>
 
-                <TextView
-                    android:id="@+id/tv_profil_role_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/role_id"
-                    android:textSize="18sp"/>
+                    <TextView
+                        android:id="@+id/tv_profil_work_unit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/work_unit"
+                        android:textSize="18sp"/>
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_profil_role_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/role_id"
+                        android:textSize="18sp"/>
 
-        </androidx.cardview.widget.CardView>
+                    <Button
+                        android:id="@+id/button_edit_profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:text="@string/button_edit_profile"/>
 
-    <Button
-        android:id="@+id/button_edit_profile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:text="@string/button_edit_profile"/>
+                    <Button
+                        android:id="@+id/button_change_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:text="@string/button_change_password"/>
 
-    <Button
-        android:id="@+id/button_logout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:text="@string/button_logout"/>
+                    <Button
+                        android:id="@+id/button_logout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:text="@string/button_logout"/>
+
+                </LinearLayout>
+
+            </ScrollView>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

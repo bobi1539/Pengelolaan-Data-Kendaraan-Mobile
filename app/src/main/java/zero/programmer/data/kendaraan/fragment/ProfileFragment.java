@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +49,7 @@ public class ProfileFragment extends Fragment {
     private Button buttonLogout, buttonEditProfile;
     private TextView textViewUsername, textViewFullName, textViewEmployeeNumber,
                 textViewPosition, textViewWorkUnit, textViewRoleId;
+    private SwipeRefreshLayout swipeRefreshLayoutProfile;
     private SessionManager sessionManager;
     private String username;
 
@@ -96,13 +98,20 @@ public class ProfileFragment extends Fragment {
         textViewRoleId = view.findViewById(R.id.tv_profil_role_id);
         buttonLogout = view.findViewById(R.id.button_logout);
         buttonEditProfile = view.findViewById(R.id.button_edit_profile);
+        swipeRefreshLayoutProfile = view.findViewById(R.id.swipe_refresh_profile);
 
         // ambil username dari session
         sessionManager = new SessionManager(getContext());
         username = sessionManager.getUserSessionDetail().get(SessionManager.KEY_USERNAME);
 
-        // set Data profile from server
-        setProfileFromServer();
+        // swipe refresh layout
+        swipeRefreshLayoutProfile.setOnRefreshListener(() -> {
+            swipeRefreshLayoutProfile.setRefreshing(true);
+
+            // set Data profile from server
+            setProfileFromServer();
+            swipeRefreshLayoutProfile.setRefreshing(false);
+        });
         
         // logout
         buttonLogout.setOnClickListener(v -> logoutUser());
@@ -112,7 +121,13 @@ public class ProfileFragment extends Fragment {
 
         return view;
     }
-    
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setProfileFromServer();
+    }
+
     private void editProfile(){
         // kirim data lewat intent ke edit profile agar tidak perlu call ke server lagi di edit profile
         Intent intent = new Intent(getContext(), EditProfileActivity.class);

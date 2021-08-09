@@ -101,6 +101,8 @@ public class EditVehicleActivity extends AppCompatActivity {
 
                     editTextValue.setText(String.valueOf(vehicle.getAcquisitionValue()));
                     editTextLocation.setText(vehicle.getLocation());
+
+                    // set status kendaraan dari response
                     isBorrow = vehicle.getBorrow();
 
                     // set condition to spinner

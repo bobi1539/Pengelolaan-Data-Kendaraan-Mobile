@@ -96,4 +96,10 @@ public interface ApiRequest {
             @Path("idDriver") String idDriver
     );
 
+    @PUT("api/drivers")
+    Call<ResponseOneData<Driver>> updateDriver(
+            @Header("X-Api-Key") String apiKey,
+            @Body Driver driverData
+    );
+
 }

@@ -3,6 +3,7 @@ package zero.programmer.data.kendaraan.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
+import zero.programmer.data.kendaraan.activity.EditDriverActivity;
 import zero.programmer.data.kendaraan.api.ApiRequest;
 import zero.programmer.data.kendaraan.api.RetroServer;
 import zero.programmer.data.kendaraan.apikey.ApiKeyData;
@@ -163,7 +165,11 @@ public class DriverAdapter extends RecyclerView.Adapter<DriverAdapter.HolderData
         }
 
         private void editDriver(){
-            Toast.makeText(context, "edit " + idDriver, Toast.LENGTH_SHORT).show();
+            bottomSheetDialog.dismiss();
+            Intent intent = new Intent(context, EditDriverActivity.class);
+            intent.putExtra("idDriver", idDriver);
+            context.startActivity(intent);
+
         }
 
         private void deleteDriver(){

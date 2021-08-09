@@ -15,19 +15,26 @@
         android:theme="@style/Theme.PengelolaanDataKendaraanMobile"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".activity.EditDriverActivity"></activity>
-        <activity android:name=".activity.AddDriverActivity" />
-        <activity android:name=".activity.EditUserActivity" />
-        <activity android:name=".activity.AddUserActivity" />
-        <activity android:name=".activity.EditVehicleActivity" />
-        <activity android:name=".activity.AddVehicleActivity" />
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.EditDriverActivity" />
+        <activity android:name=".activity.AddDriverActivity" />
+        <activity android:name=".activity.EditUserActivity" />
+        <activity android:name=".activity.AddUserActivity" />
+        <activity android:name=".activity.EditVehicleActivity" />
+        <activity android:name=".activity.AddVehicleActivity" />
+        <activity android:name=".activity.MainActivity">
+
+        </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

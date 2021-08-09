@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Pengelolaan Data Kendaraan Mobile</string>
 
+    <string name="title_login">Sistem Informasi</string>
+    <string name="title_login2">Pengelolaan Data Kendaraan</string>
+
+
     <string name="title_item_person">Profil</string>
     <string name="title_item_vehicle">Kendaraan</string>
     <string name="title_item_create">Peminjaman</string>
@@ -94,5 +98,6 @@
 
     <!--  End Bagian Driver-->
 
+    <string name="button_login">Login</string>
 
 </resources>

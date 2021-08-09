@@ -25,8 +25,7 @@ import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
 import zero.programmer.data.kendaraan.activity.AddVehicleActivity;
 import zero.programmer.data.kendaraan.adapter.VehicleAdapter;
-import zero.programmer.data.kendaraan.api.ApiRequest;
-import zero.programmer.data.kendaraan.api.RetroServer;
+import zero.programmer.data.kendaraan.api.GetConnection;
 import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.Vehicle;
 import zero.programmer.data.kendaraan.response.ResponseListData;
@@ -129,8 +128,7 @@ public class VehicleFragment extends Fragment {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        ApiRequest apiRequest = RetroServer.getRetrofit().create(ApiRequest.class);
-        Call<ResponseListData<Vehicle>> getDataVehicle = apiRequest.listVehicle(ApiKeyData.getApiKey());
+        Call<ResponseListData<Vehicle>> getDataVehicle = GetConnection.apiRequest.listVehicle(ApiKeyData.getApiKey());
 
         getDataVehicle.enqueue(new Callback<ResponseListData<Vehicle>>() {
             @Override

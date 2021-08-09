@@ -25,8 +25,7 @@ import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
 import zero.programmer.data.kendaraan.activity.AddUserActivity;
 import zero.programmer.data.kendaraan.adapter.UserAdapter;
-import zero.programmer.data.kendaraan.api.ApiRequest;
-import zero.programmer.data.kendaraan.api.RetroServer;
+import zero.programmer.data.kendaraan.api.GetConnection;
 import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.User;
 import zero.programmer.data.kendaraan.response.ResponseListData;
@@ -121,8 +120,7 @@ public class UserFragment extends Fragment {
     private void retrieveData(){
         progressBarUser.setVisibility(View.VISIBLE);
 
-        ApiRequest apiRequest = RetroServer.getRetrofit().create(ApiRequest.class);
-        Call<ResponseListData<User>> getDataUser = apiRequest.listUser(ApiKeyData.getApiKey());
+        Call<ResponseListData<User>> getDataUser = GetConnection.apiRequest.listUser(ApiKeyData.getApiKey());
 
         getDataUser.enqueue(new Callback<ResponseListData<User>>() {
             @Override

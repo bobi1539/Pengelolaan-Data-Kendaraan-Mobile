@@ -27,6 +27,7 @@ import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
 import zero.programmer.data.kendaraan.activity.EditVehicleActivity;
 import zero.programmer.data.kendaraan.api.ApiRequest;
+import zero.programmer.data.kendaraan.api.GetConnection;
 import zero.programmer.data.kendaraan.api.RetroServer;
 import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.Vehicle;
@@ -38,8 +39,6 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
     private final List<Vehicle> listVehicle;
 
     private String registrationNumber;
-
-    private final ApiRequest apiRequest = RetroServer.getRetrofit().create(ApiRequest.class);
 
     public VehicleAdapter(Context context, List<Vehicle> listVehicle){
         this.context = context;
@@ -112,7 +111,7 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
 
             registrationNumber = textViewRegistrationNumber.getText().toString();
 
-            Call<ResponseOneData<Vehicle>> getDetailVehicle = apiRequest.getVehicle(ApiKeyData.getApiKey(), registrationNumber);
+            Call<ResponseOneData<Vehicle>> getDetailVehicle = GetConnection.apiRequest.getVehicle(ApiKeyData.getApiKey(), registrationNumber);
 
             getDetailVehicle.enqueue(new Callback<ResponseOneData<Vehicle>>() {
                 @Override
@@ -214,7 +213,7 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
 
             alertDialog.setNegativeButton("Ya", (dialog, which) -> {
 
-                Call<ResponseOneData<Vehicle>> callDeleteVehicle = apiRequest.deleteVehicle(ApiKeyData.getApiKey(), registrationNumber);
+                Call<ResponseOneData<Vehicle>> callDeleteVehicle = GetConnection.apiRequest.deleteVehicle(ApiKeyData.getApiKey(), registrationNumber);
 
                 callDeleteVehicle.enqueue(new Callback<ResponseOneData<Vehicle>>() {
                     @Override

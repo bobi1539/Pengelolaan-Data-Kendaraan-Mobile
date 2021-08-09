@@ -19,6 +19,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
 import zero.programmer.data.kendaraan.api.ApiRequest;
+import zero.programmer.data.kendaraan.api.GetConnection;
 import zero.programmer.data.kendaraan.api.RetroServer;
 import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.Vehicle;
@@ -61,36 +62,78 @@ public class AddVehicleActivity extends AppCompatActivity {
 
     private void inserDataVehicle(){
 
+        if (validateInput()){
+            VehicleData vehicleData = new VehicleData(
+                    registrationNumber,
+                    name,
+                    merk,
+                    chassisNumber,
+                    machineNumber,
+                    policeNumber,
+                    purchaseDateFormat,
+                    acquisitionValue,
+                    location,
+                    condition,
+                    isBorrow
+            );
+
+            Call<ResponseOneData<Vehicle>> insertVehicle = GetConnection.apiRequest.createVehicle(ApiKeyData.getApiKey(), vehicleData);
+
+            insertVehicle.enqueue(new Callback<ResponseOneData<Vehicle>>() {
+                @Override
+                public void onResponse(Call<ResponseOneData<Vehicle>> call, Response<ResponseOneData<Vehicle>> response) {
+                    List<String> messages = response.body().getMessages();
+                    Toast.makeText(AddVehicleActivity.this, messages.get(0), Toast.LENGTH_SHORT).show();
+                    onBackPressed();
+                    finish();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseOneData<Vehicle>> call, Throwable t) {
+                    Toast.makeText(AddVehicleActivity.this, "On Failure : " + t, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private boolean validateInput(){
         if (editTextRegistrationNumber.getText().toString().trim().equals("")){
             editTextRegistrationNumber.setError("Nomor registrasi tidak boleh kosong");
+            return false;
         } else if (editTextName.getText().toString().trim().equals("")){
             editTextName.setError("Nama tidak boleh kosong");
+            return false;
         } else if (editTextMerk.getText().toString().trim().equals("")){
             editTextMerk.setError("Merk tidak boleh kosong");
+            return false;
         } else if (editTextPurchaseDate.getText().toString().trim().equals("")){
             editTextPurchaseDate.setError("Tanggal beli tidak boleh kosong");
+            return false;
         } else if (editTextValue.getText().toString().trim().equals("")){
             editTextValue.setError("Nilai peroleh tidak boleh kosong");
+            return false;
         }  else if (editTextLocation.getText().toString().trim().equals("")){
             editTextLocation.setError("Lokasi tidak boleh kosong");
+            return false;
         } else if (spinnerCondition.getSelectedItem().toString().equals("Kondisi")){
             Toast.makeText(this, "Silahkan pilih kondisi kendaraan", Toast.LENGTH_SHORT).show();
+            return false;
         } else {
             registrationNumber = editTextRegistrationNumber.getText().toString();
             name = editTextName.getText().toString();
             merk = editTextMerk.getText().toString();
 
-            if (editTextChassisNumber.getText().toString().trim().equals("")){
+            if (editTextChassisNumber.getText().toString().trim().equals("")) {
                 chassisNumber = "";
             } else {
                 chassisNumber = editTextChassisNumber.getText().toString();
             }
-            if (editTextMachineNumber.getText().toString().trim().equals("")){
+            if (editTextMachineNumber.getText().toString().trim().equals("")) {
                 machineNumber = "";
             } else {
                 machineNumber = editTextMachineNumber.getText().toString();
             }
-            if (editTextMachineNumber.getText().toString().trim().equals("")){
+            if (editTextMachineNumber.getText().toString().trim().equals("")) {
                 policeNumber = "";
             } else {
                 policeNumber = editTextPoliceNumber.getText().toString();
@@ -99,51 +142,20 @@ public class AddVehicleActivity extends AppCompatActivity {
             acquisitionValue = Long.parseLong(editTextValue.getText().toString());
             condition = spinnerCondition.getSelectedItem().toString();
 
-            boolean isDateFormatValid = true;
+            if (registrationNumber.contains(" ")){
+                Toast.makeText(this, "Nomor registrasi tidak boleh ada spasi", Toast.LENGTH_SHORT).show();
+                return false;
+            } else {
+                @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    purchaseDate = dateFormat.parse(editTextPurchaseDate.getText().toString());
+                    purchaseDateFormat = dateFormat.format(purchaseDate);
+                    return true;
 
-            @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                purchaseDate = dateFormat.parse(editTextPurchaseDate.getText().toString());
-                purchaseDateFormat = dateFormat.format(purchaseDate);
-
-            } catch (Exception e) {
-                Toast.makeText(this, "Format tanggal beli harus seperti yyyy-MM-dd (2021-01-01)", Toast.LENGTH_SHORT).show();
-                isDateFormatValid = false;
-            }
-
-            if (isDateFormatValid){
-                VehicleData vehicleData = new VehicleData(
-                        registrationNumber,
-                        name,
-                        merk,
-                        chassisNumber,
-                        machineNumber,
-                        policeNumber,
-                        purchaseDateFormat,
-                        acquisitionValue,
-                        location,
-                        condition,
-                        isBorrow
-                );
-
-
-                ApiRequest apiRequest = RetroServer.getRetrofit().create(ApiRequest.class);
-                Call<ResponseOneData<Vehicle>> insertVehicle = apiRequest.createVehicle(ApiKeyData.getApiKey(), vehicleData);
-
-                insertVehicle.enqueue(new Callback<ResponseOneData<Vehicle>>() {
-                    @Override
-                    public void onResponse(Call<ResponseOneData<Vehicle>> call, Response<ResponseOneData<Vehicle>> response) {
-                        List<String> messages = response.body().getMessages();
-                        Toast.makeText(AddVehicleActivity.this, messages.get(0), Toast.LENGTH_SHORT).show();
-                        onBackPressed();
-                        finish();
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseOneData<Vehicle>> call, Throwable t) {
-                        Toast.makeText(AddVehicleActivity.this, "On Failure : " + t, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                } catch (Exception e) {
+                    Toast.makeText(this, "Format tanggal beli harus seperti yyyy-MM-dd (2021-01-01)", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
             }
         }
     }

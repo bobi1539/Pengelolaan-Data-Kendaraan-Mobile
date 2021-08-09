@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.AddDriverActivity">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:elevation="10dp"
+        app:cardCornerRadius="10dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/input_driver"
+                    android:textStyle="bold"
+                    android:textSize="22sp"
+                    android:textColor="@color/purple_500"
+                    android:layout_marginBottom="15dp"
+                    android:layout_gravity="center_horizontal"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/purple_500"
+                    android:layout_marginBottom="10dp"/>
+
+                <EditText
+                    android:id="@+id/et_driver_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/driver_id_driver"
+                    android:background="@drawable/custom_input"
+                    android:autofillHints="@string/driver_id_driver"
+                    android:inputType="text"
+                    tools:ignore="TextFields" />
+
+                <EditText
+                    android:id="@+id/et_driver_full_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/driver_full_name"
+                    android:background="@drawable/custom_input"
+                    android:autofillHints="@string/driver_full_name"
+                    android:inputType="text"/>
+
+                <EditText
+                    android:id="@+id/et_driver_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/driver_phone_number"
+                    android:background="@drawable/custom_input"
+                    android:autofillHints="@string/driver_phone_number"
+                    android:inputType="text"
+                    tools:ignore="TextFields" />
+
+                <EditText
+                    android:id="@+id/et_driver_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/driver_address"
+                    android:background="@drawable/custom_input"
+                    android:autofillHints="@string/driver_address"
+                    android:inputType="text"
+                    tools:ignore="TextFields" />
+
+                <Button
+                    android:id="@+id/button_insert_driver"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/button_add"/>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

@@ -20,6 +20,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
 import zero.programmer.data.kendaraan.api.ApiRequest;
+import zero.programmer.data.kendaraan.api.GetConnection;
 import zero.programmer.data.kendaraan.api.RetroServer;
 import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.User;
@@ -35,7 +36,6 @@ public class EditUserActivity extends AppCompatActivity {
     private String username, fullName, employeeNumber, position, workUnit;
     private RoleId roleId;
 
-    private final ApiRequest apiRequest = RetroServer.getRetrofit().create(ApiRequest.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +64,7 @@ public class EditUserActivity extends AppCompatActivity {
 
     private void setDataToEditText(){
 
-        Call<ResponseOneData<User>> getDetailUser = apiRequest.getUser(ApiKeyData.getApiKey(), username);
+        Call<ResponseOneData<User>> getDetailUser = GetConnection.apiRequest.getUser(ApiKeyData.getApiKey(), username);
 
         getDetailUser.enqueue(new Callback<ResponseOneData<User>>() {
             @SuppressLint("ResourceAsColor")
@@ -120,7 +120,7 @@ public class EditUserActivity extends AppCompatActivity {
             userData.put("workUnit", workUnit);
             userData.put("roleId", roleId);
 
-            Call<ResponseOneData<User>> updateDataUser = apiRequest.updateUser(
+            Call<ResponseOneData<User>> updateDataUser = GetConnection.apiRequest.updateUser(
                     ApiKeyData.getApiKey(),
                     username,
                     userData

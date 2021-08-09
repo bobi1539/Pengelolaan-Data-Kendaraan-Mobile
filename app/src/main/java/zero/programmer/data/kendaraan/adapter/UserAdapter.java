@@ -2,7 +2,6 @@ package zero.programmer.data.kendaraan.adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +23,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
 import zero.programmer.data.kendaraan.activity.EditUserActivity;
-import zero.programmer.data.kendaraan.api.ApiRequest;
-import zero.programmer.data.kendaraan.api.RetroServer;
+import zero.programmer.data.kendaraan.api.GetConnection;
 import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.User;
 import zero.programmer.data.kendaraan.response.ResponseOneData;
@@ -36,8 +34,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.HolderData>{
     private List<User> listUser;
 
     private String username;
-
-    private final ApiRequest apiRequest = RetroServer.getRetrofit().create(ApiRequest.class);
 
     public UserAdapter(Context context, List<User> listUser) {
         this.context = context;
@@ -97,7 +93,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.HolderData>{
         private void detailUser(){
             username = textViewUsername.getText().toString();
 
-            Call<ResponseOneData<User>> getDetailUser = apiRequest.getUser(ApiKeyData.getApiKey(), username);
+            Call<ResponseOneData<User>> getDetailUser = GetConnection.apiRequest.getUser(ApiKeyData.getApiKey(), username);
 
             getDetailUser.enqueue(new Callback<ResponseOneData<User>>() {
                 @Override
@@ -172,7 +168,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.HolderData>{
 
             alertDialog.setNegativeButton("Ya", ((dialog, which) -> {
 
-                Call<ResponseOneData<User>> deleteUserData = apiRequest.deleteUser(ApiKeyData.getApiKey(), username);
+                Call<ResponseOneData<User>> deleteUserData = GetConnection.apiRequest.deleteUser(ApiKeyData.getApiKey(), username);
 
                 deleteUserData.enqueue(new Callback<ResponseOneData<User>>() {
                     @Override

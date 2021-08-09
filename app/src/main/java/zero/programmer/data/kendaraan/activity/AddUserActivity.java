@@ -15,6 +15,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
 import zero.programmer.data.kendaraan.api.ApiRequest;
+import zero.programmer.data.kendaraan.api.GetConnection;
 import zero.programmer.data.kendaraan.api.RetroServer;
 import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.User;
@@ -64,8 +65,7 @@ public class AddUserActivity extends AppCompatActivity {
                     roleId
             );
 
-            ApiRequest apiRequest = RetroServer.getRetrofit().create(ApiRequest.class);
-            Call<ResponseOneData<User>> insertUserData = apiRequest.createUser(ApiKeyData.getApiKey(), userData);
+            Call<ResponseOneData<User>> insertUserData = GetConnection.apiRequest.createUser(ApiKeyData.getApiKey(), userData);
             insertUserData.enqueue(new Callback<ResponseOneData<User>>() {
                 @Override
                 public void onResponse(Call<ResponseOneData<User>> call, Response<ResponseOneData<User>> response) {
@@ -78,8 +78,9 @@ public class AddUserActivity extends AppCompatActivity {
                         ).show();
                     } else {
                         try {
-                            List<String> messages = response.body().getMessages();
-                            Toast.makeText(AddUserActivity.this, messages.get(0), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddUserActivity.this
+                                    , response.body().getMessages().get(0)
+                                    , Toast.LENGTH_SHORT).show();
                             onBackPressed();
                             finish();
                         } catch (NullPointerException e) {

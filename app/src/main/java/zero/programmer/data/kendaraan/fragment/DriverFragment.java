@@ -1,5 +1,6 @@
 package zero.programmer.data.kendaraan.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -22,8 +23,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
+import zero.programmer.data.kendaraan.activity.AddDriverActivity;
 import zero.programmer.data.kendaraan.adapter.DriverAdapter;
 import zero.programmer.data.kendaraan.api.ApiRequest;
+import zero.programmer.data.kendaraan.api.GetConnection;
 import zero.programmer.data.kendaraan.api.RetroServer;
 import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.Driver;
@@ -105,6 +108,8 @@ public class DriverFragment extends Fragment {
             swipeRefreshLayoutDriver.setRefreshing(false);
         });
 
+        floatingActionButtonAddDriver.setOnClickListener(v -> startActivity(new Intent(getContext(), AddDriverActivity.class)));
+
         return view;
     }
 
@@ -119,8 +124,7 @@ public class DriverFragment extends Fragment {
 
         progressBarDriver.setVisibility(View.VISIBLE);
 
-        ApiRequest apiRequest = RetroServer.getRetrofit().create(ApiRequest.class);
-        Call<ResponseListData<Driver>> getListDriver = apiRequest.listDriver(ApiKeyData.getApiKey());
+        Call<ResponseListData<Driver>> getListDriver = GetConnection.apiRequest.listDriver(ApiKeyData.getApiKey());
 
         getListDriver.enqueue(new Callback<ResponseListData<Driver>>() {
             @Override

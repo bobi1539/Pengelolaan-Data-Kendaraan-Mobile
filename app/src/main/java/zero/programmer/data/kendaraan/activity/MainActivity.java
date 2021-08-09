@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -16,17 +17,22 @@ import zero.programmer.data.kendaraan.fragment.DriverFragment;
 import zero.programmer.data.kendaraan.fragment.ProfileFragment;
 import zero.programmer.data.kendaraan.fragment.UserFragment;
 import zero.programmer.data.kendaraan.fragment.VehicleFragment;
+import zero.programmer.data.kendaraan.session.SessionManager;
 
 public class MainActivity extends AppCompatActivity {
-
-    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        // cek jika sudah login
+        if (!new SessionManager(MainActivity.this).isLogin()){
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnItemSelectedListener(navigationListener);
 
         // Setting Profile Fragment as main Fragment
@@ -36,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Listener Navigation Bar
-    private NavigationBarView.OnItemSelectedListener navigationListener = new NavigationBarView.OnItemSelectedListener() {
+    private final NavigationBarView.OnItemSelectedListener navigationListener = new NavigationBarView.OnItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 

@@ -77,7 +77,7 @@ public interface ApiRequest {
             );
 
     @POST("api/users/login")
-    Call<ResponseOneData<LoginData>> loginUser(
+    Call<ResponseOneData<User>> loginUser(
             @Header("X-Api-Key") String apiKey,
             @Body LoginData loginData
     );

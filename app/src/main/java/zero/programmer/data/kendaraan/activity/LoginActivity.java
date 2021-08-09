@@ -14,6 +14,7 @@ import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
 import zero.programmer.data.kendaraan.api.GetConnection;
 import zero.programmer.data.kendaraan.apikey.ApiKeyData;
+import zero.programmer.data.kendaraan.entitites.User;
 import zero.programmer.data.kendaraan.model.LoginData;
 import zero.programmer.data.kendaraan.response.ResponseOneData;
 
@@ -41,17 +42,30 @@ public class LoginActivity extends AppCompatActivity {
 
             LoginData loginData = new LoginData(username, password);
 
-            Call<ResponseOneData<LoginData>> checkLoginUser = GetConnection.apiRequest.loginUser(
+            Call<ResponseOneData<User>> checkLoginUser = GetConnection.apiRequest.loginUser(
                     ApiKeyData.getApiKey(), loginData);
 
-            checkLoginUser.enqueue(new Callback<ResponseOneData<LoginData>>() {
+            checkLoginUser.enqueue(new Callback<ResponseOneData<User>>() {
                 @Override
-                public void onResponse(Call<ResponseOneData<LoginData>> call, Response<ResponseOneData<LoginData>> response) {
+                public void onResponse(Call<ResponseOneData<User>> call, Response<ResponseOneData<User>> response) {
 
                     if (response.code() == 200){
                         try {
+
+                            // set data user ke object user dari response
+                            User userDetail = response.body().getData();
+
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            intent.putExtra("username", username);
+
+                            // set data user ke intent untuk dibawa ke activity berikutnya
+                            // data untuk disimpan kedalam session
+                            intent.putExtra("username", userDetail.getUsername());
+                            intent.putExtra("fullName", userDetail.getFullName());
+                            intent.putExtra("employeeNumber", userDetail.getEmployeeNumber());
+                            intent.putExtra("position", userDetail.getPosition());
+                            intent.putExtra("workUnit", userDetail.getWorkUnit());
+                            intent.putExtra("roleId", userDetail.getRoleId());
+
                             startActivity(intent);
                             Toast.makeText(LoginActivity.this, response.body().getMessages().get(0), Toast.LENGTH_SHORT).show();
 
@@ -69,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<ResponseOneData<LoginData>> call, Throwable t) {
+                public void onFailure(Call<ResponseOneData<User>> call, Throwable t) {
                     Toast.makeText(LoginActivity.this, "Error + t", Toast.LENGTH_SHORT).show();
                 }
             });

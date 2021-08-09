@@ -14,6 +14,7 @@ import retrofit2.http.Path;
 import zero.programmer.data.kendaraan.entitites.Driver;
 import zero.programmer.data.kendaraan.entitites.User;
 import zero.programmer.data.kendaraan.entitites.Vehicle;
+import zero.programmer.data.kendaraan.model.LoginData;
 import zero.programmer.data.kendaraan.response.ResponseListData;
 import zero.programmer.data.kendaraan.model.VehicleData;
 import zero.programmer.data.kendaraan.response.ResponseOneData;
@@ -74,6 +75,12 @@ public interface ApiRequest {
             @Path("username") String username,
             @Body Map<Object, Object> userData
             );
+
+    @POST("api/users/login")
+    Call<ResponseOneData<LoginData>> loginUser(
+            @Header("X-Api-Key") String apiKey,
+            @Body LoginData loginData
+    );
 
     @GET("api/drivers")
     Call<ResponseListData<Driver>> listDriver(@Header("X-Api-Key") String apiKey);

@@ -78,4 +78,10 @@ public interface ApiRequest {
     @GET("api/drivers")
     Call<ResponseListData<Driver>> listDriver(@Header("X-Api-Key") String apiKey);
 
+    @GET("api/drivers/{idDriver}")
+    Call<ResponseOneData<Driver>> getDriver(
+            @Header("X-Api-Key") String apiKey,
+            @Path("idDriver") String idDriver
+    );
+
 }

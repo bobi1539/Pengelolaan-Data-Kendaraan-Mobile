@@ -90,6 +90,7 @@
     <string name="driver_address">Alamat</string>
     <string name="driver_on_duty">Sedang Bertugas</string>
     <string name="driver_not_on_duty">Tidak Sedang Bertugas</string>
+    <string name="driver_status">Status</string>
 
     <!--  End Bagian Driver-->
 

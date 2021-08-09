@@ -12,12 +12,19 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
 import zero.programmer.data.kendaraan.api.ApiRequest;
 import zero.programmer.data.kendaraan.api.RetroServer;
+import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.Driver;
+import zero.programmer.data.kendaraan.response.ResponseOneData;
 
 public class DriverAdapter extends RecyclerView.Adapter<DriverAdapter.HolderData>{
 
@@ -69,7 +76,11 @@ public class DriverAdapter extends RecyclerView.Adapter<DriverAdapter.HolderData
     public class HolderData extends RecyclerView.ViewHolder{
 
         TextView textViewIdDriver, textViewFullName, textViewPhoneNumber, textViewIsOnDuty;
+        TextView textViewDetailIdDriver, textViewDetailFullName, textViewDetailPhoneNumber,
+                textViewDetailAddress, textViewDetailIsOnDuty;
         CardView cardViewDriver;
+        Button buttonEditDriver, buttonDeleteDriver;
+        BottomSheetDialog bottomSheetDialog;
 
         public HolderData(@NonNull View itemView) {
             super(itemView);
@@ -79,6 +90,82 @@ public class DriverAdapter extends RecyclerView.Adapter<DriverAdapter.HolderData
             textViewFullName = itemView.findViewById(R.id.card_driver_full_name);
             textViewPhoneNumber = itemView.findViewById(R.id.card_driver_phone_number);
             textViewIsOnDuty = itemView.findViewById(R.id.card_driver_is_on_duty);
+            cardViewDriver = itemView.findViewById(R.id.card_driver);
+
+            cardViewDriver.setOnClickListener(v -> detailDriver());
+        }
+
+        private void detailDriver(){
+            idDriver = textViewIdDriver.getText().toString();
+
+            Call<ResponseOneData<Driver>> getDetailDriver = apiRequest.getDriver(ApiKeyData.getApiKey(), idDriver);
+
+            getDetailDriver.enqueue(new Callback<ResponseOneData<Driver>>() {
+                @Override
+                public void onResponse(Call<ResponseOneData<Driver>> call, Response<ResponseOneData<Driver>> response) {
+                    try {
+
+                        Driver driverDetail = response.body().getData();
+
+                        // bottom sheet dialog
+                        bottomSheetDialog = new BottomSheetDialog(
+                                context, R.style.BottomSheetDialogTheme
+                        );
+                        View bottomSheetView = LayoutInflater.from(context)
+                                .inflate(
+                                        R.layout.bottom_sheet_driver,
+                                        itemView.findViewById(R.id.bottom_sheet_driver)
+                                );
+
+                        // get view driver detail
+                        textViewDetailIdDriver = bottomSheetView.findViewById(R.id.tv_driver_id);
+                        textViewDetailFullName = bottomSheetView.findViewById(R.id.tv_driver_full_name);
+                        textViewDetailPhoneNumber = bottomSheetView.findViewById(R.id.tv_driver_phone_number);
+                        textViewDetailIsOnDuty = bottomSheetView.findViewById(R.id.tv_driver_status);
+                        textViewDetailAddress = bottomSheetView.findViewById(R.id.tv_driver_address);
+                        buttonEditDriver = bottomSheetView.findViewById(R.id.button_edit_driver);
+                        buttonDeleteDriver = bottomSheetView.findViewById(R.id.button_delete_driver);
+
+                        // set detail driver from reponse
+                        textViewDetailIdDriver.setText(driverDetail.getIdDriver());
+                        textViewDetailFullName.setText(driverDetail.getFullName());
+                        textViewDetailPhoneNumber.setText(driverDetail.getPhoneNumber());
+
+                        // cek status driver
+                        if (!driverDetail.getOnDuty()){
+                            textViewDetailIsOnDuty.setText(R.string.driver_not_on_duty);
+                        } else {
+                            textViewDetailIsOnDuty.setText(R.string.driver_on_duty);
+                        }
+                        textViewDetailAddress.setText(driverDetail.getAddress());
+
+                        // set button update
+                        buttonEditDriver.setOnClickListener(v -> editDriver());
+                        // set button delete
+                        buttonDeleteDriver.setOnClickListener(v -> deleteDriver());
+
+                        bottomSheetDialog.setContentView(bottomSheetView);
+                        bottomSheetDialog.show();
+
+
+                    } catch (NullPointerException e){
+                        Toast.makeText(context, "Error : " + e, Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseOneData<Driver>> call, Throwable t) {
+                    Toast.makeText(context, "Error : " + t, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        private void editDriver(){
+            Toast.makeText(context, "edit " + idDriver, Toast.LENGTH_SHORT).show();
+        }
+
+        private void deleteDriver(){
+            Toast.makeText(context, "Delete " + idDriver, Toast.LENGTH_SHORT).show();
         }
     }
 }

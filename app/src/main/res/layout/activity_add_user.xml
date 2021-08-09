@@ -43,87 +43,162 @@
                     android:background="@color/purple_500"
                     android:layout_marginBottom="10dp"/>
 
-                <EditText
-                    android:id="@+id/et_user_username"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:layout_marginTop="10dp"
                     android:hint="@string/username"
-                    android:background="@drawable/custom_input"
-                    android:autofillHints="@string/username"
-                    android:inputType="text"
-                    tools:ignore="TextFields" />
+                    app:boxBackgroundColor="@color/white"
+                    android:layout_marginBottom="10dp"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                <EditText
-                    android:id="@+id/et_user_password"
+                    <EditText
+                        android:id="@+id/et_user_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="@string/username"
+                        android:inputType="text"
+                        tools:ignore="LabelFor,TextFields" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:layout_marginTop="10dp"
                     android:hint="@string/password"
-                    android:background="@drawable/custom_input"
-                    android:autofillHints="@string/password"
-                    android:inputType="textPassword"
-                    />
+                    app:boxBackgroundColor="@color/white"
+                    android:layout_marginBottom="10dp"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:passwordToggleEnabled="true"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                <EditText
-                    android:id="@+id/et_user_repeat_password"
+                    <EditText
+                        android:id="@+id/et_user_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="@string/password"
+                        android:inputType="textPassword"
+                        tools:ignore="LabelFor" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:layout_marginTop="10dp"
                     android:hint="@string/repeat_password"
-                    android:background="@drawable/custom_input"
-                    android:autofillHints="@string/repeat_password"
-                    android:inputType="textPassword"/>
+                    app:boxBackgroundColor="@color/white"
+                    android:layout_marginBottom="10dp"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:passwordToggleEnabled="true"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                <EditText
-                    android:id="@+id/et_user_full_name"
+                    <EditText
+                        android:id="@+id/et_user_repeat_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="@string/repeat_password"
+                        android:inputType="textPassword"
+                        tools:ignore="LabelFor" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:layout_marginTop="10dp"
                     android:hint="@string/full_name"
-                    android:background="@drawable/custom_input"
-                    android:autofillHints="@string/full_name"
-                    android:inputType="text"/>
+                    app:boxBackgroundColor="@color/white"
+                    android:layout_marginBottom="10dp"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <EditText
+                        android:id="@+id/et_user_full_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="@string/full_name"
+                        android:inputType="text"
+                        tools:ignore="LabelFor" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/employee_number"
+                    app:boxBackgroundColor="@color/white"
+                    android:layout_marginBottom="10dp"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                 <EditText
                     android:id="@+id/et_user_employee_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:layout_marginTop="10dp"
-                    android:hint="@string/employee_number"
-                    android:background="@drawable/custom_input"
                     android:autofillHints="@string/employee_number"
                     android:inputType="text"
-                    tools:ignore="TextFields" />
+                    tools:ignore="LabelFor,TextFields" />
 
-                <EditText
-                    android:id="@+id/et_user_position"
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:layout_marginTop="10dp"
                     android:hint="@string/position"
-                    android:background="@drawable/custom_input"
-                    android:autofillHints="@string/position"
-                    android:inputType="text"
-                    tools:ignore="TextFields" />
+                    app:boxBackgroundColor="@color/white"
+                    android:layout_marginBottom="10dp"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                <EditText
-                    android:id="@+id/et_user_work_unit"
+                    <EditText
+                        android:id="@+id/et_user_position"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="@string/position"
+                        android:inputType="text"
+                        tools:ignore="LabelFor,TextFields" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:layout_marginTop="10dp"
                     android:hint="@string/work_unit"
-                    android:background="@drawable/custom_input"
-                    android:autofillHints="@string/work_unit"
-                    android:inputType="text"
-                    tools:ignore="TextFields" />
+                    app:boxBackgroundColor="@color/white"
+                    android:layout_marginBottom="10dp"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <EditText
+                        android:id="@+id/et_user_work_unit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="@string/work_unit"
+                        android:inputType="text"
+                        tools:ignore="LabelFor,TextFields" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
 
                 <Spinner
                     android:id="@+id/spinner_user_role_id"

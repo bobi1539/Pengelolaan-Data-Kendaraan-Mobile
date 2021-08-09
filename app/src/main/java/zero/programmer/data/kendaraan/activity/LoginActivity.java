@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -17,6 +18,7 @@ import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.User;
 import zero.programmer.data.kendaraan.model.LoginData;
 import zero.programmer.data.kendaraan.response.ResponseOneData;
+import zero.programmer.data.kendaraan.session.SessionManager;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -55,18 +57,19 @@ public class LoginActivity extends AppCompatActivity {
                             // set data user ke object user dari response
                             User userDetail = response.body().getData();
 
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            // membuat session saat berhasil login
+                            SessionManager sessionManager = new SessionManager(LoginActivity.this);
+                            sessionManager.createLoginSession(
+                                    userDetail.getUsername(),
+                                    userDetail.getFullName(),
+                                    userDetail.getEmployeeNumber(),
+                                    userDetail.getPosition(),
+                                    userDetail.getWorkUnit(),
+                                    userDetail.getRoleId()
+                            );
 
-                            // set data user ke intent untuk dibawa ke activity berikutnya
-                            // data untuk disimpan kedalam session
-                            intent.putExtra("username", userDetail.getUsername());
-                            intent.putExtra("fullName", userDetail.getFullName());
-                            intent.putExtra("employeeNumber", userDetail.getEmployeeNumber());
-                            intent.putExtra("position", userDetail.getPosition());
-                            intent.putExtra("workUnit", userDetail.getWorkUnit());
-                            intent.putExtra("roleId", userDetail.getRoleId());
-
-                            startActivity(intent);
+                            // go to main activity
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             Toast.makeText(LoginActivity.this, response.body().getMessages().get(0), Toast.LENGTH_SHORT).show();
 
                         } catch (NullPointerException e){

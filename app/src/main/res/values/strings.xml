@@ -102,5 +102,9 @@
     <string name="button_logout">Logout</string>
     <string name="button_edit_profile">Edit Profil</string>
     <string name="button_change_password">Ganti Password</string>
+    <string name="new_password">Password Baru</string>
+    <string name="repeat_new_password">Ulangi Password Baru</string>
+    <string name="update_password">Update Password</string>
+
 
 </resources>

@@ -22,6 +22,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
+import zero.programmer.data.kendaraan.activity.ChangePasswordActivity;
 import zero.programmer.data.kendaraan.activity.EditProfileActivity;
 import zero.programmer.data.kendaraan.activity.LoginActivity;
 import zero.programmer.data.kendaraan.api.GetConnection;
@@ -46,7 +47,7 @@ public class ProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private Button buttonLogout, buttonEditProfile;
+    private Button buttonLogout, buttonEditProfile, buttonChangePassword;
     private TextView textViewUsername, textViewFullName, textViewEmployeeNumber,
                 textViewPosition, textViewWorkUnit, textViewRoleId;
     private SwipeRefreshLayout swipeRefreshLayoutProfile;
@@ -97,6 +98,7 @@ public class ProfileFragment extends Fragment {
         textViewWorkUnit = view.findViewById(R.id.tv_profil_work_unit);
         textViewRoleId = view.findViewById(R.id.tv_profil_role_id);
         buttonLogout = view.findViewById(R.id.button_logout);
+        buttonChangePassword = view.findViewById(R.id.button_change_password);
         buttonEditProfile = view.findViewById(R.id.button_edit_profile);
         swipeRefreshLayoutProfile = view.findViewById(R.id.swipe_refresh_profile);
 
@@ -118,6 +120,9 @@ public class ProfileFragment extends Fragment {
         
         // edit profil
         buttonEditProfile.setOnClickListener(v -> editProfile());
+
+        // ganti password
+        buttonChangePassword.setOnClickListener(v -> startActivity(new Intent(getContext(), ChangePasswordActivity.class)));
 
         return view;
     }

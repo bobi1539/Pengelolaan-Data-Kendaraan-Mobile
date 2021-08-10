@@ -13,7 +13,7 @@
 
     <string name="title_profile">Profil</string>
     <string name="title_vehicle">Data Kendaraan</string>
-    <string name="title_borrow">Data Peminjaman</string>
+    <string name="title_borrow">Data Peminjaman Kendaraan</string>
     <string name="title_driver">Data Sopir</string>
     <string name="title_user">Data User</string>
 
@@ -105,6 +105,9 @@
     <string name="new_password">Password Baru</string>
     <string name="repeat_new_password">Ulangi Password Baru</string>
     <string name="update_password">Update Password</string>
+
+    <string name="borrow_dinas">Perjalanan Dinas</string>
+    <string name="borrow_personal">Keperluan Pribadi</string>
 
 
 </resources>

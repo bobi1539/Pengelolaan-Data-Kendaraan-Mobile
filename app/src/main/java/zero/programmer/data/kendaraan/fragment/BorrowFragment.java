@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import zero.programmer.data.kendaraan.R;
 import zero.programmer.data.kendaraan.activity.BorrowDinasActivity;
+import zero.programmer.data.kendaraan.activity.BorrowPersonalActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -74,6 +75,7 @@ public class BorrowFragment extends Fragment {
 
         // on click card
         cardViewBorrowDinas.setOnClickListener(v -> startActivity(new Intent(getContext(), BorrowDinasActivity.class)));
+        cardViewBorrowPersonal.setOnClickListener(v -> startActivity(new Intent(getContext(), BorrowPersonalActivity.class)));
 
         return  view;
     }

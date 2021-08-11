@@ -27,32 +27,32 @@ import zero.programmer.data.kendaraan.response.ResponseListData;
 import zero.programmer.data.kendaraan.session.SessionManager;
 import zero.programmer.data.kendaraan.utils.RoleId;
 
-public class BorrowDinasActivity extends AppCompatActivity {
+public class BorrowPersonalActivity extends AppCompatActivity {
 
     private RecyclerView recyclerViewBorrow;
     private RecyclerView.Adapter recyclerViewBorrowAdapter;
     private RecyclerView.LayoutManager recyclerViewBorrowLayoutManager;
     private List<BorrowVehicle> listBorrowVehicle = new ArrayList<>();
-    private ProgressBar progressBarBorrowDinas;
-    private FloatingActionButton floatingActionButtonAddBorrowDinas;
-    private SwipeRefreshLayout swipeRefreshLayoutBorrowDinas;
+    private ProgressBar progressBarBorrowPersonal;
+    private FloatingActionButton floatingActionButtonAddBorrowPersonal;
+    private SwipeRefreshLayout swipeRefreshLayoutBorrowPersonal;
     private SessionManager sessionManager;
 
     private String roleId;
     private String username;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_borrow_dinas);
+        setContentView(R.layout.activity_borrow_personal);
 
         // get view layout
-        recyclerViewBorrow = findViewById(R.id.recycler_view_borrow_dinas);
-        progressBarBorrowDinas = findViewById(R.id.borrow_dinas_progress_bar);
-        floatingActionButtonAddBorrowDinas = findViewById(R.id.button_add_borrow_dinas);
-        swipeRefreshLayoutBorrowDinas = findViewById(R.id.swipe_refresh_borrow_dinas);
+        recyclerViewBorrow = findViewById(R.id.recycler_view_borrow_personal);
+        progressBarBorrowPersonal = findViewById(R.id.borrow_personal_progress_bar);
+        floatingActionButtonAddBorrowPersonal = findViewById(R.id.button_add_borrow_personal);
+        swipeRefreshLayoutBorrowPersonal = findViewById(R.id.swipe_refresh_borrow_personal);
 
+        // set layout manager
         recyclerViewBorrowLayoutManager = new LinearLayoutManager(this);
         recyclerViewBorrow.setLayoutManager(recyclerViewBorrowLayoutManager);
 
@@ -62,11 +62,12 @@ public class BorrowDinasActivity extends AppCompatActivity {
         username = sessionManager.getUserSessionDetail().get(SessionManager.KEY_USERNAME);
 
         // swipe refresh layout
-        swipeRefreshLayoutBorrowDinas.setOnRefreshListener(() -> {
-            swipeRefreshLayoutBorrowDinas.setRefreshing(true);
+        swipeRefreshLayoutBorrowPersonal.setOnRefreshListener(() -> {
+            swipeRefreshLayoutBorrowPersonal.setRefreshing(true);
             retrieveData();
-            swipeRefreshLayoutBorrowDinas.setRefreshing(false);
+            swipeRefreshLayoutBorrowPersonal.setRefreshing(false);
         });
+
     }
 
     @Override
@@ -76,85 +77,87 @@ public class BorrowDinasActivity extends AppCompatActivity {
     }
 
     private void retrieveData(){
-
-        progressBarBorrowDinas.setVisibility(View.VISIBLE);
+        progressBarBorrowPersonal.setVisibility(View.VISIBLE);
 
         if (roleId.equals(RoleId.ADMIN.toString()) || roleId.equals(RoleId.KABID.toString())){
             getBorrowDataAdmin();
         } else if (roleId.equals(RoleId.KARYAWAN.toString())){
             getBorrowDataEmployee();
         } else {
-            progressBarBorrowDinas.setVisibility(View.GONE);
             Toast.makeText(this, "Your access is forbidden", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private void getBorrowDataAdmin(){
-        Call<ResponseListData<BorrowVehicle>> getAllListBorrowDinas = GetConnection.apiRequest.listBorrowVehicleDinas(
+        Call<ResponseListData<BorrowVehicle>> getAllBorrowPersonal = GetConnection.apiRequest.listBorrowVehiclePersonal(
                 ApiKeyData.getApiKey()
         );
-
-        getAllListBorrowDinas.enqueue(new Callback<ResponseListData<BorrowVehicle>>() {
+        getAllBorrowPersonal.enqueue(new Callback<ResponseListData<BorrowVehicle>>() {
             @Override
             public void onResponse(Call<ResponseListData<BorrowVehicle>> call, Response<ResponseListData<BorrowVehicle>> response) {
                 try {
+
                     if (response.code() == 404){
-                        progressBarBorrowDinas.setVisibility(View.GONE);
-                        Toast.makeText(BorrowDinasActivity.this, "Tidak ada data", Toast.LENGTH_SHORT).show();
+                        progressBarBorrowPersonal.setVisibility(View.GONE);
+                        Toast.makeText(BorrowPersonalActivity.this, "Tidak ada data", Toast.LENGTH_SHORT).show();
                     } else {
                         listBorrowVehicle = response.body().getData();
-                        recyclerViewBorrowAdapter = new BorrowVehicleAdapter(BorrowDinasActivity.this, listBorrowVehicle);
-                        recyclerViewBorrow.setAdapter(recyclerViewBorrowAdapter);
-                        recyclerViewBorrowAdapter.notifyDataSetChanged();
-                        progressBarBorrowDinas.setVisibility(View.GONE);
+                        setRecyclerViewBorrow(listBorrowVehicle);
                     }
 
                 } catch (NullPointerException e){
-                    progressBarBorrowDinas.setVisibility(View.GONE);
-                    Toast.makeText(BorrowDinasActivity.this, "Error : " + e, Toast.LENGTH_SHORT).show();
+                    progressBarBorrowPersonal.setVisibility(View.GONE);
+                    Toast.makeText(BorrowPersonalActivity.this, "Error : " + e, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseListData<BorrowVehicle>> call, Throwable t) {
-                progressBarBorrowDinas.setVisibility(View.GONE);
-                Toast.makeText(BorrowDinasActivity.this, "Error : " + t, Toast.LENGTH_SHORT).show();
+                progressBarBorrowPersonal.setVisibility(View.GONE);
+                Toast.makeText(BorrowPersonalActivity.this, "Error : " + t, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void getBorrowDataEmployee(){
-        Call<ResponseListData<BorrowVehicle>> getListBorrowByUsername = GetConnection
+        Call<ResponseListData<BorrowVehicle>> getBorrowPersonalByUsername = GetConnection
                 .apiRequest
-                .listBorrowVehicleDinasByUsername(ApiKeyData.getApiKey(),username);
+                .listBorrowVehiclePersonalByUsername(ApiKeyData.getApiKey(), username);
 
-        getListBorrowByUsername.enqueue(new Callback<ResponseListData<BorrowVehicle>>() {
+        getBorrowPersonalByUsername.enqueue(new Callback<ResponseListData<BorrowVehicle>>() {
             @Override
             public void onResponse(Call<ResponseListData<BorrowVehicle>> call, Response<ResponseListData<BorrowVehicle>> response) {
                 try {
                     if (response.code() == 404){
-                        progressBarBorrowDinas.setVisibility(View.GONE);
-                        Toast.makeText(BorrowDinasActivity.this, "Tidak ada data", Toast.LENGTH_SHORT).show();
+                        progressBarBorrowPersonal.setVisibility(View.GONE);
+                        Toast.makeText(BorrowPersonalActivity.this, "Tidak ada data", Toast.LENGTH_SHORT).show();
                     } else {
                         listBorrowVehicle = response.body().getData();
-                        recyclerViewBorrowAdapter = new BorrowVehicleAdapter(BorrowDinasActivity.this, listBorrowVehicle);
-                        recyclerViewBorrow.setAdapter(recyclerViewBorrowAdapter);
-                        recyclerViewBorrowAdapter.notifyDataSetChanged();
-                        progressBarBorrowDinas.setVisibility(View.GONE);
+                        setRecyclerViewBorrow(listBorrowVehicle);
                     }
-
                 } catch (NullPointerException e){
-                    progressBarBorrowDinas.setVisibility(View.GONE);
-                    Toast.makeText(BorrowDinasActivity.this, "Error : ", Toast.LENGTH_SHORT).show();
+                    progressBarBorrowPersonal.setVisibility(View.GONE);
+                    Toast.makeText(BorrowPersonalActivity.this, "Error : " + e, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseListData<BorrowVehicle>> call, Throwable t) {
-                progressBarBorrowDinas.setVisibility(View.GONE);
-                Toast.makeText(BorrowDinasActivity.this, "Error : " + t, Toast.LENGTH_SHORT).show();
+                progressBarBorrowPersonal.setVisibility(View.GONE);
+                Toast.makeText(BorrowPersonalActivity.this, "Error : " + t, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    /**
+     * untuk set recycler view
+     * @param listBorrowVehicle
+     */
+    private void setRecyclerViewBorrow(List<BorrowVehicle> listBorrowVehicle){
+        recyclerViewBorrowAdapter = new BorrowVehicleAdapter(BorrowPersonalActivity.this, listBorrowVehicle);
+        recyclerViewBorrow.setAdapter(recyclerViewBorrowAdapter);
+        recyclerViewBorrowAdapter.notifyDataSetChanged();
+        progressBarBorrowPersonal.setVisibility(View.GONE);
+
     }
 }

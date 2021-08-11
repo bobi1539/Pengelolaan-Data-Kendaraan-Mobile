@@ -119,4 +119,13 @@ public interface ApiRequest {
             @Path("username") String username
     );
 
+    @GET("api/borrow-vehicle/personal")
+    Call<ResponseListData<BorrowVehicle>> listBorrowVehiclePersonal(@Header("X-Api-Key") String apiKey);
+
+    @GET("api/borrow-vehicle/personal/{username}")
+    Call<ResponseListData<BorrowVehicle>> listBorrowVehiclePersonalByUsername(
+            @Header("X-Api-Key") String apiKey,
+            @Path("username") String username
+    );
+
 }

@@ -108,6 +108,9 @@
 
     <string name="borrow_dinas">Perjalanan Dinas</string>
     <string name="borrow_personal">Keperluan Pribadi</string>
+    <string name="date_of_filling">Tanggal Pengajuan</string>
+    <string name="necessity">Keperluan</string>
+    <string name="destination">Tujuan</string>
 
 
 </resources>

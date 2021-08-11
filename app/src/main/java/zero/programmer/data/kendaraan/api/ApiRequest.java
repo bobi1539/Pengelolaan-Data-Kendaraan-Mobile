@@ -11,6 +11,7 @@ import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import zero.programmer.data.kendaraan.entitites.BorrowVehicle;
 import zero.programmer.data.kendaraan.entitites.Driver;
 import zero.programmer.data.kendaraan.entitites.User;
 import zero.programmer.data.kendaraan.entitites.Vehicle;
@@ -107,6 +108,15 @@ public interface ApiRequest {
     Call<ResponseOneData<Driver>> updateDriver(
             @Header("X-Api-Key") String apiKey,
             @Body Driver driverData
+    );
+
+    @GET("api/borrow-vehicle/dinas")
+    Call<ResponseListData<BorrowVehicle>> listBorrowVehicleDinas(@Header("X-Api-Key") String apiKey);
+
+    @GET("api/borrow-vehicle/dinas/{username}")
+    Call<ResponseListData<BorrowVehicle>> listBorrowVehicleDinasByUsername(
+            @Header("X-Api-Key") String apiKey,
+            @Path("username") String username
     );
 
 }

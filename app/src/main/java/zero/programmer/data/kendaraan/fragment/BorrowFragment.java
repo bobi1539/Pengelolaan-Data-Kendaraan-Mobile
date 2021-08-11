@@ -1,7 +1,9 @@
 package zero.programmer.data.kendaraan.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import zero.programmer.data.kendaraan.R;
+import zero.programmer.data.kendaraan.activity.BorrowDinasActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +28,8 @@ public class BorrowFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private CardView cardViewBorrowDinas, cardViewBorrowPersonal;
 
     public BorrowFragment() {
         // Required empty public constructor
@@ -61,6 +66,15 @@ public class BorrowFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_borrow, container, false);
+        View view = inflater.inflate(R.layout.fragment_borrow, container, false);
+
+        // get view layout
+        cardViewBorrowDinas = view.findViewById(R.id.card_borrow_dinas);
+        cardViewBorrowPersonal = view.findViewById(R.id.card_borrow_personal);
+
+        // on click card
+        cardViewBorrowDinas.setOnClickListener(v -> startActivity(new Intent(getContext(), BorrowDinasActivity.class)));
+
+        return  view;
     }
 }

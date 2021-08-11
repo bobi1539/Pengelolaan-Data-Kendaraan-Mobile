@@ -25,6 +25,7 @@ import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
 import zero.programmer.data.kendaraan.activity.EditDriverActivity;
 import zero.programmer.data.kendaraan.api.ApiRequest;
+import zero.programmer.data.kendaraan.api.GetConnection;
 import zero.programmer.data.kendaraan.api.RetroServer;
 import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.Driver;
@@ -36,8 +37,6 @@ public class DriverAdapter extends RecyclerView.Adapter<DriverAdapter.HolderData
     private List<Driver> listDriver;
 
     private String idDriver;
-
-    private final ApiRequest apiRequest = RetroServer.getRetrofit().create(ApiRequest.class);
 
     public DriverAdapter(Context context, List<Driver> listDriver) {
         this.context = context;
@@ -54,7 +53,7 @@ public class DriverAdapter extends RecyclerView.Adapter<DriverAdapter.HolderData
 
     @Override
     public void onBindViewHolder(@NonNull HolderData holder, int position) {
-        // set data dari class user ke card driver
+        // set data dari class driver ke card driver
         Driver driver = listDriver.get(position);
         holder.textViewIdDriver.setText(driver.getIdDriver());
         holder.textViewFullName.setText(driver.getFullName());
@@ -102,7 +101,7 @@ public class DriverAdapter extends RecyclerView.Adapter<DriverAdapter.HolderData
         private void detailDriver(){
             idDriver = textViewIdDriver.getText().toString();
 
-            Call<ResponseOneData<Driver>> getDetailDriver = apiRequest.getDriver(ApiKeyData.getApiKey(), idDriver);
+            Call<ResponseOneData<Driver>> getDetailDriver = GetConnection.apiRequest.getDriver(ApiKeyData.getApiKey(), idDriver);
 
             getDetailDriver.enqueue(new Callback<ResponseOneData<Driver>>() {
                 @Override
@@ -181,7 +180,7 @@ public class DriverAdapter extends RecyclerView.Adapter<DriverAdapter.HolderData
 
             alertDialog.setNegativeButton("Ya", (dialog, which) -> {
 
-                Call<ResponseOneData<Driver>> deleteDataDriver = apiRequest.deleteDriver(ApiKeyData.getApiKey(), idDriver);
+                Call<ResponseOneData<Driver>> deleteDataDriver = GetConnection.apiRequest.deleteDriver(ApiKeyData.getApiKey(), idDriver);
                 deleteDataDriver.enqueue(new Callback<ResponseOneData<Driver>>() {
                     @Override
                     public void onResponse(Call<ResponseOneData<Driver>> call, Response<ResponseOneData<Driver>> response) {

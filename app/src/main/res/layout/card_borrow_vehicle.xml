@@ -10,7 +10,7 @@
     app:cardCornerRadius="10dp"
     android:elevation="10dp"
     android:layout_margin="5dp"
-    android:id="@+id/card_driver">
+    android:id="@+id/card_borrow_vehicle_data">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/ic_driver"
+            android:src="@drawable/ic_dinas"
             android:layout_gravity="center"
             app:tint="@color/purple_500"
             android:contentDescription="@string/content_description" />
@@ -32,31 +32,31 @@
             android:padding="10dp">
 
             <TextView
-                android:id="@+id/card_driver_full_name"
+                android:id="@+id/card_borrow_vehicle_full_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/driver_full_name"
+                android:text="@string/full_name"
                 android:textColor="@color/purple_500"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/card_driver_id"
+                android:id="@+id/card_borrow_vehicle_merk"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/driver_id_driver"/>
+                android:text="@string/vehicle_merk"/>
 
             <TextView
-                android:id="@+id/card_driver_phone_number"
+                android:id="@+id/card_borrow_vehicle_date_of_filling"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/driver_phone_number"/>
+                android:text="@string/date_of_filling"/>
 
             <TextView
-                android:id="@+id/card_driver_is_on_duty"
+                android:id="@+id/card_borrow_vehicle_destination"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/driver_address"
+                android:text="@string/destination"
                 android:textColor="@color/purple_500"/>
 
         </LinearLayout>

@@ -129,20 +129,26 @@ public class DriverFragment extends Fragment {
         getListDriver.enqueue(new Callback<ResponseListData<Driver>>() {
             @Override
             public void onResponse(Call<ResponseListData<Driver>> call, Response<ResponseListData<Driver>> response) {
-                try {
-                    listDriver = response.body().getData();
-                } catch (NullPointerException e){
+                if (response.code() == 404){
                     progressBarDriver.setVisibility(View.GONE);
-                    Toast.makeText(getContext(), "Error : " + e, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Tidak ada data", Toast.LENGTH_SHORT).show();
+                } else {
+                    try {
+                        listDriver = response.body().getData();
+                        recyclerViewAdapterDriver = new DriverAdapter(getContext(), listDriver);
+                        recyclerViewDriver.setAdapter(recyclerViewAdapterDriver);
+                        recyclerViewAdapterDriver.notifyDataSetChanged();
+                        progressBarDriver.setVisibility(View.GONE);
+                    } catch (NullPointerException e){
+                        progressBarDriver.setVisibility(View.GONE);
+                        Toast.makeText(getContext(), "Error : " + e, Toast.LENGTH_SHORT).show();
+                    }
                 }
-                recyclerViewAdapterDriver = new DriverAdapter(getContext(), listDriver);
-                recyclerViewDriver.setAdapter(recyclerViewAdapterDriver);
-                recyclerViewAdapterDriver.notifyDataSetChanged();
-                progressBarDriver.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(Call<ResponseListData<Driver>> call, Throwable t) {
+                progressBarDriver.setVisibility(View.GONE);
                 Toast.makeText(getContext(), "Error : " + t, Toast.LENGTH_SHORT).show();
             }
         });

@@ -113,6 +113,7 @@
     <string name="destination">Tujuan</string>
 
     <string name="title_select_vehicle">Silahkan Pilih Kendaraan</string>
+    <string name="title_select_driver">Silahkan Pilih Sopir</string>
 
 
 </resources>

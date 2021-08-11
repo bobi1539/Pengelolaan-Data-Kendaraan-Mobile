@@ -1,6 +1,7 @@
 package zero.programmer.data.kendaraan.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,16 +16,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import zero.programmer.data.kendaraan.R;
+import zero.programmer.data.kendaraan.activity.SelectDriverActivity;
 import zero.programmer.data.kendaraan.entitites.Vehicle;
-import zero.programmer.data.kendaraan.utils.RoleId;
 
 public class SelectVehicleDinasAdapter extends RecyclerView.Adapter<SelectVehicleDinasAdapter.HolderData>{
 
     private final Context context;
     private List<Vehicle> listVehicle;
 
-    private String registrationNumber;
-    private String isBorrow;
+    private String registrationNumber, name, merk, policeNumber, isBorrow;
 
     public SelectVehicleDinasAdapter(Context context, List<Vehicle> listVehicle) {
         this.context = context;
@@ -89,14 +89,32 @@ public class SelectVehicleDinasAdapter extends RecyclerView.Adapter<SelectVehicl
         }
 
         private void selectThisVehicle(){
-            // set Role id from text view
+            // set data from text view
+            registrationNumber = textViewRegistrationNumber.getText().toString();
+            name = textViewName.getText().toString();
+            merk = textViewMerk.getText().toString();
+            policeNumber = textViewPoliceNumber.getText().toString();
             isBorrow = textViewIsBorrow.getText().toString();
 
             if (isBorrow.equals("DIPINJAM")){
                 vibrator.vibrate(80);
                 Toast.makeText(context, "Kendaraan sedang dipinjam", Toast.LENGTH_SHORT).show();
+            } else if (policeNumber.equals("")){
+                vibrator.vibrate(80);
+                Toast.makeText(
+                        context,
+                        "Kendaraan tidak bisa dipinjam karena belum memiliki nomor polisi",
+                        Toast.LENGTH_SHORT
+                ).show();
             } else {
-                Toast.makeText(context, "Ok", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(context, SelectDriverActivity.class);
+                intent.putExtra("registrationNumber", registrationNumber);
+                intent.putExtra("name", name);
+                intent.putExtra("merk", merk);
+                intent.putExtra("policeNumber", policeNumber);
+                intent.putExtra("isBorrow", isBorrow);
+                context.startActivity(intent);
             }
         }
     }

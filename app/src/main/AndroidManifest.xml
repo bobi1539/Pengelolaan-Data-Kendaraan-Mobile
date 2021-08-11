@@ -15,7 +15,8 @@
         android:theme="@style/Theme.PengelolaanDataKendaraanMobile"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".activity.BorrowPersonalActivity"></activity>
+        <activity android:name=".activity.SelectVehicleDinasActivity"></activity>
+        <activity android:name=".activity.BorrowPersonalActivity" />
         <activity android:name=".activity.BorrowDinasActivity" />
         <activity android:name=".activity.ChangePasswordActivity" />
         <activity android:name=".activity.EditProfileActivity" />

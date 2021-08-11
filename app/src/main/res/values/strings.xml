@@ -112,5 +112,7 @@
     <string name="necessity">Keperluan</string>
     <string name="destination">Tujuan</string>
 
+    <string name="title_select_vehicle">Silahkan Pilih Kendaraan</string>
+
 
 </resources>

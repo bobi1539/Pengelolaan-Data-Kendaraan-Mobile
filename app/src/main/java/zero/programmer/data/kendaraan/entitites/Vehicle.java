@@ -19,6 +19,10 @@ public class Vehicle {
     public Vehicle() {
     }
 
+    public Vehicle(String registrationNumber) {
+        this.registrationNumber = registrationNumber;
+    }
+
     public Vehicle(
             String registrationNumber,
             String name, String merk,

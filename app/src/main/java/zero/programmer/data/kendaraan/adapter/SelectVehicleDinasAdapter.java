@@ -18,6 +18,7 @@ import java.util.List;
 import zero.programmer.data.kendaraan.R;
 import zero.programmer.data.kendaraan.activity.SelectDriverActivity;
 import zero.programmer.data.kendaraan.entitites.Vehicle;
+import zero.programmer.data.kendaraan.model.SendCustomData;
 
 public class SelectVehicleDinasAdapter extends RecyclerView.Adapter<SelectVehicleDinasAdapter.HolderData>{
 
@@ -108,13 +109,13 @@ public class SelectVehicleDinasAdapter extends RecyclerView.Adapter<SelectVehicl
                 ).show();
             } else {
 
-                Intent intent = new Intent(context, SelectDriverActivity.class);
-                intent.putExtra("registrationNumber", registrationNumber);
-                intent.putExtra("name", name);
-                intent.putExtra("merk", merk);
-                intent.putExtra("policeNumber", policeNumber);
-                intent.putExtra("isBorrow", isBorrow);
-                context.startActivity(intent);
+                // set data untuk dikirim ke input pinjam kendaraan
+                SendCustomData.registrationNumber = registrationNumber;
+                SendCustomData.vehicleName = name;
+                SendCustomData.merk = merk;
+                SendCustomData.policeNumber = policeNumber;
+
+                context.startActivity(new Intent(context, SelectDriverActivity.class));
             }
         }
     }

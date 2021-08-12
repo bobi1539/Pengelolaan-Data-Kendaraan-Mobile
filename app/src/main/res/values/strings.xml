@@ -111,9 +111,16 @@
     <string name="date_of_filling">Tanggal Pengajuan</string>
     <string name="necessity">Keperluan</string>
     <string name="destination">Tujuan</string>
+    <string name="borrow_date">Tanggal Pinjam / Perjalanan</string>
+    <string name="return_date">Tanggal Kembali</string>
 
     <string name="title_select_vehicle">Silahkan Pilih Kendaraan</string>
     <string name="title_select_driver">Silahkan Pilih Sopir</string>
+    <string name="title_input_borrow">Input Data Peminjaman Kendaraan</string>
+    <string name="sub_title_select_vehicle">Kendaraan Yang Dipilih</string>
+    <string name="sub_title_select_driver">Driver Yang Dipilih</string>
+    <string name="sub_title_input_borrow">Input Data Lainnya</string>
+    <string name="save">Simpan</string>
 
 
 </resources>

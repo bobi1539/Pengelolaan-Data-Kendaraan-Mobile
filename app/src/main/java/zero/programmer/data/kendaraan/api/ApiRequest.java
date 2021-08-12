@@ -15,6 +15,7 @@ import zero.programmer.data.kendaraan.entitites.BorrowVehicle;
 import zero.programmer.data.kendaraan.entitites.Driver;
 import zero.programmer.data.kendaraan.entitites.User;
 import zero.programmer.data.kendaraan.entitites.Vehicle;
+import zero.programmer.data.kendaraan.model.BorrowVehicleData;
 import zero.programmer.data.kendaraan.model.LoginData;
 import zero.programmer.data.kendaraan.response.ResponseListData;
 import zero.programmer.data.kendaraan.model.VehicleData;
@@ -126,6 +127,12 @@ public interface ApiRequest {
     Call<ResponseListData<BorrowVehicle>> listBorrowVehiclePersonalByUsername(
             @Header("X-Api-Key") String apiKey,
             @Path("username") String username
+    );
+
+    @POST("api/borrow-vehicle")
+    Call<ResponseOneData<BorrowVehicle>> createBorrowVehicle(
+            @Header("X-Api-Key") String apiKey,
+            @Body BorrowVehicleData borrowVehicleData
     );
 
 }

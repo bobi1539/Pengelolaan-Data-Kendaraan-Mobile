@@ -11,6 +11,10 @@ public class Driver {
     public Driver() {
     }
 
+    public Driver(String idDriver) {
+        this.idDriver = idDriver;
+    }
+
     public Driver(String idDriver, String fullName, String phoneNumber, String address, Boolean isOnDuty) {
         this.idDriver = idDriver;
         this.fullName = fullName;

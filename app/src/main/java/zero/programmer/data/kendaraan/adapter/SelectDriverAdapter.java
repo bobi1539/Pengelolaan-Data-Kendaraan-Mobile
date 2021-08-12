@@ -1,6 +1,7 @@
 package zero.programmer.data.kendaraan.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import zero.programmer.data.kendaraan.R;
+import zero.programmer.data.kendaraan.activity.AddBorrowVehicleDinasActivity;
 import zero.programmer.data.kendaraan.entitites.Driver;
+import zero.programmer.data.kendaraan.model.SendCustomData;
 
 public class SelectDriverAdapter extends RecyclerView.Adapter<SelectDriverAdapter.HolderData>{
 
@@ -91,7 +94,13 @@ public class SelectDriverAdapter extends RecyclerView.Adapter<SelectDriverAdapte
                 vibrator.vibrate(80);
                 Toast.makeText(context, "Driver sedang bertugas", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(context, "Driver dipilih : " + idDriver, Toast.LENGTH_SHORT).show();
+
+                // set data to tambah pinjam kendaraan
+                SendCustomData.idDriver = idDriver;
+                SendCustomData.driverName = fullName;
+                SendCustomData.phoneNumber = phoneNumber;
+
+                context.startActivity(new Intent(context, AddBorrowVehicleDinasActivity.class));
             }
 
         }

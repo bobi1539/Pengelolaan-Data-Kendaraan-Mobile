@@ -38,6 +38,7 @@
     <string name="button_delete">Hapus</string>
     <string name="button_add">Tambah Data</string>
     <string name="button_update_action">Update Data</string>
+    <string name="button_print">Cetak</string>
 
     <string name="content_description">TODO</string>
 

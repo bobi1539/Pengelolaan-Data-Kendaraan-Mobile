@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -85,6 +86,7 @@ public class BorrowVehicleAdapter extends RecyclerView.Adapter<BorrowVehicleAdap
                 textViewDetailDateOfFilling, textViewDetailPhoneNumber2,
                 textViewDetailNecessity, textViewDetailBorrowDate, textViewDetailReturnDate,
                 textViewDetailDestination, textViewDetailBorrowStatus;
+        Button buttonEditBorrow, buttonDeleteBorrow, buttonPrintBorrow;
 
         public HolderData(@NonNull View itemView) {
             super(itemView);
@@ -140,6 +142,9 @@ public class BorrowVehicleAdapter extends RecyclerView.Adapter<BorrowVehicleAdap
                             textViewDetailReturnDate = bottomSheetView.findViewById(R.id.tv_borrow_return_date);
                             textViewDetailDestination = bottomSheetView.findViewById(R.id.tv_borrow_destination);
                             textViewDetailBorrowStatus = bottomSheetView.findViewById(R.id.tv_borrow_status);
+                            buttonEditBorrow = bottomSheetView.findViewById(R.id.button_edit_borrow_vehicle);
+                            buttonDeleteBorrow = bottomSheetView.findViewById(R.id.button_delete_borrow_vehicle);
+                            buttonPrintBorrow = bottomSheetView.findViewById(R.id.button_print_borrow_vehicle);
 
                             // set detail from response
                             textViewDetailFullName.setText(borrowVehicle.getUser().getFullName());
@@ -174,6 +179,11 @@ public class BorrowVehicleAdapter extends RecyclerView.Adapter<BorrowVehicleAdap
                             }
                             textViewDetailBorrowStatus.setText(stringBorrowStatus);
 
+                            //click button
+                            buttonEditBorrow.setOnClickListener(v -> editBorrowVehicle());
+                            buttonDeleteBorrow.setOnClickListener(v -> deleteBorrowVehicle());
+                            buttonPrintBorrow.setOnClickListener(v -> printBorrowVehicle());
+
                             bottomSheetDialog.setContentView(bottomSheetView);
                             bottomSheetDialog.show();
 
@@ -189,6 +199,18 @@ public class BorrowVehicleAdapter extends RecyclerView.Adapter<BorrowVehicleAdap
                     Toast.makeText(context, "Error + t", Toast.LENGTH_SHORT).show();
                 }
             });
+        }
+
+        private void editBorrowVehicle(){
+            Toast.makeText(context, "edit " + idBorrow, Toast.LENGTH_SHORT).show();
+        }
+
+        private void deleteBorrowVehicle(){
+            Toast.makeText(context, "delete " + idBorrow, Toast.LENGTH_SHORT).show();
+        }
+
+        private void printBorrowVehicle(){
+            Toast.makeText(context, "print " + idBorrow, Toast.LENGTH_SHORT).show();
         }
     }
 }

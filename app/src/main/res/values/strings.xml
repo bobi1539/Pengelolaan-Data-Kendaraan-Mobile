@@ -129,6 +129,7 @@
     <string name="title_select_driver">Silahkan Pilih Sopir</string>
     <string name="title_input_borrow">Input Data Peminjaman Kendaraan</string>
     <string name="title_edit_borrow">Edit Data Peminjaman Kendaraan</string>
+    <string name="sub_title_select_borrow_user">Detail Peminjam</string>
     <string name="sub_title_select_vehicle">Kendaraan Yang Dipilih</string>
     <string name="sub_title_select_driver">Driver Yang Dipilih</string>
     <string name="sub_title_input_borrow">Input Data Lainnya</string>

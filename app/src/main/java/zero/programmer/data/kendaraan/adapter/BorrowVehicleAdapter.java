@@ -37,6 +37,8 @@ public class BorrowVehicleAdapter extends RecyclerView.Adapter<BorrowVehicleAdap
     private List<BorrowVehicle> listBorrowVehicle;
 
     private Integer idBorrow;
+    private String fullName, employeeNumber, position, vehicleName, merk, policeNumber, driverName,
+            phoneNumber, necessity, borrowDate, returnDate, destination, borrowStatusVariable, borrowType;
 
     @SuppressLint("SimpleDateFormat")
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -183,6 +185,26 @@ public class BorrowVehicleAdapter extends RecyclerView.Adapter<BorrowVehicleAdap
                             }
                             textViewDetailBorrowStatus.setText(stringBorrowStatus);
 
+                            // set to variable
+                            fullName = textViewDetailFullName.getText().toString();
+                            employeeNumber = textViewDetailEmployeeNumber.getText().toString();
+                            position = textViewDetailPosition.getText().toString();
+                            vehicleName = textViewDetailVehicleName.getText().toString();
+                            merk = textViewDetailMerk.getText().toString();
+                            policeNumber = textViewDetailPoliceNumber.getText().toString();
+
+                            if (borrowVehicle.getBorrowType().equals("DINAS")){
+                                driverName = textViewDetailDriverName2.getText().toString();
+                                phoneNumber = textViewDetailPhoneNumber2.getText().toString();
+                            }
+                            necessity = textViewDetailNecessity.getText().toString();
+                            borrowDate = textViewDetailBorrowDate.getText().toString();
+                            returnDate = textViewDetailReturnDate.getText().toString();
+                            destination = textViewDetailDestination.getText().toString();
+                            borrowStatusVariable = textViewDetailBorrowStatus.getText().toString();
+                            borrowType = borrowVehicle.getBorrowType();
+
+
                             //click button
                             buttonEditBorrow.setOnClickListener(v -> editBorrowVehicle());
                             buttonDeleteBorrow.setOnClickListener(v -> deleteBorrowVehicle());
@@ -207,6 +229,21 @@ public class BorrowVehicleAdapter extends RecyclerView.Adapter<BorrowVehicleAdap
 
         private void editBorrowVehicle(){
             Intent intent = new Intent(context, EditBorrowVehicleActivity.class);
+            intent.putExtra("idBorrow", idBorrow);
+            intent.putExtra("fullName", fullName);
+            intent.putExtra("employeeNumber", employeeNumber);
+            intent.putExtra("position", position);
+            intent.putExtra("vehicleName", vehicleName);
+            intent.putExtra("merk", merk);
+            intent.putExtra("policeNumber", policeNumber);
+            intent.putExtra("driverName", driverName);
+            intent.putExtra("phoneNumber", phoneNumber);
+            intent.putExtra("necessity", necessity);
+            intent.putExtra("borrowDate", borrowDate);
+            intent.putExtra("returnDate", returnDate);
+            intent.putExtra("destination", destination);
+            intent.putExtra("borrowStatusVariable", borrowStatusVariable);
+            intent.putExtra("borrowType", borrowType);
             context.startActivity(intent);
             bottomSheetDialog.dismiss();
         }

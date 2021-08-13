@@ -14,6 +14,7 @@ public class BorrowVehicle {
     private Date borrowDate;
     private Date returnDate;
     private String destination;
+    private Boolean borrowStatus;
 
     public BorrowVehicle() {
     }
@@ -28,7 +29,8 @@ public class BorrowVehicle {
             String necessity,
             Date borrowDate,
             Date returnDate,
-            String destination
+            String destination,
+            Boolean borrowStatus
     ) {
         this.idBorrow = idBorrow;
         this.user = user;
@@ -40,6 +42,7 @@ public class BorrowVehicle {
         this.borrowDate = borrowDate;
         this.returnDate = returnDate;
         this.destination = destination;
+        this.borrowStatus = borrowStatus;
     }
 
     public Integer getIdBorrow() {
@@ -120,5 +123,13 @@ public class BorrowVehicle {
 
     public void setDestination(String destination) {
         this.destination = destination;
+    }
+
+    public Boolean getBorrowStatus() {
+        return borrowStatus;
+    }
+
+    public void setBorrowStatus(Boolean borrowStatus) {
+        this.borrowStatus = borrowStatus;
     }
 }

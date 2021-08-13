@@ -165,14 +165,14 @@ public class BorrowVehicleAdapter extends RecyclerView.Adapter<BorrowVehicleAdap
                             textViewDetailReturnDate.setText(dateFormat.format(borrowVehicle.getReturnDate()));
                             textViewDetailDestination.setText(borrowVehicle.getDestination());
 
-                            Boolean isBorrow = borrowVehicle.getVehicle().getBorrow();
-                            String statusBorrow;
-                            if (isBorrow){
-                                statusBorrow = "DIPINJAM";
+                            Boolean borrowStatus = borrowVehicle.getBorrowStatus();
+                            String stringBorrowStatus;
+                            if (borrowStatus){
+                                stringBorrowStatus = "DIPINJAM";
                             } else {
-                                statusBorrow = "DIKEMBALIKAN";
+                                stringBorrowStatus = "DIKEMBALIKAN";
                             }
-                            textViewDetailBorrowStatus.setText(statusBorrow);
+                            textViewDetailBorrowStatus.setText(stringBorrowStatus);
 
                             bottomSheetDialog.setContentView(bottomSheetView);
                             bottomSheetDialog.show();

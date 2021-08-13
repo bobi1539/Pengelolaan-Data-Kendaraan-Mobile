@@ -61,6 +61,12 @@
         <item>Hilang</item>
     </string-array>
 
+    <string-array name="array_borrow_status">
+        <item>Status Peminjaman</item>
+        <item>DIPINJAM</item>
+        <item>DIKEMBALIKAN</item>
+    </string-array>
+
     <!--  Bagian User  -->
     <string name="title_data_user">Data User</string>
     <string name="username">Username</string>
@@ -122,6 +128,7 @@
     <string name="title_select_vehicle">Silahkan Pilih Kendaraan</string>
     <string name="title_select_driver">Silahkan Pilih Sopir</string>
     <string name="title_input_borrow">Input Data Peminjaman Kendaraan</string>
+    <string name="title_edit_borrow">Edit Data Peminjaman Kendaraan</string>
     <string name="sub_title_select_vehicle">Kendaraan Yang Dipilih</string>
     <string name="sub_title_select_driver">Driver Yang Dipilih</string>
     <string name="sub_title_input_borrow">Input Data Lainnya</string>

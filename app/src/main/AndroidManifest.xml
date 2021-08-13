@@ -15,7 +15,8 @@
         android:theme="@style/Theme.PengelolaanDataKendaraanMobile"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".activity.AddBorrowVehiclePersonalActivity"></activity>
+        <activity android:name=".activity.EditBorrowVehicleActivity"></activity>
+        <activity android:name=".activity.AddBorrowVehiclePersonalActivity" />
         <activity android:name=".activity.SelectVehiclePersonalActivity" />
         <activity android:name=".activity.AddBorrowVehicleDinasActivity" />
         <activity android:name=".activity.SelectDriverActivity" />

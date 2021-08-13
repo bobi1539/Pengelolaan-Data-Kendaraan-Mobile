@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
+import zero.programmer.data.kendaraan.activity.EditBorrowVehicleActivity;
 import zero.programmer.data.kendaraan.api.GetConnection;
 import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.BorrowVehicle;
@@ -204,7 +206,9 @@ public class BorrowVehicleAdapter extends RecyclerView.Adapter<BorrowVehicleAdap
         }
 
         private void editBorrowVehicle(){
-            Toast.makeText(context, "edit " + idBorrow, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(context, EditBorrowVehicleActivity.class);
+            context.startActivity(intent);
+            bottomSheetDialog.dismiss();
         }
 
         private void deleteBorrowVehicle(){

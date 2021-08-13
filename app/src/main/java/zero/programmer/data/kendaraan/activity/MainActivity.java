@@ -2,10 +2,12 @@ package zero.programmer.data.kendaraan.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -21,13 +23,17 @@ import zero.programmer.data.kendaraan.session.SessionManager;
 
 public class MainActivity extends AppCompatActivity {
 
+    private SessionManager sessionManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        sessionManager = new SessionManager(this);
+
         // cek jika sudah login
-        if (!new SessionManager(MainActivity.this).isLogin()){
+        if (!sessionManager.isLogin()){
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }

@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -67,6 +68,9 @@ public class BorrowPersonalActivity extends AppCompatActivity {
             retrieveData();
             swipeRefreshLayoutBorrowPersonal.setRefreshing(false);
         });
+
+        // click add borrow
+        floatingActionButtonAddBorrowPersonal.setOnClickListener(v -> startActivity(new Intent(this, SelectVehiclePersonalActivity.class)));
 
     }
 

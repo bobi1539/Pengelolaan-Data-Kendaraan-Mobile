@@ -1,18 +1,10 @@
 package zero.programmer.data.kendaraan.activity;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.InputType;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -35,65 +27,58 @@ import zero.programmer.data.kendaraan.model.SendCustomData;
 import zero.programmer.data.kendaraan.response.ResponseOneData;
 import zero.programmer.data.kendaraan.session.SessionManager;
 
-public class AddBorrowVehicleDinasActivity extends AppCompatActivity {
+public class AddBorrowVehiclePersonalActivity extends AppCompatActivity {
 
-    private EditText editTextVehicleName, editTextMerk, editTextPoliceNumber,
-                    editTextDriverName, editTextPhoneNumber, editTextNecessity,
-                    editTextBorrowDate, editTextReturnBorrow, editTextDestination;
-    private Button buttonInserBorrowDinas;
+    private EditText editTextVehicleName, editTextMerk, editTextPoliceNumber, editTextNecessity,
+            editTextBorrowDate, editTextReturnBorrow, editTextDestination;
+    private Button buttonInserBorrowPersonal;
 
     private Calendar calendar = Calendar.getInstance();
     private String necessity, borrowDate, returnDate, destination;
-    private final String borrowType = "DINAS";
+    private final String borrowType = "PRIBADI";
 
     private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_borrow_vehicle_dinas);
+        setContentView(R.layout.activity_add_borrow_vehicle_personal);
 
-
-        // inject session
+        // inject session manager
         sessionManager = new SessionManager(this);
 
         // get view layout
-        editTextVehicleName = findViewById(R.id.et_vehicle_name_dinas);
-        editTextMerk = findViewById(R.id.et_vehicle_merk_dinas);
-        editTextPoliceNumber = findViewById(R.id.et_vehicle_police_number_dinas);
-        editTextDriverName = findViewById(R.id.et_driver_full_name_dinas);
-        editTextPhoneNumber = findViewById(R.id.et_driver_phone_number_dinas);
-        editTextNecessity = findViewById(R.id.et_borrow_necessity_dinas);
-        editTextBorrowDate = findViewById(R.id.et_borrow_borrow_date_dinas);
-        editTextReturnBorrow = findViewById(R.id.et_borrow_return_date_dinas);
-        editTextDestination = findViewById(R.id.et_borrow_destination_dinas);
-        buttonInserBorrowDinas = findViewById(R.id.button_insert_borrow_dinas);
+        editTextVehicleName = findViewById(R.id.et_vehicle_name_personal);
+        editTextMerk = findViewById(R.id.et_vehicle_merk_personal);
+        editTextPoliceNumber = findViewById(R.id.et_vehicle_police_number_personal);
+        editTextNecessity = findViewById(R.id.et_borrow_necessity_personal);
+        editTextBorrowDate = findViewById(R.id.et_borrow_borrow_date_personal);
+        editTextReturnBorrow = findViewById(R.id.et_borrow_return_date_personal);
+        editTextDestination = findViewById(R.id.et_borrow_destination_personal);
+        buttonInserBorrowPersonal = findViewById(R.id.button_insert_borrow_personal);
 
-        // set data from send custom data
+        // set Data from custom data
         editTextVehicleName.setText(SendCustomData.vehicleName);
         editTextMerk.setText(SendCustomData.merk);
         editTextPoliceNumber.setText(SendCustomData.policeNumber);
-        editTextDriverName.setText(SendCustomData.driverName);
-        editTextPhoneNumber.setText(SendCustomData.phoneNumber);
 
         // jika edit borrow date click
         editTextBorrowDate.setOnClickListener(v -> getBorrowDate());
         // jika edit return date click
         editTextReturnBorrow.setOnClickListener(v -> getReturnDate());
 
-        // click button
-        buttonInserBorrowDinas.setOnClickListener(v -> addBorrowVehicle());
+        // click save
+        buttonInserBorrowPersonal.setOnClickListener(v -> addBorrowVehicle());
+
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private void getBorrowDate(){
-
         final int year = calendar.get(Calendar.YEAR);
         final int month = calendar.get(Calendar.MONTH);
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(
-                AddBorrowVehicleDinasActivity.this, new DatePickerDialog.OnDateSetListener() {
+                AddBorrowVehiclePersonalActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
@@ -126,7 +111,7 @@ public class AddBorrowVehicleDinasActivity extends AppCompatActivity {
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(
-                AddBorrowVehicleDinasActivity.this, new DatePickerDialog.OnDateSetListener() {
+                AddBorrowVehiclePersonalActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
@@ -154,15 +139,13 @@ public class AddBorrowVehicleDinasActivity extends AppCompatActivity {
     }
 
     private void addBorrowVehicle(){
-
         if (validateInput()){
 
             Vehicle vehicle = new Vehicle(SendCustomData.registrationNumber);
             User user = new User(sessionManager.getUserSessionDetail().get(SessionManager.KEY_USERNAME));
-            Driver driver = new Driver(SendCustomData.idDriver);
 
             BorrowVehicleData borrowVehicleData = new BorrowVehicleData(
-                    user, vehicle, driver, borrowType, necessity, borrowDate, returnDate, destination
+                    user, vehicle, null, borrowType, necessity, borrowDate, returnDate, destination
             );
 
             Call<ResponseOneData<BorrowVehicle>> createBorrowVehicle = GetConnection.apiRequest.createBorrowVehicle(
@@ -173,29 +156,28 @@ public class AddBorrowVehicleDinasActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<ResponseOneData<BorrowVehicle>> call, Response<ResponseOneData<BorrowVehicle>> response) {
                     if (response.code() == 404){
-                        Toast.makeText(AddBorrowVehicleDinasActivity.this, "Salah satu data tidak ditemukan", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddBorrowVehiclePersonalActivity.this, "Salah satu data tidak ditemukan", Toast.LENGTH_SHORT).show();
                     } else if (response.code() == 400){
-                        Toast.makeText(AddBorrowVehicleDinasActivity.this, "Something error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddBorrowVehiclePersonalActivity.this, "Something error", Toast.LENGTH_SHORT).show();
                     } else {
                         try {
 
-                            Toast.makeText(AddBorrowVehicleDinasActivity.this, response.body().getMessages().get(0), Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(AddBorrowVehicleDinasActivity.this, BorrowDinasActivity.class));
+                            Toast.makeText(AddBorrowVehiclePersonalActivity.this, response.body().getMessages().get(0), Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(AddBorrowVehiclePersonalActivity.this, BorrowPersonalActivity.class));
                             finish();
 
                         } catch (NullPointerException e){
-                            Toast.makeText(AddBorrowVehicleDinasActivity.this, "Error : " + e, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddBorrowVehiclePersonalActivity.this, "Error : " + e, Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseOneData<BorrowVehicle>> call, Throwable t) {
-                    Toast.makeText(AddBorrowVehicleDinasActivity.this, "Error : " + t, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddBorrowVehiclePersonalActivity.this, "Error : " + t, Toast.LENGTH_SHORT).show();
                 }
             });
         }
-
     }
 
     private boolean validateInput(){

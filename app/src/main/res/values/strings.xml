@@ -20,6 +20,7 @@
     <string name="vehicle_detail">Detail Kendaraan</string>
     <string name="vehicle_registration_number">Nomor Registrasi</string>
     <string name="vehicle_name">Nama</string>
+    <string name="vehicle_name_vehicle">Nama Kendaraan</string>
     <string name="vehicle_merk">Merk</string>
     <string name="vehicle_police_number">Nomor Polisi</string>
     <string name="vehicle_is_borrow">Status Peminjaman</string>
@@ -90,6 +91,7 @@
     <string name="edit_driver">Edit Data Sopir</string>
     <string name="driver_id_driver">Id Sopir</string>
     <string name="driver_full_name">Nama Lengkap</string>
+    <string name="driver_name">Nama Sopir</string>
     <string name="driver_phone_number">Nomor Handphone</string>
     <string name="driver_address">Alamat</string>
     <string name="driver_on_duty">Sedang Bertugas</string>
@@ -106,12 +108,14 @@
     <string name="repeat_new_password">Ulangi Password Baru</string>
     <string name="update_password">Update Password</string>
 
+    <string name="detail_borrow">Detail Peminjaman Kendaraan</string>
     <string name="borrow_dinas">Perjalanan Dinas</string>
     <string name="borrow_personal">Keperluan Pribadi</string>
     <string name="date_of_filling">Tanggal Pengajuan</string>
     <string name="necessity">Keperluan</string>
     <string name="destination">Tujuan</string>
     <string name="borrow_date">Tanggal Pinjam / Perjalanan</string>
+    <string name="borrow_date2">Tanggal Pinjam</string>
     <string name="return_date">Tanggal Kembali</string>
 
     <string name="title_select_vehicle">Silahkan Pilih Kendaraan</string>
@@ -120,6 +124,7 @@
     <string name="sub_title_select_vehicle">Kendaraan Yang Dipilih</string>
     <string name="sub_title_select_driver">Driver Yang Dipilih</string>
     <string name="sub_title_input_borrow">Input Data Lainnya</string>
+    <string name="id_borrow">Id Borrow</string>
     <string name="save">Simpan</string>
 
 

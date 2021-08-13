@@ -129,6 +129,12 @@ public interface ApiRequest {
             @Path("username") String username
     );
 
+    @GET("api/borrow-vehicle/{idBorrow}")
+    Call<ResponseOneData<BorrowVehicle>> getBorrowVehicle(
+            @Header("X-Api-Key") String apiKey,
+            @Path("idBorrow") Integer idBorrow
+    );
+
     @POST("api/borrow-vehicle")
     Call<ResponseOneData<BorrowVehicle>> createBorrowVehicle(
             @Header("X-Api-Key") String apiKey,

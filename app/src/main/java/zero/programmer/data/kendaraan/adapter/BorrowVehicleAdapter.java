@@ -1,7 +1,9 @@
 package zero.programmer.data.kendaraan.adapter;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -206,7 +208,46 @@ public class BorrowVehicleAdapter extends RecyclerView.Adapter<BorrowVehicleAdap
         }
 
         private void deleteBorrowVehicle(){
-            Toast.makeText(context, "delete " + idBorrow, Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+            alertDialog.setMessage("Yakin data dihapus?");
+            alertDialog.setCancelable(true);
+
+            alertDialog.setPositiveButton("Tidak", (dialog, which) -> dialog.dismiss());
+
+            alertDialog.setNegativeButton("Ya", (dialog, which) -> {
+
+                Call<ResponseOneData<BorrowVehicle>> deleteBorrowVehicle = GetConnection.apiRequest
+                        .deleteBorrowVehicle(ApiKeyData.getApiKey(), idBorrow);
+
+                deleteBorrowVehicle.enqueue(new Callback<ResponseOneData<BorrowVehicle>>() {
+                    @Override
+                    public void onResponse(Call<ResponseOneData<BorrowVehicle>> call, Response<ResponseOneData<BorrowVehicle>> response) {
+                        if (response.code() == 400){
+                            Toast.makeText(context, "Data tidak bisa dihapus karena kendaraan masih belum dikembalikan", Toast.LENGTH_SHORT).show();
+                        } else if (response.code() == 404){
+                            Toast.makeText(context, "Data tidak ditemukan", Toast.LENGTH_SHORT).show();
+                        } else if (response.code() == 200){
+                            try{
+
+                                Toast.makeText(context, response.body().getMessages().get(0), Toast.LENGTH_SHORT).show();
+                                bottomSheetDialog.dismiss();
+
+                            }catch (NullPointerException e){
+                                Toast.makeText(context, "Error : " + e, Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(context, "Something wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseOneData<BorrowVehicle>> call, Throwable t) {
+                        Toast.makeText(context, "Error : " + t, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            });
+            alertDialog.show();
         }
 
         private void printBorrowVehicle(){

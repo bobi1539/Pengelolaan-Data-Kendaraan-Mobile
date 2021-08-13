@@ -141,4 +141,9 @@ public interface ApiRequest {
             @Body BorrowVehicleData borrowVehicleData
     );
 
+    @DELETE("api/borrow-vehicle/{idBorrow}")
+    Call<ResponseOneData<BorrowVehicle>> deleteBorrowVehicle(
+            @Header("X-Api-Key") String apiKey,
+            @Path("idBorrow") Integer idBorrow
+    );
 }

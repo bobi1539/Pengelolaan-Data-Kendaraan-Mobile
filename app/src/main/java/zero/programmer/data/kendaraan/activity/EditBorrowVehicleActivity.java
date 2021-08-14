@@ -2,16 +2,21 @@ package zero.programmer.data.kendaraan.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.Calendar;
 
 import zero.programmer.data.kendaraan.R;
 
@@ -28,8 +33,8 @@ public class EditBorrowVehicleActivity extends AppCompatActivity {
     private Intent intent;
 
     private Integer idBorrow;
-    private String fullName, employeeNumber, position, vehicleName, merk, policeNumber,
-            driverName, phoneNumber, necessity, borrowDate, returnDate, destination, borrowStatusVariable;
+    private String necessity, borrowDate, returnDate, destination, borrowStatus;
+    private Calendar calendar = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +59,19 @@ public class EditBorrowVehicleActivity extends AppCompatActivity {
         subTitleEditBorrow = findViewById(R.id.sub_title_edit_borrow);
         textInputLayoutDriverName = findViewById(R.id.til_driver_full_name_edit_borrow);
         textInputLayoutPhoneNumber = findViewById(R.id.til_driver_phone_number_edit_borrow);
+        buttonUpdateData = findViewById(R.id.button_update_borrow);
 
         // intent
         intent = getIntent();
         setTextFromIntentToEditText();
+
+        // when edit borrow date click
+        editTextBorrowDate.setOnClickListener(v -> getBorrowDate());
+        // when edit return date click
+        editTextReturnDate.setOnClickListener(v -> getReturnDate());
+
+        // click button
+        buttonUpdateData.setOnClickListener(v -> updateBorrowVehicle());
     }
 
     private void setTextFromIntentToEditText(){
@@ -86,5 +100,100 @@ public class EditBorrowVehicleActivity extends AppCompatActivity {
         ArrayAdapter adapter = (ArrayAdapter) spinnerBorrowStatus.getAdapter();
         int positionSpinner = adapter.getPosition(intent.getStringExtra("borrowStatusVariable"));
         spinnerBorrowStatus.setSelection(positionSpinner);
+    }
+
+    private void getBorrowDate(){
+        final int year = calendar.get(Calendar.YEAR);
+        final int month = calendar.get(Calendar.MONTH);
+        final int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                EditBorrowVehicleActivity.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                month = month + 1;
+                String dayString;
+                String monthString;
+
+                // cek jika day and month kurang dari 10
+                if (dayOfMonth > 0 && dayOfMonth < 10){
+                    dayString = "0" + dayOfMonth;
+                } else {
+                    dayString = String.valueOf(dayOfMonth);
+                }
+                if (month > 0 && month < 10){
+                    monthString = "0" + month;
+                } else {
+                    monthString = String.valueOf(month);
+                }
+                borrowDate = year + "-" + monthString + "-" +dayString;
+                String borrowDateForEditText = dayString + "-" + monthString + "-" + year;
+                editTextBorrowDate.setText(borrowDateForEditText);
+            }
+        }, year, month, day);
+
+        datePickerDialog.show();
+    }
+
+    private void getReturnDate(){
+        final int year = calendar.get(Calendar.YEAR);
+        final int month = calendar.get(Calendar.MONTH);
+        final int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                EditBorrowVehicleActivity.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                month = month + 1;
+                String dayString;
+                String monthString;
+
+                // cek jika day and month kurang dari 10
+                if (dayOfMonth > 0 && dayOfMonth < 10){
+                    dayString = "0" + dayOfMonth;
+                } else {
+                    dayString = String.valueOf(dayOfMonth);
+                }
+                if (month > 0 && month < 10){
+                    monthString = "0" + month;
+                } else {
+                    monthString = String.valueOf(month);
+                }
+                returnDate = year + "-" + monthString + "-" +dayString;
+                String borrowDateForEditText = dayString + "-" + monthString + "-" + year;
+                editTextReturnDate.setText(borrowDateForEditText);
+            }
+        }, year, month, day);
+
+        datePickerDialog.show();
+    }
+
+    private void updateBorrowVehicle(){
+        if (validateInput()){
+            Toast.makeText(this, "valid", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean validateInput(){
+        if (editTextNecessity.getText().toString().trim().equals("")){
+            editTextNecessity.setError("Keperluan tidak boleh kosong");
+            return false;
+        } else if (editTextBorrowDate.getText().toString().trim().equals("")){
+            editTextBorrowDate.setError("Tanggal pinjam tidak boleh kosong");
+            return false;
+        } else if (editTextReturnDate.getText().toString().trim().equals("")){
+            editTextReturnDate.setError("Tanggal kembali tidak boleh kosong");
+            return false;
+        } else if (editTextDestination.getText().toString().trim().equals("")){
+            editTextDestination.setError("Tempat tujuan tidak boleh kosong");
+            return false;
+        } else if (spinnerBorrowStatus.getSelectedItem().toString().trim().equals("Status Peminjaman")){
+            Toast.makeText(this, "Silahkan pilih status peminjaman", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            necessity = editTextNecessity.getText().toString();
+            destination = editTextDestination.getText().toString();
+            return true;
+        }
     }
 }

@@ -29,6 +29,8 @@ import zero.programmer.data.kendaraan.api.GetConnection;
 import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.Vehicle;
 import zero.programmer.data.kendaraan.response.ResponseListData;
+import zero.programmer.data.kendaraan.session.SessionManager;
+import zero.programmer.data.kendaraan.utils.RoleId;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,6 +55,7 @@ public class VehicleFragment extends Fragment {
     private ProgressBar progressBar;
     private FloatingActionButton floatingActionButton;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private SessionManager sessionManager;
 
     public VehicleFragment() {
         // Required empty public constructor
@@ -93,11 +96,19 @@ public class VehicleFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recycler_view_vehicle);
         progressBar = view.findViewById(R.id.vehicle_progress_bar);
+        floatingActionButton = view.findViewById(R.id.button_add_vehicle);
         recyclerViewLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
 
+        // inject session manager
+        sessionManager = new SessionManager(getContext());
+
+        // cek apakah role id admin
+        if (!sessionManager.getRoleId().equals(RoleId.ADMIN.toString())){
+            floatingActionButton.setVisibility(View.GONE);
+        }
+
         // button untuk pergi ke activity tambah vehicle
-        floatingActionButton = view.findViewById(R.id.button_add_vehicle);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

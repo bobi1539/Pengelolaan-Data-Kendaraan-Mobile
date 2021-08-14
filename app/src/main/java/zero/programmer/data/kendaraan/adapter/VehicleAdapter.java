@@ -32,6 +32,8 @@ import zero.programmer.data.kendaraan.api.RetroServer;
 import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.Vehicle;
 import zero.programmer.data.kendaraan.response.ResponseOneData;
+import zero.programmer.data.kendaraan.session.SessionManager;
+import zero.programmer.data.kendaraan.utils.RoleId;
 
 public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderData> {
 
@@ -90,9 +92,13 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
         Vibrator vibrator;
         Button buttonUpdateVehicle, buttonDeleteVehicle;
         BottomSheetDialog bottomSheetDialog;
+        SessionManager sessionManager;
 
         public HolderData(@NonNull View itemView) {
             super(itemView);
+
+            // inject session manager
+            sessionManager = new SessionManager(context);
 
             // get view
             textViewName = itemView.findViewById(R.id.card_vehicle_name);
@@ -104,7 +110,10 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.HolderDa
             cardViewVehicle = itemView.findViewById(R.id.card_vehicle);
             vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
-            cardViewVehicle.setOnClickListener(v -> detailVehicle());
+            // cek jika role id = admin
+            if (sessionManager.getRoleId().equals(RoleId.ADMIN.toString())){
+                cardViewVehicle.setOnClickListener(v -> detailVehicle());
+            }
         }
 
         private void detailVehicle(){

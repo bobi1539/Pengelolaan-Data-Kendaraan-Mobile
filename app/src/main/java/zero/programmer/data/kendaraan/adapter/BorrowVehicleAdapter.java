@@ -30,6 +30,8 @@ import zero.programmer.data.kendaraan.api.GetConnection;
 import zero.programmer.data.kendaraan.apikey.ApiKeyData;
 import zero.programmer.data.kendaraan.entitites.BorrowVehicle;
 import zero.programmer.data.kendaraan.response.ResponseOneData;
+import zero.programmer.data.kendaraan.session.SessionManager;
+import zero.programmer.data.kendaraan.utils.RoleId;
 
 public class BorrowVehicleAdapter extends RecyclerView.Adapter<BorrowVehicleAdapter.HolderData>{
 
@@ -94,8 +96,13 @@ public class BorrowVehicleAdapter extends RecyclerView.Adapter<BorrowVehicleAdap
                 textViewDetailDestination, textViewDetailBorrowStatus;
         Button buttonEditBorrow, buttonDeleteBorrow, buttonPrintBorrow;
 
+        SessionManager sessionManager;
+
         public HolderData(@NonNull View itemView) {
             super(itemView);
+
+            // inject session manager
+            sessionManager = new SessionManager(context);
 
             // get view layout
             textViewIdBorrow = itemView.findViewById(R.id.card_borrow_vehicle_id_borrow);
@@ -203,6 +210,12 @@ public class BorrowVehicleAdapter extends RecyclerView.Adapter<BorrowVehicleAdap
                             destination = textViewDetailDestination.getText().toString();
                             borrowStatusVariable = textViewDetailBorrowStatus.getText().toString();
                             borrowType = borrowVehicle.getBorrowType();
+
+                            // cek jika role id bukan admin
+                            if (!sessionManager.getRoleId().equals(RoleId.ADMIN.toString())){
+                                buttonEditBorrow.setVisibility(View.GONE);
+                                buttonDeleteBorrow.setVisibility(View.GONE);
+                            }
 
 
                             //click button

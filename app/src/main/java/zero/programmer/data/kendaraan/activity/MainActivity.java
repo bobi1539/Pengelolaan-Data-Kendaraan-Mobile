@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private SessionManager sessionManager;
 
     private MenuItem itemDriver, itemUser;
-    BottomNavigationView bottomNavigationView;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void validateRoleIdAccess(){
-        if (sessionManager.getRoleId().equals(RoleId.KARYAWAN.toString()) || sessionManager.getRoleId().equals(RoleId.KABID.toString())){
+        if (!sessionManager.getRoleId().equals(RoleId.ADMIN.toString())){
             itemDriver.setVisible(false);
             itemUser.setVisible(false);
         }

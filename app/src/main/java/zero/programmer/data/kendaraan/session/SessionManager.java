@@ -67,4 +67,8 @@ public class SessionManager {
         sharedPreferencesEditor.clear();
         sharedPreferencesEditor.commit();
     }
+
+    public String getRoleId(){
+        return userSession.getString(KEY_ROLE_ID, null);
+    }
 }

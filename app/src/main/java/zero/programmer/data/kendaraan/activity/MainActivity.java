@@ -20,10 +20,14 @@ import zero.programmer.data.kendaraan.fragment.ProfileFragment;
 import zero.programmer.data.kendaraan.fragment.UserFragment;
 import zero.programmer.data.kendaraan.fragment.VehicleFragment;
 import zero.programmer.data.kendaraan.session.SessionManager;
+import zero.programmer.data.kendaraan.utils.RoleId;
 
 public class MainActivity extends AppCompatActivity {
 
     private SessionManager sessionManager;
+
+    private MenuItem itemDriver, itemUser;
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +42,26 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnItemSelectedListener(navigationListener);
+
+        itemDriver = bottomNavigationView.getMenu().findItem(R.id.item_driver);
+        itemUser = bottomNavigationView.getMenu().findItem(R.id.item_user);
+
+        // cek role id
+        validateRoleIdAccess();
 
         // Setting Profile Fragment as main Fragment
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_layout, new ProfileFragment())
                 .commit();
+    }
+
+    private void validateRoleIdAccess(){
+        if (sessionManager.getRoleId().equals(RoleId.KARYAWAN.toString()) || sessionManager.getRoleId().equals(RoleId.KABID.toString())){
+            itemDriver.setVisible(false);
+            itemUser.setVisible(false);
+        }
     }
 
     // Listener Navigation Bar

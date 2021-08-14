@@ -2,6 +2,7 @@ package zero.programmer.data.kendaraan.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +19,15 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Calendar;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import zero.programmer.data.kendaraan.R;
+import zero.programmer.data.kendaraan.api.GetConnection;
+import zero.programmer.data.kendaraan.apikey.ApiKeyData;
+import zero.programmer.data.kendaraan.entitites.BorrowVehicle;
+import zero.programmer.data.kendaraan.model.UpdateRequestBorrowVehicle;
+import zero.programmer.data.kendaraan.response.ResponseOneData;
 
 public class EditBorrowVehicleActivity extends AppCompatActivity {
 
@@ -33,7 +42,8 @@ public class EditBorrowVehicleActivity extends AppCompatActivity {
     private Intent intent;
 
     private Integer idBorrow;
-    private String necessity, borrowDate, returnDate, destination, borrowStatus;
+    private String necessity, borrowDate, returnDate, destination;
+    private Boolean borrowStatus;
     private Calendar calendar = Calendar.getInstance();
 
     @Override
@@ -100,6 +110,11 @@ public class EditBorrowVehicleActivity extends AppCompatActivity {
         ArrayAdapter adapter = (ArrayAdapter) spinnerBorrowStatus.getAdapter();
         int positionSpinner = adapter.getPosition(intent.getStringExtra("borrowStatusVariable"));
         spinnerBorrowStatus.setSelection(positionSpinner);
+
+        // set id borrow from intent
+        idBorrow = Integer.parseInt(intent.getStringExtra("idBorrow"));
+        // cek borrow status
+        borrowStatus = spinnerBorrowStatus.getSelectedItem().toString().trim().equals("DIPINJAM");
     }
 
     private void getBorrowDate(){
@@ -170,7 +185,51 @@ public class EditBorrowVehicleActivity extends AppCompatActivity {
 
     private void updateBorrowVehicle(){
         if (validateInput()){
-            Toast.makeText(this, "valid", Toast.LENGTH_SHORT).show();
+
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            alertDialog.setMessage("Yakin data di update?");
+            alertDialog.setCancelable(true);
+
+            alertDialog.setPositiveButton("Tidak", (dialog, which) -> dialog.dismiss());
+
+            alertDialog.setNegativeButton("Ya", (dialog, which) -> {
+                UpdateRequestBorrowVehicle borrowVehicle = new UpdateRequestBorrowVehicle(
+                        necessity, borrowDate,returnDate, destination, borrowStatus
+                );
+
+                Call<ResponseOneData<BorrowVehicle>> updateBorrowVehicle = GetConnection.apiRequest.updateBorrowVehicle(
+                        ApiKeyData.getApiKey(), idBorrow, borrowVehicle
+                );
+
+                updateBorrowVehicle.enqueue(new Callback<ResponseOneData<BorrowVehicle>>() {
+                    @Override
+                    public void onResponse(Call<ResponseOneData<BorrowVehicle>> call, Response<ResponseOneData<BorrowVehicle>> response) {
+                        if (response.code() == 404){
+                            Toast.makeText(EditBorrowVehicleActivity.this, "Data tidak ditemukan", Toast.LENGTH_SHORT).show();
+                        } else if (response.code() == 200){
+                            try {
+
+                                Toast.makeText(EditBorrowVehicleActivity.this, response.body().getMessages().get(0), Toast.LENGTH_SHORT).show();
+                                onBackPressed();
+                                finish();
+
+                            } catch (NullPointerException e){
+                                Toast.makeText(EditBorrowVehicleActivity.this, "Error : " + e, Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(EditBorrowVehicleActivity.this, "Something wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseOneData<BorrowVehicle>> call, Throwable t) {
+                        Toast.makeText(EditBorrowVehicleActivity.this, "Error : " + t, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            });
+
+            alertDialog.show();
+
         }
     }
 
@@ -191,6 +250,9 @@ public class EditBorrowVehicleActivity extends AppCompatActivity {
             Toast.makeText(this, "Silahkan pilih status peminjaman", Toast.LENGTH_SHORT).show();
             return false;
         } else {
+
+            borrowStatus = spinnerBorrowStatus.getSelectedItem().toString().trim().equals("DIPINJAM");
+
             necessity = editTextNecessity.getText().toString();
             destination = editTextDestination.getText().toString();
             return true;

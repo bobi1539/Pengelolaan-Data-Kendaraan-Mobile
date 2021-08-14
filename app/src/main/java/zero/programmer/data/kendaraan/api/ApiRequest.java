@@ -17,6 +17,7 @@ import zero.programmer.data.kendaraan.entitites.User;
 import zero.programmer.data.kendaraan.entitites.Vehicle;
 import zero.programmer.data.kendaraan.model.BorrowVehicleData;
 import zero.programmer.data.kendaraan.model.LoginData;
+import zero.programmer.data.kendaraan.model.UpdateRequestBorrowVehicle;
 import zero.programmer.data.kendaraan.response.ResponseListData;
 import zero.programmer.data.kendaraan.model.VehicleData;
 import zero.programmer.data.kendaraan.response.ResponseOneData;
@@ -146,4 +147,11 @@ public interface ApiRequest {
             @Header("X-Api-Key") String apiKey,
             @Path("idBorrow") Integer idBorrow
     );
+
+    @PATCH("api/borrow-vehicle/{idBorrow}")
+    Call<ResponseOneData<BorrowVehicle>> updateBorrowVehicle(
+            @Header("X-Api-Key") String apiKey,
+            @Path("idBorrow") Integer idBorrow,
+            @Body UpdateRequestBorrowVehicle borrowVehicle
+            );
 }

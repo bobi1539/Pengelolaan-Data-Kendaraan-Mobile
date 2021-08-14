@@ -229,7 +229,7 @@ public class BorrowVehicleAdapter extends RecyclerView.Adapter<BorrowVehicleAdap
 
         private void editBorrowVehicle(){
             Intent intent = new Intent(context, EditBorrowVehicleActivity.class);
-            intent.putExtra("idBorrow", idBorrow);
+            intent.putExtra("idBorrow", String.valueOf(idBorrow));
             intent.putExtra("fullName", fullName);
             intent.putExtra("employeeNumber", employeeNumber);
             intent.putExtra("position", position);

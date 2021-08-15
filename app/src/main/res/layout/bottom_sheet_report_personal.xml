@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/bottom_sheet_report_dinas"
+    android:id="@+id/bottom_sheet_report_personal"
     android:orientation="vertical"
     android:background="@drawable/bottom_sheet_background"
     android:padding="20dp">
@@ -14,7 +14,7 @@
         android:id="@+id/driver_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/borrow_dinas_report"
+        android:text="@string/borrow_personal_report"
         android:layout_gravity="center_horizontal"
         android:textSize="22sp"
         android:textColor="@color/purple_500"
@@ -45,13 +45,13 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <EditText
-                android:id="@+id/et_report_dinas_month"
+                android:id="@+id/et_report_personal_month"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints="@string/month"
                 android:inputType="number"
-                android:maxLength="2"
-                tools:ignore="LabelFor" />
+                tools:ignore="LabelFor"
+                android:maxLength="2"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,24 +68,23 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <EditText
-                android:id="@+id/et_report_dinas_year"
+                android:id="@+id/et_report_personal_year"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints="@string/year"
                 android:inputType="number"
-                android:maxLength="4"
-                tools:ignore="LabelFor" />
+                tools:ignore="LabelFor"
+                android:maxLength="4"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 
     <Button
-        android:id="@+id/button_print_report_dinas"
+        android:id="@+id/button_print_report_personal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/button_print"/>
-
 
 </LinearLayout>

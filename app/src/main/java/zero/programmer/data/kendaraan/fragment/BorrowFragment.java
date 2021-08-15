@@ -9,6 +9,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -35,6 +38,10 @@ public class BorrowFragment extends Fragment {
 
     private CardView cardViewBorrowDinas, cardViewBorrowPersonal, cardViewReportDinas, cardViewReportPersonal;
     private BottomSheetDialog bottomSheetDialog;
+    private EditText editTextMonthDinas, editTextYearDinas, editTextMonthPersonal, editTextYearPersonal;
+    private Button buttonPrintReportDinas, buttonPrintReportPersonal;
+
+    private String monthDinas, yearDinas, monthPersonal, yearPersonal;
 
     public BorrowFragment() {
         // Required empty public constructor
@@ -92,6 +99,7 @@ public class BorrowFragment extends Fragment {
         }
 
         cardViewReportDinas.setOnClickListener(v -> bottomSheetDialogReportDinas(view));
+        cardViewReportPersonal.setOnClickListener(v -> bottomSheetDialogReportPersonal(view));
 
         return  view;
     }
@@ -102,8 +110,61 @@ public class BorrowFragment extends Fragment {
         View bottomSheetView = LayoutInflater.from(getContext())
                 .inflate(R.layout.bottom_sheet_report_dinas, view.findViewById(R.id.bottom_sheet_report_dinas));
 
+        editTextMonthDinas = bottomSheetView.findViewById(R.id.et_report_dinas_month);
+        editTextYearDinas = bottomSheetView.findViewById(R.id.et_report_dinas_year);
+        buttonPrintReportDinas = bottomSheetView.findViewById(R.id.button_print_report_dinas);
+
+        buttonPrintReportDinas.setOnClickListener(v -> printReportDinas());
+
+
+
+
+
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
 
+    }
+
+    private void bottomSheetDialogReportPersonal(View view){
+        bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.BottomSheetDialogTheme);
+        View bottomSheetView = LayoutInflater.from(getContext())
+                .inflate(R.layout.bottom_sheet_report_personal, view.findViewById(R.id.bottom_sheet_report_personal));
+
+        editTextMonthPersonal = bottomSheetView.findViewById(R.id.et_report_personal_month);
+        editTextYearPersonal = bottomSheetView.findViewById(R.id.et_report_personal_year);
+        buttonPrintReportPersonal = bottomSheetView.findViewById(R.id.button_print_report_personal);
+
+        bottomSheetDialog.setContentView(bottomSheetView);
+        bottomSheetDialog.show();
+    }
+
+    private void printReportDinas(){
+        if (validateInputDinas()){
+            Toast.makeText(getContext(), "valid", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean validateInputDinas(){
+        if (editTextMonthDinas.getText().toString().trim().equals("")){
+            editTextMonthDinas.setError("Bulan tidak boleh kosong");
+            return false;
+        } else if (editTextYearDinas.getText().toString().trim().equals("")){
+            editTextYearDinas.setError("Tahun tidak boleh kosong");
+            return false;
+        } else {
+            monthDinas = editTextMonthDinas.getText().toString();
+            yearDinas = editTextYearDinas.getText().toString();
+
+            if (Integer.parseInt(monthDinas) < 1 || Integer.parseInt(monthDinas) > 12){
+                Toast.makeText(getContext(), "Input bulan tidak valid", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+            if (Integer.parseInt(yearDinas) < 1000 || Integer.parseInt(yearDinas) > 3000){
+                Toast.makeText(getContext(), "Input tahun tidak valid", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            return true;
+        }
     }
 }

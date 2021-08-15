@@ -147,10 +147,6 @@ public class BorrowFragment extends Fragment {
 
         buttonPrintReportDinas.setOnClickListener(v -> printReportDinas());
 
-
-
-
-
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
 
@@ -164,6 +160,8 @@ public class BorrowFragment extends Fragment {
         editTextMonthPersonal = bottomSheetView.findViewById(R.id.et_report_personal_month);
         editTextYearPersonal = bottomSheetView.findViewById(R.id.et_report_personal_year);
         buttonPrintReportPersonal = bottomSheetView.findViewById(R.id.button_print_report_personal);
+
+        buttonPrintReportPersonal.setOnClickListener(v -> printReportPersonal());
 
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
@@ -204,19 +202,19 @@ public class BorrowFragment extends Fragment {
     }
 
     private boolean validateInputDinas(){
-        if (editTextMonthDinas.getText().toString().trim().equals("")){
-            editTextMonthDinas.setError("Bulan tidak boleh kosong");
-            return false;
-        } else if (editTextYearDinas.getText().toString().trim().equals("")){
+
+        if (editTextYearDinas.getText().toString().trim().equals("")){
             editTextYearDinas.setError("Tahun tidak boleh kosong");
             return false;
         } else {
             monthDinas = editTextMonthDinas.getText().toString();
             yearDinas = editTextYearDinas.getText().toString();
 
-            if (Integer.parseInt(monthDinas) < 1 || Integer.parseInt(monthDinas) > 12){
-                Toast.makeText(getContext(), "Input bulan tidak valid", Toast.LENGTH_SHORT).show();
-                return false;
+            if (!monthDinas.equals("")){
+                if (Integer.parseInt(monthDinas) < 1 || Integer.parseInt(monthDinas) > 12){
+                    Toast.makeText(getContext(), "Input bulan tidak valid", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
             }
 
             if (Integer.parseInt(yearDinas) < 1000 || Integer.parseInt(yearDinas) > 3000){
@@ -243,7 +241,12 @@ public class BorrowFragment extends Fragment {
         Paragraph paragraph1 = new Paragraph("Laporan Peminjaman Kendaraan Keperluan Dinas").setBold().setFontSize(12)
                 .setTextAlignment(TextAlignment.CENTER);
 
-        Paragraph paragraph2 = new Paragraph("Bulan " + monthDinas + "-" + yearDinas);
+        Paragraph paragraph2 = new Paragraph();
+        if (monthDinas.equals("")){
+            paragraph2.add("Tahun " + yearDinas);
+        } else {
+            paragraph2.add("Bulan " + monthDinas + "-" + yearDinas);
+        }
 
         float[] width = {25, 50, 50, 50, 50, 50, 50,50,50,50, 50,50,50,50};
         Table table1 = new Table(width);
@@ -275,6 +278,143 @@ public class BorrowFragment extends Fragment {
             table1.addCell(new Cell().add(new Paragraph(borrowVehicle.getVehicle().getName())));
             table1.addCell(new Cell().add(new Paragraph(borrowVehicle.getVehicle().getPoliceNumber())));
             table1.addCell(new Cell().add(new Paragraph(borrowVehicle.getDriver().getFullName())));
+            table1.addCell(new Cell().add(new Paragraph(borrowVehicle.getNecessity())));
+            table1.addCell(new Cell().add(new Paragraph(dateFormat.format(borrowVehicle.getBorrowDate()))));
+            table1.addCell(new Cell().add(new Paragraph(dateFormat.format(borrowVehicle.getReturnDate()))));
+            table1.addCell(new Cell().add(new Paragraph(borrowVehicle.getDestination())));
+            if (borrowVehicle.getBorrowStatus()){
+                table1.addCell(new Cell().add(new Paragraph("DIPINJAM")));
+            } else {
+                table1.addCell(new Cell().add(new Paragraph("DIKEMBALIKAN")));
+            }
+        }
+
+        document.add(paragraph1);
+        document.add(paragraph2);
+        document.add(table1);
+
+        document.close();
+        System.out.println("ukuran : " + listBorrow.size());
+        Toast.makeText(getContext(), "Berhasil Download di Folder Download", Toast.LENGTH_SHORT).show();
+    }
+
+    private void printReportPersonal(){
+        if (validateInputPersonal()){
+            String dateOfFillingPersonal ;
+            if (monthPersonal.equals("")){
+                dateOfFillingPersonal = yearPersonal;
+            } else {
+                dateOfFillingPersonal = yearPersonal + "-" + monthPersonal;
+            }
+
+            Call<ResponseListData<BorrowVehicle>> getBorrowVehicle = GetConnection.apiRequest.listBorrowVehiclePersonalLike(
+                    ApiKeyData.getApiKey(), dateOfFillingPersonal
+            );
+
+            getBorrowVehicle.enqueue(new Callback<ResponseListData<BorrowVehicle>>() {
+                @Override
+                public void onResponse(Call<ResponseListData<BorrowVehicle>> call, Response<ResponseListData<BorrowVehicle>> response) {
+
+                    if (response.code() == 404){
+                        Toast.makeText(getContext(), "Data tidak ditemukan", Toast.LENGTH_SHORT).show();
+                    } else {
+                        try {
+
+                            listBorrow = response.body().getData();
+                            createPdfReportPersonal();
+                            bottomSheetDialog.dismiss();
+
+                        } catch (Exception e){
+                            Toast.makeText(getContext(), "Error : " + e, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ResponseListData<BorrowVehicle>> call, Throwable t) {
+                    Toast.makeText(getContext(), "Error : " + t, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private boolean validateInputPersonal(){
+
+        if (editTextYearPersonal.getText().toString().trim().equals("")){
+            editTextYearPersonal.setError("Tahun tidak boleh kosong");
+            return false;
+        } else {
+            monthPersonal = editTextMonthPersonal.getText().toString();
+            System.out.println("month " + monthPersonal);
+            yearPersonal = editTextYearPersonal.getText().toString();
+
+            if (!monthPersonal.equals("")){
+                if (Integer.parseInt(monthPersonal) < 0 || Integer.parseInt(monthPersonal) > 12){
+                    Toast.makeText(getContext(), "Input bulan tidak valid", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            }
+
+            if (Integer.parseInt(yearPersonal) < 1000 || Integer.parseInt(yearPersonal) > 3000){
+                Toast.makeText(getContext(), "Input tahun tidak valid", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            return true;
+        }
+    }
+
+    private void createPdfReportPersonal() throws FileNotFoundException{
+        String pdfPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+        File file = new File(pdfPath, "Laporan-Keperluan-Pribadi.pdf");
+        OutputStream outputStream = new FileOutputStream(file);
+
+        PdfWriter writer = new PdfWriter(file);
+        PdfDocument pdfDocument = new PdfDocument(writer);
+        Document document = new Document(pdfDocument);
+
+        pdfDocument.setDefaultPageSize(PageSize.A4.rotate());
+        document.setMargins(30,30,30,30);
+        document.setFontSize(10);
+
+        Paragraph paragraph1 = new Paragraph("Laporan Peminjaman Kendaraan Keperluan Pribadi").setBold().setFontSize(12)
+                .setTextAlignment(TextAlignment.CENTER);
+
+        Paragraph paragraph2 = new Paragraph();
+        if (monthPersonal.equals("")){
+            paragraph2.add("Tahun " + yearPersonal);
+        } else {
+            paragraph2.add("Bulan " + monthPersonal + "-" + yearPersonal);
+        }
+
+        float[] width = {25, 50, 50, 50, 50, 50, 50,50,50,50, 50,50,50};
+        Table table1 = new Table(width);
+        table1.setTextAlignment(TextAlignment.CENTER);
+
+        table1.addCell(new Cell().add(new Paragraph("No")));
+        table1.addCell(new Cell().add(new Paragraph("Tgl Pengajuan")));
+        table1.addCell(new Cell().add(new Paragraph("Nama")));
+        table1.addCell(new Cell().add(new Paragraph("NPK")));
+        table1.addCell(new Cell().add(new Paragraph("Jabatan")));
+        table1.addCell(new Cell().add(new Paragraph("Unit Kerja")));
+        table1.addCell(new Cell().add(new Paragraph("Kendaraan")));
+        table1.addCell(new Cell().add(new Paragraph("No Polisi")));
+        table1.addCell(new Cell().add(new Paragraph("Keperluan")));
+        table1.addCell(new Cell().add(new Paragraph("Tgl Perjalanan")));
+        table1.addCell(new Cell().add(new Paragraph("Tgl Kembali")));
+        table1.addCell(new Cell().add(new Paragraph("Tujuan")));
+        table1.addCell(new Cell().add(new Paragraph("Status")));
+
+        int number = 1;
+        for (BorrowVehicle borrowVehicle : listBorrow){
+            table1.addCell(new Cell().add(new Paragraph(String.valueOf(number++))));
+            table1.addCell(new Cell().add(new Paragraph(dateFormat.format(borrowVehicle.getDateOfFilling()))));
+            table1.addCell(new Cell().add(new Paragraph(borrowVehicle.getUser().getFullName())));
+            table1.addCell(new Cell().add(new Paragraph(borrowVehicle.getUser().getEmployeeNumber())));
+            table1.addCell(new Cell().add(new Paragraph(borrowVehicle.getUser().getPosition())));
+            table1.addCell(new Cell().add(new Paragraph(borrowVehicle.getUser().getWorkUnit())));
+            table1.addCell(new Cell().add(new Paragraph(borrowVehicle.getVehicle().getName())));
+            table1.addCell(new Cell().add(new Paragraph(borrowVehicle.getVehicle().getPoliceNumber())));
             table1.addCell(new Cell().add(new Paragraph(borrowVehicle.getNecessity())));
             table1.addCell(new Cell().add(new Paragraph(dateFormat.format(borrowVehicle.getBorrowDate()))));
             table1.addCell(new Cell().add(new Paragraph(dateFormat.format(borrowVehicle.getReturnDate()))));

@@ -10,9 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
 import zero.programmer.data.kendaraan.R;
 import zero.programmer.data.kendaraan.activity.BorrowDinasActivity;
 import zero.programmer.data.kendaraan.activity.BorrowPersonalActivity;
+import zero.programmer.data.kendaraan.session.SessionManager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,7 +33,8 @@ public class BorrowFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private CardView cardViewBorrowDinas, cardViewBorrowPersonal;
+    private CardView cardViewBorrowDinas, cardViewBorrowPersonal, cardViewReportDinas, cardViewReportPersonal;
+    private BottomSheetDialog bottomSheetDialog;
 
     public BorrowFragment() {
         // Required empty public constructor
@@ -69,14 +73,37 @@ public class BorrowFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_borrow, container, false);
 
+        SessionManager sessionManager = new SessionManager(getContext());
+
         // get view layout
         cardViewBorrowDinas = view.findViewById(R.id.card_borrow_dinas);
         cardViewBorrowPersonal = view.findViewById(R.id.card_borrow_personal);
+        cardViewReportDinas = view.findViewById(R.id.card_borrow_dinas_report);
+        cardViewReportPersonal = view.findViewById(R.id.card_borrow_personal_report);
 
         // on click card
         cardViewBorrowDinas.setOnClickListener(v -> startActivity(new Intent(getContext(), BorrowDinasActivity.class)));
         cardViewBorrowPersonal.setOnClickListener(v -> startActivity(new Intent(getContext(), BorrowPersonalActivity.class)));
 
+        // cek jika tidak admin dan kabid
+        if (sessionManager.getRoleId().equals("KARYAWAN")){
+            cardViewReportDinas.setVisibility(View.GONE);
+            cardViewReportPersonal.setVisibility(View.GONE);
+        }
+
+        cardViewReportDinas.setOnClickListener(v -> bottomSheetDialogReportDinas(view));
+
         return  view;
+    }
+
+    private void bottomSheetDialogReportDinas(View view){
+
+        bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.BottomSheetDialogTheme);
+        View bottomSheetView = LayoutInflater.from(getContext())
+                .inflate(R.layout.bottom_sheet_report_dinas, view.findViewById(R.id.bottom_sheet_report_dinas));
+
+        bottomSheetDialog.setContentView(bottomSheetView);
+        bottomSheetDialog.show();
+
     }
 }

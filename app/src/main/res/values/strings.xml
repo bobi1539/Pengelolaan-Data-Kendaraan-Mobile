@@ -137,4 +137,10 @@
     <string name="save">Simpan</string>
 
 
+    <string name="borrow_dinas_report">Laporan Perjalanan Dinas</string>
+    <string name="borrow_personal_report">Laporan Keperluan Pribadi</string>
+    <string name="month">Bulan (mm)</string>
+    <string name="year">Tahun (yyyy)</string>
+
+
 </resources>

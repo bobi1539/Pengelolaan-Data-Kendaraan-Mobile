@@ -5,6 +5,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
 
     <application
         android:allowBackup="true"
@@ -15,7 +17,7 @@
         android:theme="@style/Theme.PengelolaanDataKendaraanMobile"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".activity.EditBorrowVehicleActivity"></activity>
+        <activity android:name=".activity.EditBorrowVehicleActivity"/>
         <activity android:name=".activity.AddBorrowVehiclePersonalActivity" />
         <activity android:name=".activity.SelectVehiclePersonalActivity" />
         <activity android:name=".activity.AddBorrowVehicleDinasActivity" />

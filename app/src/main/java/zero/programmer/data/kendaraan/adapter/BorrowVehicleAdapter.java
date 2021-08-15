@@ -5,6 +5,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +21,29 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.itextpdf.barcodes.BarcodeQRCode;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.colors.ColorConstants;
+import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.borders.Border;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.property.HorizontalAlignment;
+import com.itextpdf.layout.property.TextAlignment;
+import com.itextpdf.layout.property.VerticalAlignment;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -221,7 +247,21 @@ public class BorrowVehicleAdapter extends RecyclerView.Adapter<BorrowVehicleAdap
                             //click button
                             buttonEditBorrow.setOnClickListener(v -> editBorrowVehicle());
                             buttonDeleteBorrow.setOnClickListener(v -> deleteBorrowVehicle());
-                            buttonPrintBorrow.setOnClickListener(v -> printBorrowVehicle());
+                            buttonPrintBorrow.setOnClickListener(v -> {
+                                if (borrowVehicle.getBorrowType().equals("DINAS")) {
+                                    try {
+                                        printBorrowVehicleDinas(
+                                                fullName, employeeNumber, position, borrowVehicle.getUser().getWorkUnit(),
+                                                borrowDate, destination, driverName, policeNumber,
+                                                dateFormat.format(borrowVehicle.getDateOfFilling())
+                                        );
+                                    } catch (FileNotFoundException e){
+                                        Toast.makeText(context, "File not found", Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    printBorrowVehiclePersonal();
+                                }
+                            });
 
                             bottomSheetDialog.setContentView(bottomSheetView);
                             bottomSheetDialog.show();
@@ -304,8 +344,132 @@ public class BorrowVehicleAdapter extends RecyclerView.Adapter<BorrowVehicleAdap
             alertDialog.show();
         }
 
-        private void printBorrowVehicle(){
-            Toast.makeText(context, "print " + idBorrow, Toast.LENGTH_SHORT).show();
+        private void printBorrowVehicleDinas(
+                String printName, String printEmployeeNumber, String printPosition, String printWorkUnit,
+                String printDate, String printDestination, String printDriverName, String printPoliceNumber,
+                String printDateOfFilling
+        ) throws FileNotFoundException {
+
+            String pdfPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+            File file = new File(pdfPath, "Keperluan-Dinas.pdf");
+            OutputStream outputStream = new FileOutputStream(file);
+
+            PdfWriter writer = new PdfWriter(file);
+            PdfDocument pdfDocument = new PdfDocument(writer);
+            Document document = new Document(pdfDocument);
+
+            pdfDocument.setDefaultPageSize(PageSize.A6);
+            document.setMargins(30,30,30,30);
+            document.setFontSize(6);
+
+            Drawable drawable = context.getDrawable(R.drawable.image_logo);
+            Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+
+            byte[] bitmapData = stream.toByteArray();
+
+            ImageData imageData = ImageDataFactory.create(bitmapData);
+            Image image = new Image(imageData);
+            image.setWidth(60);
+
+            float[] columnWidthTitle = {65,180,65};
+            Table table1 = new Table(columnWidthTitle);
+            table1.setBorder(Border.NO_BORDER);
+
+            // table1 -- 01
+            table1.addCell(new Cell().add(image).setBorder(Border.NO_BORDER));
+            table1.addCell(new Cell().add(new Paragraph("SURAT JALAN KENDARAAN DINAS").setBold()
+                    .setHorizontalAlignment(HorizontalAlignment.CENTER).setFontSize(7).setUnderline())
+                    .setBorder(Border.NO_BORDER).setVerticalAlignment(VerticalAlignment.BOTTOM));
+            table1.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
+
+            // paragraf 1
+            Paragraph paragraph1 = new Paragraph("Yang bertanda tangan di bawah ini :")
+                    .setTextAlignment(TextAlignment.LEFT);
+
+            // ------table 2---------------
+            float[] width2 = {70,10,100};
+            Table table2 = new Table(width2);
+            table2.addCell(new Cell().add(new Paragraph("Nama")).setBorder(Border.NO_BORDER));
+            table2.addCell(new Cell().add(new Paragraph(":")).setBorder(Border.NO_BORDER));
+            table2.addCell(new Cell().add(new Paragraph(printName)).setBorder(Border.NO_BORDER));
+
+            table2.addCell(new Cell().add(new Paragraph("NPK")).setBorder(Border.NO_BORDER));
+            table2.addCell(new Cell().add(new Paragraph(":")).setBorder(Border.NO_BORDER));
+            table2.addCell(new Cell().add(new Paragraph(printEmployeeNumber)).setBorder(Border.NO_BORDER));
+
+            table2.addCell(new Cell().add(new Paragraph("Jabatan")).setBorder(Border.NO_BORDER));
+            table2.addCell(new Cell().add(new Paragraph(":")).setBorder(Border.NO_BORDER));
+            table2.addCell(new Cell().add(new Paragraph(printPosition)).setBorder(Border.NO_BORDER));
+
+            table2.addCell(new Cell().add(new Paragraph("Unit Kerja")).setBorder(Border.NO_BORDER));
+            table2.addCell(new Cell().add(new Paragraph(":")).setBorder(Border.NO_BORDER));
+            table2.addCell(new Cell().add(new Paragraph(printWorkUnit)).setBorder(Border.NO_BORDER));
+
+            // ----------table 3-----------------
+            float[] width3 = {70,10,100};
+            Table table3 = new Table(width3);
+            table3.addCell(new Cell().add(new Paragraph("Hari / Tgl Perjalanan")).setBorder(Border.NO_BORDER));
+            table3.addCell(new Cell().add(new Paragraph(":")).setBorder(Border.NO_BORDER));
+            table3.addCell(new Cell().add(new Paragraph(printDate)).setBorder(Border.NO_BORDER));
+
+            table3.addCell(new Cell().add(new Paragraph("Tujuan")).setBorder(Border.NO_BORDER));
+            table3.addCell(new Cell().add(new Paragraph(":")).setBorder(Border.NO_BORDER));
+            table3.addCell(new Cell().add(new Paragraph(printDestination)).setBorder(Border.NO_BORDER));
+
+            table3.addCell(new Cell().add(new Paragraph("Nama Pengemudi")).setBorder(Border.NO_BORDER));
+            table3.addCell(new Cell().add(new Paragraph(":")).setBorder(Border.NO_BORDER));
+            table3.addCell(new Cell().add(new Paragraph(printDriverName)).setBorder(Border.NO_BORDER));
+
+            table3.addCell(new Cell().add(new Paragraph("No Polisi Kendaraan")).setBorder(Border.NO_BORDER));
+            table3.addCell(new Cell().add(new Paragraph(":")).setBorder(Border.NO_BORDER));
+            table3.addCell(new Cell().add(new Paragraph(printPoliceNumber)).setBorder(Border.NO_BORDER));
+
+
+            // -----generate qr code-------
+            BarcodeQRCode qrCode = new BarcodeQRCode(printName + ", " + printEmployeeNumber + ", " + printPosition);
+            PdfFormXObject qrCodeObject = qrCode.createFormXObject(ColorConstants.BLACK, pdfDocument);
+            Image qrCodeImage = new Image(qrCodeObject).setWidth(50).setHorizontalAlignment(HorizontalAlignment.LEFT);
+
+            // -----------table 4-------------
+            float[] width4 = {90,90,90};
+            Table table4 = new Table(width4);
+            table4.addCell(new Cell().add(new Paragraph("dikeluarkan tgl : " + printDateOfFilling)).setBorder(Border.NO_BORDER));
+            table4.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
+            table4.addCell(new Cell().add(new Paragraph("diketahui, \n Bidang USDM")).setBorder(Border.NO_BORDER));
+
+            table4.addCell(new Cell().add(qrCodeImage).setBorder(Border.NO_BORDER));
+            table4.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
+            table4.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
+
+            table4.addCell(new Cell().add(new Paragraph("............................")).setBorder(Border.NO_BORDER));
+            table4.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
+            table4.addCell(new Cell().add(new Paragraph("............................")).setBorder(Border.NO_BORDER));
+
+            table4.addCell(new Cell().add(new Paragraph(printName)).setBorder(Border.NO_BORDER));
+            table4.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
+            table4.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
+
+
+            document.add(table1);
+            document.add(new Paragraph("\n\n"));
+            document.add(paragraph1);
+            document.add(table2);
+            document.add(new Paragraph("\nAkan menggunakan kendaraan dinas untuk " +
+                    "kegiatan operasional kantor / Dinas dengan rincian sebagai berikut :"));
+            document.add(table3);
+            document.add(new Paragraph("Surat jalan kendaraan ini dibuat untuk dipergunakan seperlunya.\n"));
+            document.add(table4);
+
+            document.close();
+            Toast.makeText(context, "Berhasil Download di Folder Download", Toast.LENGTH_SHORT).show();
+
         }
+
+        private void printBorrowVehiclePersonal(){
+
+        }
+
     }
 }

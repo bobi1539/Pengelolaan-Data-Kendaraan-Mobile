@@ -154,4 +154,10 @@ public interface ApiRequest {
             @Path("idBorrow") Integer idBorrow,
             @Body UpdateRequestBorrowVehicle borrowVehicle
             );
+
+    @GET("api/borrow-vehicle/dinas/date/{dateOfFilling}")
+    Call<ResponseListData<BorrowVehicle>> listBorrowVehicleDinasLike(
+            @Header("X-Api-Key") String apiKey,
+            @Path("dateOfFilling") String dateOfFilling
+    );
 }

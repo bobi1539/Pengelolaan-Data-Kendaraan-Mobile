@@ -256,10 +256,18 @@ public class BorrowVehicleAdapter extends RecyclerView.Adapter<BorrowVehicleAdap
                                                 dateFormat.format(borrowVehicle.getDateOfFilling())
                                         );
                                     } catch (FileNotFoundException e){
-                                        Toast.makeText(context, "File not found", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(context, "File not found " + e, Toast.LENGTH_SHORT).show();
                                     }
                                 } else {
-                                    printBorrowVehiclePersonal();
+                                    try {
+                                        printBorrowVehiclePersonal(
+                                            fullName, employeeNumber, position, borrowVehicle.getUser().getWorkUnit(),
+                                                necessity, borrowDate, returnDate, destination, policeNumber,
+                                                dateFormat.format(borrowVehicle.getDateOfFilling())
+                                        );
+                                    } catch (FileNotFoundException e){
+                                        Toast.makeText(context, "File not found", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                             });
 
@@ -467,8 +475,125 @@ public class BorrowVehicleAdapter extends RecyclerView.Adapter<BorrowVehicleAdap
 
         }
 
-        private void printBorrowVehiclePersonal(){
+        private void printBorrowVehiclePersonal(
+                String printName, String printEmployeeNumber, String printPosition, String printWorkUnit,
+                String printNecessity, String printBorrowDate, String printReturnDate, String printDestination,
+                String printPoliceNumber, String printDateOfFilling
+        ) throws FileNotFoundException{
+            String pdfPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+            File file = new File(pdfPath, "Keperluan-Pribadi.pdf");
+            OutputStream outputStream = new FileOutputStream(file);
 
+            PdfWriter writer = new PdfWriter(file);
+            PdfDocument pdfDocument = new PdfDocument(writer);
+            Document document = new Document(pdfDocument);
+
+            pdfDocument.setDefaultPageSize(PageSize.A6);
+            document.setMargins(30,30,30,30);
+            document.setFontSize(5);
+
+            Drawable drawable = context.getDrawable(R.drawable.image_logo);
+            Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+
+            byte[] bitmapData = stream.toByteArray();
+
+            ImageData imageData = ImageDataFactory.create(bitmapData);
+            Image image = new Image(imageData);
+            image.setWidth(50);
+
+            float[] columnWidthTitle = {55,190,55};
+            Table table1 = new Table(columnWidthTitle);
+            table1.setBorder(Border.NO_BORDER);
+
+            // table1 -- 01
+            table1.addCell(new Cell().add(image).setBorder(Border.NO_BORDER));
+            table1.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
+            table1.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
+
+            Paragraph paragraph0 = new Paragraph("SURAT PERMOHONAN PEMINJAMAN KENDARAAN DINAS").setBold()
+                    .setFontSize(6).setHorizontalAlignment(HorizontalAlignment.CENTER);
+
+            Paragraph paragraph1 = new Paragraph("Yth, Kepala Kantor Cabang BPJS Ketenagakerjaan Bukittinggi\n" +
+                    " Melalui Kepala Bidang Umum dan SDM\n" +
+                    "Jl.Nawawi No.5\n" +
+                    "Bukittinggi");
+
+            Paragraph paragraph2 = new Paragraph("Yang bertanda tangan di bawah ini :");
+
+            // ------table 2---------------
+            float[] width2 = {70,10,100};
+            Table table2 = new Table(width2);
+            table2.setPadding(2);
+            table2.addCell(new Cell().add(new Paragraph("Nama")).setBorder(Border.NO_BORDER));
+            table2.addCell(new Cell().add(new Paragraph(":")).setBorder(Border.NO_BORDER));
+            table2.addCell(new Cell().add(new Paragraph(printName)).setBorder(Border.NO_BORDER));
+
+            table2.addCell(new Cell().add(new Paragraph("NPK")).setBorder(Border.NO_BORDER));
+            table2.addCell(new Cell().add(new Paragraph(":")).setBorder(Border.NO_BORDER));
+            table2.addCell(new Cell().add(new Paragraph(printEmployeeNumber)).setBorder(Border.NO_BORDER));
+
+            table2.addCell(new Cell().add(new Paragraph("Jabatan")).setBorder(Border.NO_BORDER));
+            table2.addCell(new Cell().add(new Paragraph(":")).setBorder(Border.NO_BORDER));
+            table2.addCell(new Cell().add(new Paragraph(printPosition)).setBorder(Border.NO_BORDER));
+
+            table2.addCell(new Cell().add(new Paragraph("Unit Kerja")).setBorder(Border.NO_BORDER));
+            table2.addCell(new Cell().add(new Paragraph(":")).setBorder(Border.NO_BORDER));
+            table2.addCell(new Cell().add(new Paragraph(printWorkUnit)).setBorder(Border.NO_BORDER));
+
+            Paragraph paragraph3 = new Paragraph("Dengan ini mengajukan permohonan pinjam kendaraan dinas " +
+                    "BPJS Ketenagakerjaan Kantor Cabang Bukittinggi untuk Keperluan " + printNecessity +
+                    " dari tanggal " + printBorrowDate + " s/d tanggal " + printReturnDate + " dengan tujuan " +
+                    printDestination.toUpperCase() +" dan Kendaraan Nomor Polisi " + printPoliceNumber.toUpperCase() + " tersebut akan saya " +
+                    "kembalikan pada tanggal " + printReturnDate);
+
+            Paragraph paragraph4 = new Paragraph("Dalam hal ini saya akan mematuhi ketentuan sbb :");
+            Paragraph paragraph5 = new Paragraph("* Peminjam bertanggung jawab penuh atas kerusakan kendaraan dan hal lain yang mungkin terjadi selama meminjaman.\n" +
+                    "* Peminjam bertanggung jawab atas kehilangan kendaraan yang mungkin terjadi baik berurusan dengan aparat kepolisian maupun administrasi asuransi.\n" +
+                    "* Bahan bakar di tanggung sendiri oleh peminjam.\n" +
+                    "* Kendaraan kembali dalam keadaan baik dan bersih.\n" +
+                    "* Bila mencapai minimal 1.500 KM , dikenakan biaya service / ganti olie yang besarnyan sesuai standart bengkel yang di tunjuk Kantor Cabang Bukittinggi.\n" +
+                    "* Setelah meminjam, kunci kendaraan tersebut langsung di kembalikan ke Bidang Umum dan SDM.\n" +
+                    "* Kendaraan yang dipinjam harus sudah di kantor selambat-lambatnya pada pukul 08.00 WIB.\n" +
+                    "* Peminjam harus tunduk pada aturan tersebut di atas.").setBold().setItalic().setFontSize(4).setMarginLeft(10);
+
+            Paragraph paragraph6 = new Paragraph("Demikian permohonan ini saya buat, atas perhatiannya diucapkan terimakasih.");
+
+            // -----generate qr code-------
+            BarcodeQRCode qrCode = new BarcodeQRCode(printName + ", " + printEmployeeNumber + ", " + printPosition);
+            PdfFormXObject qrCodeObject = qrCode.createFormXObject(ColorConstants.BLACK, pdfDocument);
+            Image qrCodeImage = new Image(qrCodeObject).setWidth(50).setHorizontalAlignment(HorizontalAlignment.LEFT);
+
+            // -----------table 4-------------
+            float[] width4 = {90,90,90};
+            Table table4 = new Table(width4);
+            table4.addCell(new Cell().add(new Paragraph("Mengetahui / Menyetujui")).setBorder(Border.NO_BORDER));
+            table4.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
+            table4.addCell(new Cell().add(new Paragraph("Bukittinggi, " + printDateOfFilling + "\nPeminjam")).setBorder(Border.NO_BORDER));
+
+            table4.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
+            table4.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
+            table4.addCell(new Cell().add(qrCodeImage).setBorder(Border.NO_BORDER));
+
+            table4.addCell(new Cell().add(new Paragraph("Bidang Umum / SDM")).setBorder(Border.NO_BORDER));
+            table4.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
+            table4.addCell(new Cell().add(new Paragraph(printName.toUpperCase())).setBorder(Border.NO_BORDER));
+
+
+            document.add(table1);
+            document.add(paragraph0);
+            document.add(paragraph1);
+            document.add(paragraph2);
+            document.add(table2);
+            document.add(paragraph3);
+            document.add(paragraph4);
+            document.add(paragraph5);
+            document.add(paragraph6);
+            document.add(table4);
+
+            document.close();
+            Toast.makeText(context, "Berhasil Download di Folder Download", Toast.LENGTH_SHORT).show();
         }
 
     }

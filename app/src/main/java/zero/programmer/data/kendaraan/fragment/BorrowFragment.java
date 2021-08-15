@@ -1,5 +1,6 @@
 package zero.programmer.data.kendaraan.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -29,6 +30,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,6 +70,9 @@ public class BorrowFragment extends Fragment {
     private String monthDinas, yearDinas, monthPersonal, yearPersonal;
 
     private List<BorrowVehicle> listBorrow = new ArrayList<>();
+
+    @SuppressLint("SimpleDateFormat")
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     public BorrowFragment() {
         // Required empty public constructor
@@ -233,22 +238,52 @@ public class BorrowFragment extends Fragment {
 
         pdfDocument.setDefaultPageSize(PageSize.A4.rotate());
         document.setMargins(30,30,30,30);
-        document.setFontSize(6);
+        document.setFontSize(10);
 
-        Paragraph paragraph1 = new Paragraph("Laporan Peminjaman Kendaraan Keperluan Dinas").setBold().setFontSize(8)
+        Paragraph paragraph1 = new Paragraph("Laporan Peminjaman Kendaraan Keperluan Dinas").setBold().setFontSize(12)
                 .setTextAlignment(TextAlignment.CENTER);
 
         Paragraph paragraph2 = new Paragraph("Bulan " + monthDinas + "-" + yearDinas);
 
-        float[] width = {10, 30};
+        float[] width = {25, 50, 50, 50, 50, 50, 50,50,50,50, 50,50,50,50};
         Table table1 = new Table(width);
+        table1.setTextAlignment(TextAlignment.CENTER);
 
         table1.addCell(new Cell().add(new Paragraph("No")));
+        table1.addCell(new Cell().add(new Paragraph("Tgl Pengajuan")));
         table1.addCell(new Cell().add(new Paragraph("Nama")));
+        table1.addCell(new Cell().add(new Paragraph("NPK")));
+        table1.addCell(new Cell().add(new Paragraph("Jabatan")));
+        table1.addCell(new Cell().add(new Paragraph("Unit Kerja")));
+        table1.addCell(new Cell().add(new Paragraph("Kendaraan")));
+        table1.addCell(new Cell().add(new Paragraph("No Polisi")));
+        table1.addCell(new Cell().add(new Paragraph("Nama Sopir")));
+        table1.addCell(new Cell().add(new Paragraph("Keperluan")));
+        table1.addCell(new Cell().add(new Paragraph("Tgl Perjalanan")));
+        table1.addCell(new Cell().add(new Paragraph("Tgl Kembali")));
+        table1.addCell(new Cell().add(new Paragraph("Tujuan")));
+        table1.addCell(new Cell().add(new Paragraph("Status")));
 
-        for (int x = 0; x < 10; x++){
-            table1.addCell(new Cell().add(new Paragraph("hi")));
-            table1.addCell(new Cell().add(new Paragraph("hi")));
+        int number = 1;
+        for (BorrowVehicle borrowVehicle : listBorrow){
+            table1.addCell(new Cell().add(new Paragraph(String.valueOf(number++))));
+            table1.addCell(new Cell().add(new Paragraph(dateFormat.format(borrowVehicle.getDateOfFilling()))));
+            table1.addCell(new Cell().add(new Paragraph(borrowVehicle.getUser().getFullName())));
+            table1.addCell(new Cell().add(new Paragraph(borrowVehicle.getUser().getEmployeeNumber())));
+            table1.addCell(new Cell().add(new Paragraph(borrowVehicle.getUser().getPosition())));
+            table1.addCell(new Cell().add(new Paragraph(borrowVehicle.getUser().getWorkUnit())));
+            table1.addCell(new Cell().add(new Paragraph(borrowVehicle.getVehicle().getName())));
+            table1.addCell(new Cell().add(new Paragraph(borrowVehicle.getVehicle().getPoliceNumber())));
+            table1.addCell(new Cell().add(new Paragraph(borrowVehicle.getDriver().getFullName())));
+            table1.addCell(new Cell().add(new Paragraph(borrowVehicle.getNecessity())));
+            table1.addCell(new Cell().add(new Paragraph(dateFormat.format(borrowVehicle.getBorrowDate()))));
+            table1.addCell(new Cell().add(new Paragraph(dateFormat.format(borrowVehicle.getReturnDate()))));
+            table1.addCell(new Cell().add(new Paragraph(borrowVehicle.getDestination())));
+            if (borrowVehicle.getBorrowStatus()){
+                table1.addCell(new Cell().add(new Paragraph("DIPINJAM")));
+            } else {
+                table1.addCell(new Cell().add(new Paragraph("DIKEMBALIKAN")));
+            }
         }
 
         document.add(paragraph1);

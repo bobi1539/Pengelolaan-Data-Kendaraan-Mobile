@@ -160,4 +160,10 @@ public interface ApiRequest {
             @Header("X-Api-Key") String apiKey,
             @Path("dateOfFilling") String dateOfFilling
     );
+
+    @GET("api/borrow-vehicle/personal/date/{dateOfFilling}")
+    Call<ResponseListData<BorrowVehicle>> listBorrowVehiclePersonalLike(
+            @Header("X-Api-Key") String apiKey,
+            @Path("dateOfFilling") String dateOfFilling
+    );
 }
